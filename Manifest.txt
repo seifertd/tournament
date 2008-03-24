@@ -8,11 +8,11 @@ bin/gui.rb
 bin/gui_v2.rb
 bin/picker
 bin/pool
-lib/pool-lib/bracket.rb
-lib/pool-lib/entry.rb
-lib/pool-lib/pool.rb
-lib/pool-lib/team.rb
 lib/tournament.rb
+lib/tournament/bracket.rb
+lib/tournament/entry.rb
+lib/tournament/pool.rb
+lib/tournament/team.rb
 spec/spec_helper.rb
 spec/tournament_spec.rb
 static/shoes-icon.png
