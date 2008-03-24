@@ -9,4 +9,4 @@
 
 == 0.0.3 / 2008-03-23
 
-* Bugfix the picker wrapper script.
+* Bugfix the picker wrapper script.  Getting used to bones/rubyforge.
