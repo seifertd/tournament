@@ -2,7 +2,7 @@
 
 dir = File.dirname(File.expand_path(File.join(__FILE__, ".."))) 
 
-file = ARGV[1].nil? ? '' : File.join(Dir.pwd, ARGV[1])
+file = ARGV[0].nil? ? '' : File.join(Dir.pwd, ARGV[0])
 
 Dir.chdir(dir)
 
