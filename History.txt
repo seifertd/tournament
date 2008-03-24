@@ -6,3 +6,7 @@
 
 * Changed the picker wrapper script to ruby because it seems that
   that is what rubyforge tools expect.
+
+== 0.0.3 / 2008-03-23
+
+* Bugfix the picker wrapper script.
