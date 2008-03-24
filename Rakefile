@@ -9,12 +9,19 @@ require 'tournament'
 
 task :default => 'spec:run'
 
+depend_on 'main'
+
 PROJ.name = 'tournament'
 PROJ.authors = 'Douglas A. Seifert'
-PROJ.email = 'doug at dseifert dot net'
-PROJ.url = 'http://www.dseifert.net/code/ncaa_pool'
+PROJ.email = 'doug+rubyforge@dseifert.net'
+PROJ.url = 'http://www.dseifert.net/code/tournament'
 PROJ.rubyforge_name = 'tournament'
+PROJ.version = '0.0.1'
+PROJ.group_id = 5863
 
 PROJ.spec_opts << '--color'
+
+PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb)
+PROJ.exclude << '^tags$'
 
 # EOF

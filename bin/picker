@@ -1,12 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-dir=`dirname $0`
+dir = File.dirname(File.expand_path(File.join(__FILE__, ".."))) 
 
-file=''
-if [ ! -z "$1" ]; then
-  file=`pwd`/$1
-fi
+file = ARGV[1].nil? ? '' : File.join(Dir.pwd, ARGV[1])
 
-cd $dir/..
+Dir.chdir(dir)
 
-./bin/gui.rb $file
+system("./bin/gui.rb #{file}")

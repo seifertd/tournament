@@ -3,9 +3,7 @@ Manifest.txt
 README.txt
 Rakefile
 bin/benchmark_pool
-bin/fake
 bin/gui.rb
-bin/gui_v2.rb
 bin/picker
 bin/pool
 lib/tournament.rb

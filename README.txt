@@ -1,6 +1,7 @@
 tournament
-    by Douglas A. Seifert
-    http://www.dseifert.net/code/ncaa_pool
+    by Douglas A. Seifert (doug+rubyforge at dseifert dot net)
+    http://www.dseifert.net/code/tournament
+    http://tournament.rubyforge.org/
 
 == DESCRIPTION:
 
@@ -12,7 +13,9 @@ basketball tournament pool.
 * Add NCAA tournament pool entries and save them as YAML
 * Run a possibilities report for determining who is likely to win
 * Run other reports such as a leader board and entry report
-* Buggy, bug functional, Shoes GUI included for creating the entries
+* Buggy, but functional, Shoes GUI included for creating the entries
+  and updating the tournament results bracket.
+* FIXME: Write a test suite.
 
 == SYNOPSIS:
 
@@ -45,7 +48,7 @@ The pool manager would use this program as follows:
     strategy.  If the basic strategy is ok, the --scoring argument is
     not required.
 
- 3. Export a tournament bracket YAML file
+ 3. Export a tournament entry YAML file
 
     tournament bracket pool.yml tournament.yml
 
@@ -77,13 +80,30 @@ The pool manager would use this program as follows:
 
     tournament report pool.yml --type=possibility
 
+== SHOES GUI:
+
+A GUI for filling out tournment bracket entries is included and is run
+by executing the program "picker".  If no argument is included, a blank
+entry is started.  It can be filled in and saved using one of the buttons
+at the top of the screen.  The entry is saved as a YAML file for a
+Tournament::Entry object.   The picker program optionally takes one
+argument, the path to a Tournament::Entry YAML file.  It will open
+with the provided entry's picks pre filled in.
+
+The GUI may be used for keeping the NCAA tournament entry YAML file
+up to date.
+ 
 == REQUIREMENTS:
 
 * main (2.8.0)
+* shoes-0.r396 (GUI Only)
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+* sudo gem install tournament
+* Download the tgz file and run it locally.  If the latter
+  option is taken, the tournament/bin directory must be in
+  the path.
 
 == LICENSE:
 
