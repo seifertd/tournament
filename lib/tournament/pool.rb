@@ -32,6 +32,14 @@ class Tournament::Pool
     @entries << YAML::load_file(yaml)
   end
 
+  # Remove an entry by name from the pool
+  def remove_by_name(name)
+    entry = @entries.find {|e| e.name == name}
+    if !entry.nil?
+      @entries.delete(entry)
+    end
+  end
+
   # Creates a bracket for the pool by combining all the
   # regions into one bracket of 64 teams.  By default the
   # bracket uses the basic scoring strategy.

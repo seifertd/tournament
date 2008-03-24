@@ -70,6 +70,12 @@ Main do
       arity -1
       description "Add an entry yaml file to the pool"
     end
+    option('remove-entry', 'r') do
+      optional
+      argument :required
+      arity -1
+      description "Remove an entry by name"
+    end
     def run
       load_pool
       if params['bracket'].given?
@@ -78,6 +84,9 @@ Main do
         save_pool 
       elsif params['add-entry'].given?
         @pool.add_entry_yaml(params['add-entry'].value)
+        save_pool 
+      elsif params['remove-entry'].given?
+        @pool.remove_by_name(params['remove-entry'].value)
         save_pool 
       else
         puts "Please specify bracket or add-entry"
