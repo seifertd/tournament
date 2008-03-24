@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(
+    File.join(File.dirname(__FILE__), '..', 'lib', 'tournament'))
+
+
+require 'benchmark'
+
+Tournament::Pool.test
+Benchmark.bm(12) do |x|
+  x.report('final_8') { Tournament::Pool.test }
+end

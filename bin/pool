@@ -1,0 +1,118 @@
+#!/usr/bin/env ruby
+require File.expand_path(
+    File.join(File.dirname(__FILE__), '..', 'lib', 'tournament'))
+
+require 'rubygems'
+require 'main'
+require 'yaml'
+
+Main do
+
+  # Loads the pool from the save file.  If the save file
+  # does not exist, creates a default pool
+  def load_pool
+    @pool = YAML::load_file(save_file_name)
+  end
+
+  def save_file_name
+    params['save-file'].value
+  end
+
+  def init_pool
+    @pool = Tournament::Pool.ncaa_2008
+    @pool.bracket.scoring_strategy = Tournament::Bracket.strategy_for_name(params['scoring'].value)
+  end
+
+  def save_pool
+    if @pool
+      File.open(save_file_name, "w") do |f|
+        YAML::dump(@pool, f)
+      end
+    end
+  end
+
+  argument('save-file') do
+    required
+    argument :required
+    arity 1
+    description "Save file for the pool."
+  end
+
+  mode('setup') do
+    description "Sets up the pool the first time"
+    option('scoring', 's') do
+      optional
+      argument :required
+      arity 1
+      default 'basic_scoring_strategy'
+      validate {|s| Tournament::Bracket.available_strategies.include?(s)}
+      description "Sets the scoring strategy, should be one of #{Tournament::Bracket.available_strategies.join(', ')}"
+    end
+    def run
+      init_pool
+      puts "Initialized new pool"
+      puts "Scoring:"
+      puts @pool.bracket.scoring_strategy.description
+      save_pool
+    end
+  end
+
+  mode('update') do
+    option('bracket', 'b') do
+      optional
+      argument :required
+      arity 1
+      description "Update the tournament bracket using supplied yaml file"
+    end
+    option('add-entry', 'a') do
+      optional
+      argument :required
+      arity -1
+      description "Add an entry yaml file to the pool"
+    end
+    def run
+      load_pool
+      if params['bracket'].given?
+        tournament = YAML::load_file(params['bracket'].value)
+        @pool.bracket = tournament.picks
+        save_pool 
+      elsif params['add-entry'].given?
+        @pool.add_entry_yaml(params['add-entry'].value)
+        save_pool 
+      else
+        puts "Please specify bracket or add-entry"
+        print usage.to_s
+        exit_warn!
+      end
+    end
+  end
+  
+  mode('bracket') do
+    argument('bracket-yaml') do
+      required
+      description "Dump the pool's bracket as an Tournament::Entry object to a yaml file."
+    end
+    def run
+      load_pool
+      tournament = Tournament::Entry.new('Tournament', @pool.bracket, 0)
+      File.open(params['bracket-yaml'].value, "w") do |f|
+        YAML::dump(tournament, f)
+      end
+    end
+  end
+
+  mode('report') do
+    option('type', 't') do
+      required
+      arity 1
+      argument :required
+      validate {|rt| ['score', 'region', 'leader', 'possibility', 'entry'].include?(rt)}
+      description "Which report to run, score, leader, region, possibility or entry"
+    end
+    def run
+      load_pool
+      @pool.send("#{params['type'].value}_report")
+    end
+  end
+
+end

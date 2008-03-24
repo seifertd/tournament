@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+dir=`dirname $0`
+
+file=''
+if [ ! -z "$1" ]; then
+  file=`pwd`/$1
+fi
+
+cd $dir/..
+
+./bin/gui.rb $file
