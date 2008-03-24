@@ -1,4 +1,8 @@
-== 1.0.0 / 2008-03-09
+== 0.0.1 / 2008-03-23
 
-* 1 major enhancement
-  * Birthday!
+* Initial Release
+
+== 0.0.2 / 2008-03-23
+
+* Changed the picker wrapper script to ruby because it seems that
+  that is what rubyforge tools expect.
