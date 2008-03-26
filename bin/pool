@@ -31,16 +31,17 @@ Main do
     end
   end
 
-  argument('save-file') do
-    required
+  option('save-file', 's') do
+    optional
     argument :required
+    default 'pool.yml'
     arity 1
     description "Save file for the pool."
   end
 
   mode('setup') do
     description "Sets up the pool the first time"
-    option('scoring', 's') do
+    option('scoring', 'S') do
       optional
       argument :required
       arity 1
@@ -58,19 +59,29 @@ Main do
   end
 
   mode('update') do
-    option('bracket', 'b') do
+    option('entry', 'e') do
       optional
       argument :required
+      default 'tournament.yml'
       arity 1
-      description "Update the tournament bracket using supplied yaml file"
+      description "Update the tournament entry using supplied yaml file"
     end
-    option('add-entry', 'a') do
+    def run
+      load_pool
+      tournament = YAML::load_file(params['entry'].value)
+      @pool.bracket = tournament.picks
+      save_pool 
+    end
+  end
+
+  mode('entry') do
+    option('add', 'a') do
       optional
       argument :required
       arity -1
       description "Add an entry yaml file to the pool"
     end
-    option('remove-entry', 'r') do
+    option('remove', 'r') do
       optional
       argument :required
       arity -1
@@ -78,50 +89,59 @@ Main do
     end
     def run
       load_pool
-      if params['bracket'].given?
-        tournament = YAML::load_file(params['bracket'].value)
-        @pool.bracket = tournament.picks
+      if params['add'].given?
+        @pool.add_entry_yaml(params['add'].value)
         save_pool 
-      elsif params['add-entry'].given?
-        @pool.add_entry_yaml(params['add-entry'].value)
-        save_pool 
-      elsif params['remove-entry'].given?
-        @pool.remove_by_name(params['remove-entry'].value)
+      elsif params['remove'].given?
+        @pool.remove_by_name(params['remove'].value)
         save_pool 
       else
-        puts "Please specify bracket or add-entry"
+        puts "Please specify add or remove"
         print usage.to_s
         exit_warn!
       end
     end
   end
   
-  mode('bracket') do
-    argument('bracket-yaml') do
-      required
-      description "Dump the pool's bracket as an Tournament::Entry object to a yaml file."
+  mode('dump') do
+    option('entry', 'e') do
+      optional
+      argument :required
+      default 'tournament.yml'
+      description "Dump the pool entry object to a yaml file."
     end
     def run
       load_pool
       tournament = Tournament::Entry.new('Tournament', @pool.bracket, 0)
-      File.open(params['bracket-yaml'].value, "w") do |f|
+      File.open(params['entry'].value, "w") do |f|
         YAML::dump(tournament, f)
       end
     end
   end
 
   mode('report') do
-    option('type', 't') do
+    available_reports = Tournament::Pool.instance_methods(false).map do |name|
+      if idx = name.index("_report")
+        name[0,idx]
+      else
+        nil
+      end
+    end.compact
+    argument('type') do
       required
       arity 1
-      argument :required
-      validate {|rt| ['score', 'region', 'leader', 'possibility', 'entry'].include?(rt)}
-      description "Which report to run, score, leader, region, possibility or entry"
+      validate {|rt| available_reports.include?(rt)}
+      description "Which report to run among #{available_reports.join(', ')}"
     end
     def run
       load_pool
       @pool.send("#{params['type'].value}_report")
     end
+  end
+
+  def run
+    print usage.to_s
+    exit_warn!
   end
 
 end

@@ -19,66 +19,82 @@ basketball tournament pool.
 
 == SYNOPSIS:
 
-The tournament command line program is installed as 'tournament'.  The library
+The tournament command line program is installed as 'pool'.  The library
 has the 2008 NCAA tournament pre-configured.  If you were to use
 this library for the 2009 NCAA tournament, code changes would be
 necessary. FIXME (add ability to read teams from a simple configuration
-file).  
+file).  For usage, just execute
+
+   pool --help
+
+For command specific usage, execute
+
+   pool <command> --help
+
+where <command> is one of the available commands described below. The
+pool command saves state in a file called pool.yml by default.  This
+can be overridden in all cases by using the --save-file option.
 
 The pool manager would use this program as follows:
 
- 1. Choose a scoring strategy.  There are various scoring strategies
-    that could be used.  The library comes pre-configured with 
-    two scoring strategies:
-    
-    1. Basic scoring strategy: each correct pick is worth 2 X the round.
-    2. Upset favoring strategy: each correct pick is worth a
-       base amount per round plus the seed number of the winner.  As
-       pre-configured, the base amounts per round are 3, 5, 11, 19, 30
-       and 40 points.
+1. Choose a scoring strategy.  There are various scoring strategies
+   that could be used.  The library comes pre-configured with 
+   two scoring strategies:
+   1. Basic scoring strategy: each correct pick is worth 2 X the round.
+   2. Upset favoring strategy: each correct pick is worth a
+      base amount per round plus the seed number of the winner.  As
+      pre-configured, the base amounts per round are 3, 5, 11, 19, 30
+      and 40 points.
+   If your scoring strategy is not one of the above, you will have to
+   write a class in the Bracket class, in file lib/tournament/bracket.rb.
 
-    If your scoring strategy is not one of the above, you will have to
-    write a class in the Bracket class, in file lib/tournament/bracket.rb.
+2. Create a directory to hold the pool data and change to it
 
- 2. Initialize the pool
+3. Initialize the pool
 
-    tournament setup pool.yml [--scoring=upset_scoring_strategy]
+       pool setup [--scoring=upset_scoring_strategy]
 
-    Use the --scoring argument to change to the upset favoring 
-    strategy.  If the basic strategy is ok, the --scoring argument is
-    not required.
+   Use the --scoring argument to change to the upset favoring 
+   strategy.  If the basic strategy is ok, the --scoring argument is
+   not required.
 
- 3. Export a tournament entry YAML file
+   As mentioned above, unless overridden by using the --save-file
+   option, the pool will save itself to the file 'pool.yml'
 
-    tournament bracket pool.yml tournament.yml
+3. Export a tournament entry YAML file
 
- 4. Create entries.  You can use the included buggy GUI (see below),
-    or edit YAML files by hand.
+       pool dump
 
- 5. Import the entry YAML files into the pool
+   This will save the tournament entry file as tournament.yml unless
+   the --entry option is used to override it.
 
-    tournament update pool.yml --add-entry=path/to/entry.yml
+4. Create entries.  You can use the included buggy GUI (see below),
+   or edit YAML files by hand.
 
- 6. As games progress, update the tournament.yml file, again using the GUI or
-    editing the YAML file by hand.  Then update the pool with the new
-    tournament YAML file
+5. Import the entry YAML files into the pool
 
-    tournament update pool.yml --bracket=tournament.yml
+       pool entry --add=path/to/entry.yml
 
- 7. Run reports
+6. As games progress, update the tournament.yml file, again using the GUI or
+   editing the YAML file by hand.  Then update the pool with the new
+   pool YAML file
+
+       pool update
+
+7. Run reports
   
-    tournament report pool.yml --type=[entry|region|leader|score]
+       pool report [final_four|entry|region|leader|score]
 
- 8. After about 22 teams are left, run a possibility report.  This report will
-    run through all the remaining ways the tournament can come out and
-    calculate the chance to win for each player.  The chance to win
-    is defined as the percentage of possibilities that lead to that player
-    coming out on top in the pool.  With more than about 22 teams left
-    (YMMV), this report could take months to run. FIXME (Investigate
-    possibly using EC2 or something to spread the load around, or 
-    otherwise optimize the possibility checking algorithm)
+8. After about 22 teams are left, run a possibility report.  This report will
+   run through all the remaining ways the tournament can come out and
+   calculate the chance to win for each player.  The chance to win
+   is defined as the percentage of possibilities that lead to that player
+   coming out on top in the pool.  With more than about 22 teams left
+   (YMMV), this report could take months to run. FIXME (Investigate
+   possibly using EC2 or something to spread the load around, or 
+   otherwise optimize the possibility checking algorithm)
 
-    tournament report pool.yml --type=possibility
+       pool report possibility
 
 == SHOES GUI:
 
@@ -90,8 +106,10 @@ Tournament::Entry object.   The picker program optionally takes one
 argument, the path to a Tournament::Entry YAML file.  It will open
 with the provided entry's picks pre filled in.
 
-The GUI may be used for keeping the NCAA tournament entry YAML file
-up to date.
+The GUI also may be used for keeping the NCAA tournament entry YAML file
+up to date:
+
+   picker tournament.yml
  
 == REQUIREMENTS:
 
