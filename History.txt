@@ -1,12 +1,20 @@
-== 0.0.1 / 2008-03-23
+== 1.0.0 / 2008-03-26
 
-* Initial Release
+* Change the pool command line script usage to make it simpler (I hope)
+* Add a new report: final_four
+* FIXME: Final four report assumes payouts go to 1st and 2nd and last places.
+  This should be configurable.
+
+== 0.0.3 / 2008-03-23
+
+* Bugfix the picker wrapper script.  Getting used to bones/rubyforge.
 
 == 0.0.2 / 2008-03-23
 
 * Changed the picker wrapper script to ruby because it seems that
   that is what rubyforge tools expect.
 
-== 0.0.3 / 2008-03-23
+== 0.0.1 / 2008-03-23
 
-* Bugfix the picker wrapper script.  Getting used to bones/rubyforge.
+* Initial Release
+
