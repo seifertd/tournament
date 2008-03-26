@@ -24,4 +24,7 @@ PROJ.spec_opts << '--color'
 PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb)
 PROJ.exclude << '^tags$'
 
+PROJ.rdoc_opts = ["--line-numbers", "--inline-source"]
+PROJ.rdoc_template = "tasks/jamis.rb"
+
 # EOF

@@ -8,6 +8,7 @@ namespace :doc do
   Rake::RDocTask.new do |rd|
     rd.main = PROJ.rdoc_main
     rd.rdoc_dir = PROJ.rdoc_dir
+    rd.template = PROJ.rdoc_template if PROJ.rdoc_template
 
     incl = Regexp.new(PROJ.rdoc_include.join('|'))
     excl = Regexp.new(PROJ.rdoc_exclude.join('|'))
