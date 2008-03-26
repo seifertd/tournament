@@ -176,7 +176,7 @@ class Tournament::Bracket
     #num_possibilities = 0
     #shifts.size.times { |n| num_possibilities |= (1 << n) }
 
-    puts "Checking #{num_possibilities} (#{number_of_outcomes}) possible outcomes."
+    #puts "Checking #{num_possibilities} (#{number_of_outcomes}) possible outcomes."
     possibility = num_possibilities - 1
     while possibility >= 0
       #puts "    possibility: #{Tournament::Bracket.jbin(possibility, teams.size - 1)}"
@@ -185,9 +185,9 @@ class Tournament::Bracket
         real_poss |= (((possibility & (1 << i)) > 0 ? 1 : 0) << s)
       end
       #puts "    real_poss: #{Tournament::Bracket.jbin(real_poss, teams.size - 1)}"
-      real_possibility = winners | real_poss
-      #puts "    possibility: #{Tournament::Bracket.jbin(real_possibility, teams.size - 1)}"
-      yield(real_possibility)
+      real_poss = winners | real_poss
+      #puts "    real_poss: #{Tournament::Bracket.jbin(real_poss, teams.size - 1)}"
+      yield(real_poss)
       possibility -= 1
     end
   end

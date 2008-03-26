@@ -297,7 +297,38 @@ class Tournament::Pool
     end
   end
 
+  def final_four_report
+    if @entries.size == 0
+      puts "There are no entries in the pool."
+      return
+    end
+    if self.bracket.teams_left != 4
+      puts "The final four report should only be run when there"
+      puts "are exactly four teams left in the tournament."
+      return
+    end
+    print "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    puts "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    sep= "--------------+----------------+----------------------------"
+    puts " Championship |    Champion    |  Winners"
+    puts sep
+    self.bracket.each_possible_bracket do |poss|
+      rankings = @entries.map{|p| [p, p.picks.score_against(poss)] }.sort_by {|arr| -arr[1] }
+      first = rankings[0][0]
+      second = rankings[1][0]
+      last = rankings[-1][0]
+      puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
+        poss.champion.name, "   1: #{first.name} (#{rankings[0][1]})"]
+      puts "%14s|%16s|%s" % ['', '',
+        "   2: #{second.name} (#{rankings[1][1]})"]
+      puts "%14s|%16s|%s" % ['', '',
+        "LAST: #{last.name} (#{rankings[-1][1]})"]
+      puts sep
+    end
+  end
+
   def possibility_report
+    $stdout.sync = true
     if @entries.size == 0
       puts "There are no entries in the pool."
       return
@@ -306,6 +337,9 @@ class Tournament::Pool
     min_ranking = @entries.map{|p| @entries.size + 1}
     times_winner = @entries.map{|p| 0 }
     count = 0
+    old_percentage = -1 
+    old_remaining = 1_000_000_000_000
+    puts "Checking #{self.bracket.number_of_outcomes} possible outcomes"
     start = Time.now.to_f
     self.bracket.each_possible_bracket do |poss|
       poss_scores = @entries.map{|p| p.picks.score_against(poss)}
@@ -318,15 +352,15 @@ class Tournament::Pool
         times_winner[i] += 1 if rank == 1
       end
       count += 1
-      percentage = (count * 100 / self.bracket.number_of_outcomes) * 1000
-      if (percentage % 1000) == 0
-        percentage /= 1000
-        hashes = '#' * percentage + '>'
-        elapsed = Time.now.to_f - start
-        spp = elapsed / count
-        remaining = ((self.bracket.number_of_outcomes - count) * spp).to_i
-        print "\rCalculating: %3d%% +#{hashes.ljust(100, '-')}+ %5d seconds remaining" % [percentage, remaining]
-
+      percentage = (count * 100.0 / self.bracket.number_of_outcomes)
+      elapsed = Time.now.to_f - start
+      spp = elapsed / count
+      remaining = ((self.bracket.number_of_outcomes - count) * spp).to_i
+      if (percentage.to_i != old_percentage) || (remaining < old_remaining)
+        old_remaining = remaining
+        old_percentage = percentage.to_i
+        hashes = '#' * (percentage.to_i/5) + '>'
+        print "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
       end
     end
     puts "\n"
