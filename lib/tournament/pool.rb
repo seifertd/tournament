@@ -336,6 +336,7 @@ class Tournament::Pool
     max_possible_score = @entries.map{|p| 0}
     min_ranking = @entries.map{|p| @entries.size + 1}
     times_winner = @entries.map{|p| 0 }
+    player_champions = @entries.map{|p| Hash.new {|h,k| h[k] = 0} }
     count = 0
     old_percentage = -1 
     old_remaining = 1_000_000_000_000
@@ -350,6 +351,9 @@ class Tournament::Pool
         rank = sort_scores.index(score) + 1
         min_ranking[i] = rank if rank < min_ranking[i]
         times_winner[i] += 1 if rank == 1
+        if rank == 1
+          player_champions[i][poss.champion] += 1
+        end
       end
       count += 1
       percentage = (count * 100.0 / self.bracket.number_of_outcomes)
@@ -368,16 +372,33 @@ class Tournament::Pool
     #puts "Highest Place: #{min_ranking.inspect}"
     #puts " Times Winner: #{times_winner.inspect}"
     sort_array = []
-    times_winner.each_with_index { |n, i| sort_array << [n, i, min_ranking[i], max_possible_score[i]] }
+    times_winner.each_with_index { |n, i| sort_array << [n, i, min_ranking[i], max_possible_score[i], player_champions[i]] }
     sort_array = sort_array.sort_by {|arr| arr[0] == 0 ? (arr[2] == 0 ? -arr[3] : arr[2]) : -arr[0]}
     #puts "SORT: #{sort_array.inspect}"
     puts "    Entry           | Win Chance | Highest Place | Max Score | Tie Break  "
     puts "--------------------+------------+---------------+-----------+------------"
     sort_array.each do |arr|
       chance = arr[0].to_f * 100.0 / self.bracket.number_of_outcomes
-      puts "%19s | %10.2f | %13d | %9d | %d" %
+      puts "%19s | %10.2f | %13d | %9d | %7d " %
         [@entries[arr[1]].name, chance, min_ranking[arr[1]], max_possible_score[arr[1]], @entries[arr[1]].tie_breaker]
     end
+    puts "Possible Champions For Win"
+    puts "    Entry           |    Champion     |  Ocurrences   |  Chance "
+    puts "--------------------+-----------------+---------------+---------"
+    sort_array.each do |arr|
+      next if arr[4].size == 0
+      arr[4].sort_by{|k,v| -v}.each_with_index do |harr, idx| 
+        team = harr[0]
+        occurences = harr[1]
+        if idx == 0
+          puts "%19s | %15s | %13d | %8.2f " % [@entries[arr[1]].name, team.name, occurences, occurences.to_f * 100.0 / arr[0]]
+        else
+          puts "%19s | %15s | %13d | %8.2f " % ['', team.name, occurences, occurences.to_f * 100.0 / arr[0]]
+        end
+      end
+      puts "--------------------+-----------------+---------------+---------"
+    end
+    nil
   end
 
 end
