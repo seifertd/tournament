@@ -257,6 +257,7 @@ class Tournament::Bracket
   def set_winner(round, game, team)
     if UNKNOWN_TEAM == team || matchup(round, game).include?(team)
       @winners[round][game-1] = team
+      @number_of_outcomes = nil
     else
       raise "Round #{round}, Game #{game} matchup does not include team #{team.inspect}"
     end
