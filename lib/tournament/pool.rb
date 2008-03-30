@@ -314,15 +314,52 @@ class Tournament::Pool
     puts sep
     self.bracket.each_possible_bracket do |poss|
       rankings = @entries.map{|p| [p, p.picks.score_against(poss)] }.sort_by {|arr| -arr[1] }
-      first = rankings[0][0]
-      second = rankings[1][0]
-      last = rankings[-1][0]
-      puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
-        poss.champion.name, "   1: #{first.name} (#{rankings[0][1]})"]
-      puts "%14s|%16s|%s" % ['', '',
-        "   2: #{second.name} (#{rankings[1][1]})"]
-      puts "%14s|%16s|%s" % ['', '',
-        "LAST: #{last.name} (#{rankings[-1][1]})"]
+
+      finishers = [{:entries => [], :score => 0},{:entries => [], :score => 0}, {:entries => [], :score => 0}]
+      first_place_score = rankings[0][1]
+      index = 0
+      while rankings[index][1] == first_place_score
+        finishers[0][:entries] << rankings[index][0]
+        finishers[0][:score] = first_place_score
+        index += 1
+      end
+      second_place_score = rankings[index][1]
+      while rankings[index][1] == second_place_score
+        finishers[1][:entries] << rankings[index][0]
+        finishers[1][:score] = second_place_score
+        index += 1
+      end
+      last_place_score = rankings[-1][1]
+      index = -1
+      while rankings[index][1] == last_place_score
+        finishers[2][:entries] << rankings[index][0]
+        finishers[2][:score] = last_place_score
+        index -= 1
+      end
+      if finishers[0][:entries].size == 1
+        puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
+          poss.champion.name, "   1: #{finishers[0][:entries][0].name} (#{finishers[0][:score]})"]
+        finishers[1][:entries].each_with_index do |tied_for_second, idx|
+          rank = finishers[1][:entries].size > 1 ? "TIE" : "2"
+          puts "%14s|%16s|%s" % ['', '',
+            " %3s: #{tied_for_second.name} (#{finishers[1][:score]})" % rank]
+        end
+      else
+        finishers[0][:entries].each_with_index do |tied_for_first, idx|
+          if idx == 0
+            puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
+              poss.champion.name, " TIE: #{tied_for_first.name} (#{finishers[0][:score]})"]
+          else
+            puts "%14s|%16s|%s" % ['', '',
+              " TIE: #{tied_for_first.name} (#{finishers[0][:score]})"]
+          end
+        end
+      end
+        
+      finishers[2][:entries].each_with_index do |tied_for_last, idx|
+        puts "%14s|%16s|%s" % ['', '',
+          "LAST: #{tied_for_last.name} (#{finishers[2][:score]})"]
+      end
       puts sep
     end
   end
