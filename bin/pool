@@ -74,6 +74,53 @@ Main do
     end
   end
 
+  mode('fee') do
+    argument('amount') do
+      required
+      cast :integer
+      arity 1
+      description "The fee charged per entry."
+    end
+    def run
+      load_pool
+      @pool.entry_fee = params['amount'].value
+      save_pool
+    end
+  end
+
+  mode('payout') do
+    option('constant-amount', 'C') do
+      optional
+      arity 1
+      cast :boolean
+      description "Specify if the payout is a constant amount rather than a percentage."
+    end
+    argument('rank') do
+      required
+      arity 1
+      description "The rank associated with the payout, such as 1, 2, 3 or last"
+    end
+    argument('amount') do
+      required
+      cast :integer
+      arity 1
+      description "The amount of the payout, either a percentage or constant amount.  If a constant amount, the --constant-amount option must be specified."
+    end
+    def run
+      load_pool
+      rank = params['rank'].value
+      if 'last' == rank
+        rank = :last
+      else
+        rank = rank.to_i
+      end
+      amount = params['amount'].value
+      amount = -amount if params['constant-amount'].value
+      @pool.set_payout(rank, amount)
+      save_pool
+    end
+  end
+
   mode('entry') do
     option('add', 'a') do
       optional

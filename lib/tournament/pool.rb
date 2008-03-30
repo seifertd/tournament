@@ -5,11 +5,14 @@
 class Tournament::Pool
   attr_reader :regions  # The regions in the pool
   attr_reader :entries  # Tournament::Entry objects for participants
+  attr_reader :payouts  # Hash of payouts by rank
+  attr_accessor :entry_fee  # The amount each entry paid to participate
 
   # Create a new empty pool with no Regions or Entries
   def initialize
     @regions = Array.new(4)
     @entries = []
+    @payouts = {}
   end
 
   # add regions to the pool.  Champ of region with index = 0 plays
@@ -38,6 +41,19 @@ class Tournament::Pool
     if !entry.nil?
       @entries.delete(entry)
     end
+  end
+
+  # Set a payout.  Takes a rank (or the symbol :last for
+  # last place), along with the payout.  The payout may be
+  # a positive integer, in which case, it represents a 
+  # percentage of the the total entry fees that particular
+  # rank would receive.  The payout may also be a negative
+  # integer, in which case, it represents a constant
+  # payout amount.
+  def set_payout(rank, payout)
+    # FIXME: Add error checking
+    @payouts ||= {}
+    @payouts[rank] = payout
   end
 
   # Creates a bracket for the pool by combining all the
@@ -152,9 +168,15 @@ class Tournament::Pool
     )
     return pool
   end
-  
-  def self.test(num_picks = 10)
+ 
+  # Run a test pool with random entries and a random outcome.
+  def self.test(num_picks = 20)
     pool = ncaa_2008
+    pool.entry_fee = 10
+    pool.set_payout(1, 70)
+    pool.set_payout(2, 20)
+    pool.set_payout(3, 10)
+    pool.set_payout(:last, -10)
     b = pool.bracket
     b.scoring_strategy = Tournament::Bracket::UpsetScoringStrategy.new
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
@@ -163,17 +185,22 @@ class Tournament::Pool
     16.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
     8.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
     4.times { |n| b.set_winner(4,n+1, b.matchup(4, n+1)[rand(2)])}
-    2.times { |n| b.set_winner(5,n+1, b.matchup(5, n+1)[rand(2)])}
-    1.times { |n| b.set_winner(6,n+1, b.matchup(6, n+1)[rand(2)])}
+    #2.times { |n| b.set_winner(5,n+1, b.matchup(5, n+1)[rand(2)])}
+    #1.times { |n| b.set_winner(6,n+1, b.matchup(6, n+1)[rand(2)])}
     picks.each_with_index {|p, idx| pool.add_entry Tournament::Entry.new("picker_#{idx}", p) }
     picks.each_with_index do |p, idx|
       puts "Score #{idx+1}: #{p.score_against(b)}"
     end
-    #pool.possibility_report
+    pool.region_report
     pool.leader_report
+    pool.final_four_report
+    pool.possibility_report
     pool.entry_report
+    pool.score_report
   end
 
+  # Generate the leader board report.  Shows each entry sorted by current 
+  # score and gives a breakdown of score by round.
   def leader_report
     puts "Total games played: #{@bracket.games_played}"
     puts "Number of entries: #{@entries.size}"
@@ -198,6 +225,9 @@ class Tournament::Pool
     end
   end
 
+  # Shows detailed scores per entry.  For each pick in each game, shows
+  # either a positive amount if the pick was correct, 0 if the pick was
+  # incorrect, or a '?' if the game has not yet been played.
   def score_report
     # Compute scores
     puts "Total games played: #{@bracket.games_played}"
@@ -234,6 +264,7 @@ class Tournament::Pool
     end
   end
 
+  # Splits str on space chars in chunks of around len size
   def self.split_line(str, len)
     new_str = []
     beg_idx = 0
@@ -248,6 +279,7 @@ class Tournament::Pool
     return new_str.reject {|s| s.nil? || s.length == 0}  
   end
 
+  # Shows a report of each entry's picks by round.
   def entry_report
     puts "There are #{@entries.size} entries."
     if @entries.size > 0
@@ -281,6 +313,7 @@ class Tournament::Pool
     end
   end
 
+  # Displays the regions and teams in the region.
   def region_report
     puts " Region | Seed | Team               "
     current_idx = -1
@@ -297,6 +330,8 @@ class Tournament::Pool
     end
   end
 
+  # When there are four teams left, for each of the 16 possible outcomes
+  # shows who will win according to the configured payouts.
   def final_four_report
     if @entries.size == 0
       puts "There are no entries in the pool."
@@ -307,63 +342,114 @@ class Tournament::Pool
       puts "are exactly four teams left in the tournament."
       return
     end
+    total_payout = @entries.size * @entry_fee
+    # Subtract out constant payments
+    total_payout = @payouts.values.inject(total_payout) {|t, amount| t += amount if amount < 0; t}
+
+    payout_keys = @payouts.keys.sort do |a,b|
+      if Symbol === a
+        1
+      elsif Symbol === b
+        -1
+      else
+        a <=> b
+      end
+    end
+
     print "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
     puts "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
-    sep= "--------------+----------------+----------------------------"
-    puts " Championship |    Champion    |  Winners"
+    puts "Payouts"
+    payout_keys.each do |key|
+      amount = if @payouts[key] > 0
+        @payouts[key].to_f / 100.0 * total_payout
+      else
+        -@payouts[key]
+      end
+      puts "%4s: $%5.2f" % [key, amount]
+    end
+    sep= "--------------+----------------+-----------------------------------------"
+    puts "              |                | Winners      Tie    "
+    puts " Championship |    Champion    | Rank Score Break Name"
     puts sep
     self.bracket.each_possible_bracket do |poss|
       rankings = @entries.map{|p| [p, p.picks.score_against(poss)] }.sort_by {|arr| -arr[1] }
-
-      finishers = [{:entries => [], :score => 0},{:entries => [], :score => 0}, {:entries => [], :score => 0}]
-      first_place_score = rankings[0][1]
+      finishers = {}
+      @payouts.each do |rank, payout|
+        finishers[rank] = {}
+        finishers[rank][:payout] = payout
+        finishers[rank][:entries] = []
+        finishers[rank][:score] = 0
+      end
+      #puts "Got finishers: #{finishers.inspect}"
       index = 0
-      while rankings[index][1] == first_place_score
-        finishers[0][:entries] << rankings[index][0]
-        finishers[0][:score] = first_place_score
-        index += 1
-      end
-      second_place_score = rankings[index][1]
-      while rankings[index][1] == second_place_score
-        finishers[1][:entries] << rankings[index][0]
-        finishers[1][:score] = second_place_score
-        index += 1
-      end
-      last_place_score = rankings[-1][1]
-      index = -1
-      while rankings[index][1] == last_place_score
-        finishers[2][:entries] << rankings[index][0]
-        finishers[2][:score] = last_place_score
-        index -= 1
-      end
-      if finishers[0][:entries].size == 1
-        puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
-          poss.champion.name, "   1: #{finishers[0][:entries][0].name} (#{finishers[0][:score]})"]
-        finishers[1][:entries].each_with_index do |tied_for_second, idx|
-          rank = finishers[1][:entries].size > 1 ? "TIE" : "2"
-          puts "%14s|%16s|%s" % ['', '',
-            " %3s: #{tied_for_second.name} (#{finishers[1][:score]})" % rank]
+      rank = 1
+      while index < @entries.size
+        rank_score = rankings[index][1]
+        finishers_key = index < (@entries.size - 1) ? rank : :last
+        finish_hash = finishers[finishers_key]
+        #puts "For rank_score = #{rank_score} finishers key = #{finishers_key.inspect}, hash = #{finish_hash}, index = #{index}"
+        if finish_hash
+          while index < @entries.size && rankings[index][1] == rank_score
+            finish_hash[:entries] << rankings[index][0]
+            finish_hash[:score] = rank_score
+            index += 1
+          end
+          rank += 1
+          next
         end
-      else
-        finishers[0][:entries].each_with_index do |tied_for_first, idx|
-          if idx == 0
-            puts "%14s|%16s|%s" % [poss.winners[5].map{|t| t.short_name}.join("-"),
-              poss.champion.name, " TIE: #{tied_for_first.name} (#{finishers[0][:score]})"]
+        index += 1
+        rank += 1
+      end
+
+      num_payouts = payout_keys.size
+
+      first_line = true
+      showed_last = false
+      payout_count = 0
+      while payout_count < num_payouts
+        rank = payout_keys[payout_count]
+        finish_hash = finishers[rank]
+        label = finish_hash[:entries].size == 1 ? "#{rank}".upcase : "TIE"
+        finish_hash[:entries].each do |winner| 
+          line = if first_line
+            "%14s|%16s| %4s %5d %5d %s" % [
+              poss.winners[5].map{|t| t.short_name}.join("-"),
+              poss.champion.name,
+              label,
+              finish_hash[:score],
+              winner.tie_breaker,
+              winner.name
+            ]
           else
-            puts "%14s|%16s|%s" % ['', '',
-              " TIE: #{tied_for_first.name} (#{finishers[0][:score]})"]
+            "%14s|%16s| %4s %5d %5d %s" % [
+              '',
+              '',
+              label,
+              finish_hash[:score],
+              winner.tie_breaker,
+              winner.name
+            ]
+          end
+          puts line
+          first_line = false
+        end
+        payout_count += finish_hash[:entries].size
+        showed_last = (rank == :last)
+        if payout_count >= num_payouts && !showed_last
+          if payout_keys[num_payouts-1] == :last
+            payout_count -= 1
+            showed_last = true
           end
         end
       end
-        
-      finishers[2][:entries].each_with_index do |tied_for_last, idx|
-        puts "%14s|%16s|%s" % ['', '',
-          "LAST: #{tied_for_last.name} (#{finishers[2][:score]})"]
-      end
       puts sep
     end
+    nil
   end
 
+  # Runs through every possible outcome of the tournament and calculates
+  # each entry's chance to win as a percentage of the possible outcomes
+  # the entry would win if the tournament came out that way.
   def possibility_report
     $stdout.sync = true
     if @entries.size == 0

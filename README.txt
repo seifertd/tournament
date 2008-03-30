@@ -61,6 +61,20 @@ The pool manager would use this program as follows:
    As mentioned above, unless overridden by using the --save-file
    option, the pool will save itself to the file 'pool.yml'
 
+3. Set the entry fee and payout amounts
+   
+       pool fee 10
+       pool payout 1 80
+       pool payout 2 20
+       pool payout last 10 -C
+
+   The above commands say that each entry fee is 10 units (this is all
+   for fun, not profit, right?) and that the 1st place finisher would
+   receive 80% of the total payout, the 2nd place finisher would 
+   receive 20% of the total payout and the last place finisher would
+   receive 10 units back (would get her entry fee back).  No error
+   checking is done with this.  FIXME: Add error checking.
+
 3. Export a tournament entry YAML file
 
        pool dump
@@ -84,6 +98,9 @@ The pool manager would use this program as follows:
 7. Run reports
   
        pool report [final_four|entry|region|leader|score]
+
+   The final four report can only be run once the final four teams have
+   been determined.
 
 8. After about 22 teams are left, run a possibility report.  This report will
    run through all the remaining ways the tournament can come out and
@@ -110,6 +127,9 @@ The GUI also may be used for keeping the NCAA tournament entry YAML file
 up to date:
 
    picker tournament.yml
+
+The GUI works as long as you don't try to go back and change games
+from played to unknown outcome.
  
 == REQUIREMENTS:
 
