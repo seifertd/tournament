@@ -1,3 +1,12 @@
+== 1.1.0 / 2008-03-29
+
+* Add ability to configure entry fee and payout amounts
+* Change final four report to use the entry fee and payout amount configuration
+* Fix bug with cached @number_of_outcomes in Tournament::Pool class.
+* Add to the possibility report a listing of each entry that could place first
+  that shows frequency of which team would have to be champion for 
+  the entry to place first.
+
 == 1.0.0 / 2008-03-26
 
 * Change the pool command line script usage to make it simpler (I hope)
