@@ -61,7 +61,7 @@ The pool manager would use this program as follows:
    As mentioned above, unless overridden by using the --save-file
    option, the pool will save itself to the file 'pool.yml'
 
-3. Set the entry fee and payout amounts
+4. Set the entry fee and payout amounts
    
        pool fee 10
        pool payout 1 80
@@ -75,43 +75,43 @@ The pool manager would use this program as follows:
    receive 10 units back (would get her entry fee back).  No error
    checking is done with this.  FIXME: Add error checking.
 
-3. Export a tournament entry YAML file
+5. Export a tournament entry YAML file
 
        pool dump
 
    This will save the tournament entry file as tournament.yml unless
    the --entry option is used to override it.
 
-4. Create entries.  You can use the included buggy GUI (see below),
+6. Create entries.  You can use the included buggy GUI (see below),
    or edit YAML files by hand.
 
-5. Import the entry YAML files into the pool
+7. Import the entry YAML files into the pool
 
        pool entry --add=path/to/entry.yml
 
-6. As games progress, update the tournament.yml file, again using the GUI or
+8. As games progress, update the tournament.yml file, again using the GUI or
    editing the YAML file by hand.  Then update the pool with the new
    pool YAML file
 
        pool update
 
-7. Run reports
+9. Run reports
   
        pool report [final_four|entry|region|leader|score]
 
    The final four report can only be run once the final four teams have
    been determined.
 
-8. After about 22 teams are left, run a possibility report.  This report will
-   run through all the remaining ways the tournament can come out and
-   calculate the chance to win for each player.  The chance to win
-   is defined as the percentage of possibilities that lead to that player
-   coming out on top in the pool.  With more than about 22 teams left
-   (YMMV), this report could take months to run. FIXME (Investigate
-   possibly using EC2 or something to spread the load around, or 
-   otherwise optimize the possibility checking algorithm)
+10. After about 22 teams are left, run a possibility report.  This report will
+    run through all the remaining ways the tournament can come out and
+    calculate the chance to win for each player.  The chance to win
+    is defined as the percentage of possibilities that lead to that player
+    coming out on top in the pool.  With more than about 22 teams left
+    (YMMV), this report could take months to run. FIXME (Investigate
+    possibly using EC2 or something to spread the load around, or 
+    otherwise optimize the possibility checking algorithm)
 
-       pool report possibility
+        pool report possibility
 
 == SHOES GUI:
 
