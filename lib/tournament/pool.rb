@@ -337,9 +337,9 @@ class Tournament::Pool
       puts "There are no entries in the pool."
       return
     end
-    if self.bracket.teams_left != 4
+    if self.bracket.teams_left > 4
       puts "The final four report should only be run when there"
-      puts "are exactly four teams left in the tournament."
+      puts "are four or fewer teams left in the tournament."
       return
     end
     total_payout = @entries.size * @entry_fee
@@ -358,6 +358,9 @@ class Tournament::Pool
 
     print "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
     puts "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    if self.bracket.teams_left <= 2
+      puts "Championship: #{self.bracket.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    end
     puts "Payouts"
     payout_keys.each do |key|
       amount = if @payouts[key] > 0
@@ -498,12 +501,12 @@ class Tournament::Pool
     times_winner.each_with_index { |n, i| sort_array << [n, i, min_ranking[i], max_possible_score[i], player_champions[i]] }
     sort_array = sort_array.sort_by {|arr| arr[0] == 0 ? (arr[2] == 0 ? -arr[3] : arr[2]) : -arr[0]}
     #puts "SORT: #{sort_array.inspect}"
-    puts "    Entry           | Win Chance | Highest Place | Max Score | Tie Break  "
-    puts "--------------------+------------+---------------+-----------+------------"
+    puts "    Entry           | Win Chance | Highest Place | Curr Score | Max Score | Tie Break  "
+    puts "--------------------+------------+---------------+------------+-----------+------------"
     sort_array.each do |arr|
       chance = arr[0].to_f * 100.0 / self.bracket.number_of_outcomes
-      puts "%19s | %10.2f | %13d | %9d | %7d " %
-        [@entries[arr[1]].name, chance, min_ranking[arr[1]], max_possible_score[arr[1]], @entries[arr[1]].tie_breaker]
+      puts "%19s | %10.2f | %13d | %10d | %9d | %7d " %
+        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.bracket), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker]
     end
     puts "Possible Champions For Win"
     puts "    Entry           |    Champion     |  Ocurrences   |  Chance "
