@@ -15,16 +15,16 @@ PROJ.name = 'tournament'
 PROJ.authors = 'Douglas A. Seifert'
 PROJ.email = 'doug+rubyforge@dseifert.net'
 PROJ.url = 'http://www.dseifert.net/code/tournament'
-PROJ.rubyforge_name = 'tournament'
-PROJ.version = '1.1.0'
+PROJ.rubyforge.name = 'tournament'
+PROJ.version = '1.1.1'
 PROJ.group_id = 5863
 
-PROJ.spec_opts << '--color'
+PROJ.spec.opts << '--color'
 
 PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb)
 PROJ.exclude << '^tags$'
 
-PROJ.rdoc_opts = ["--line-numbers", "--inline-source"]
-PROJ.rdoc_template = "tasks/jamis.rb"
+PROJ.rdoc.opts = ["--line-numbers", "--inline-source"]
+PROJ.rdoc.template = "tasks/jamis.rb"
 
 # EOF

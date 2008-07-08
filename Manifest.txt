@@ -15,12 +15,14 @@ spec/spec_helper.rb
 spec/tournament_spec.rb
 static/shoes-icon.png
 tasks/ann.rake
-tasks/annotations.rake
 tasks/bones.rake
-tasks/doc.rake
 tasks/gem.rake
+tasks/git.rake
+tasks/jamis.rb
 tasks/manifest.rake
+tasks/notes.rake
 tasks/post_load.rake
+tasks/rdoc.rake
 tasks/rubyforge.rake
 tasks/setup.rb
 tasks/spec.rake
