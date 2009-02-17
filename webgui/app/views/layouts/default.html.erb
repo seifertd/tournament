@@ -1,0 +1,46 @@
+<html>
+<head>
+<title><%=TOURNAMENT_TITLE%></title>
+<%= stylesheet_link_tag 'main' %>
+</head>
+<body>
+<div id="wrap">
+<div id="nav">
+<ul>
+<li><%= link_to "Home", :controller => 'pool', :action => 'index'%></li>
+<% if session[:user_id] -%>
+<li><%= link_to "Logout", "/logout"%></li>
+<% else -%>
+<li><%= link_to "Login", "/login"%></li>
+<li><%= link_to "Signup", "/signup"%></li>
+<% end -%>
+</ul>
+</div>
+<div id="messages">
+<% if flash[:info] %>
+<div id="info"><%= flash[:info] %></div>
+<% end %>
+<% if flash[:notice] %>
+<div id="notice"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:error] %>
+<div id="error"><%= flash[:error] %></div>
+<% end %>
+</div>
+<div id="main">
+<%= yield %>
+</div>
+<div id="sidebar">
+<ul>
+<% if session[:user_id] -%>
+<li>Logged in: <%= current_user.login %></li>
+<li><%= link_to 'My Entries', :controller => 'entry', :action => 'index'%></li>
+<li><%= link_to 'New Entry', :controller => 'entry', :action => 'new'%></li>
+<% end -%>
+</ul>
+</div>
+<div id="footer">
+</div>
+</div>
+</body>
+</html>

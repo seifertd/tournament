@@ -216,7 +216,7 @@ class Tournament::Bracket
     return pick_bracket
   end
 
-  # Returns a two element array containing the Team's in the
+  # Returns a two element array containing the Teams in the
   # matchup for the given round and game
   def matchup(round, game)
     return @winners[round-1][(game-1)*2..(game-1)*2+1]
@@ -250,6 +250,17 @@ class Tournament::Bracket
       return matchup
     else
       return matchup.reverse
+    end
+  end
+
+  # Given a overall game number, return the round and round game number
+  def round_and_game(overall_game)
+    1.upto(rounds) do |r|
+      if overall_game <= games_in_round(r)
+        return [r, overall_game]
+      else
+        overall_game -= games_in_round(r)
+      end
     end
   end
 

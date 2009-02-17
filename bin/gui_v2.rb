@@ -1,7 +1,7 @@
 #!/usr/bin/env shoes
 
 require 'yaml'
-require './lib/pool-lib.rb'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'tournament.rb'))
 
 # Define some constants
 WINDOW_HEIGHT = 600

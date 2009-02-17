@@ -1,0 +1,16 @@
+<h1>Pool Entries For <%=current_user.login%></h1>
+
+<% if @entries.empty? %>
+<p>
+You have no entries.
+</p>
+<% else %>
+<ul>
+<% @entries.each do |entry| %>
+<li><%= link_to entry.name, :action => 'show', :id => entry.id %>
+<% end %>
+</ul>
+<% end %>
+<p>
+Create a new entry: TODO
+</p>

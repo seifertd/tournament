@@ -201,14 +201,14 @@ class Tournament::Pool
 
   # Generate the leader board report.  Shows each entry sorted by current 
   # score and gives a breakdown of score by round.
-  def leader_report
-    puts "Total games played: #{@bracket.games_played}"
-    puts "Number of entries: #{@entries.size}"
+  def leader_report(out = $stdout)
+    out << "Total games played: #{@bracket.games_played}" << "\n"
+    out << "Number of entries: #{@entries.size}" << "\n"
     if @entries.size > 0
-      puts " Curr| Max |               |Champ| Round Scores"
-      puts "Score|Score|      Name     |Live?|" + (1..bracket.rounds).to_a.map{|r| "%3d" % r}.join(" ")
+      out << " Curr| Max |               |Champ| Round Scores" << "\n"
+      out << "Score|Score|      Name     |Live?|" + (1..bracket.rounds).to_a.map{|r| "%3d" % r}.join(" ") << "\n"
       sep ="-----+-----+---------------+-----+" + ("-" * 4 * bracket.rounds)
-      puts sep
+      out << sep << "\n"
       @entries.sort_by {|e| -e.picks.score_against(bracket)}.each do |entry|
         total = entry.picks.score_against(bracket)
         max = entry.picks.maximum_score(bracket)
@@ -218,24 +218,24 @@ class Tournament::Pool
           scores = entry.picks.scores_for_round(round, bracket)
           round_scores << scores.inject(0) {|sum, arr| sum += (arr[0] ? arr[0] : 0)}
         end
-        puts "%5d|%5d|%15s|%3s %1s|%s" % [total, max, entry.name,
-          champ.short_name,(bracket.still_alive?(champ) ? 'Y' : 'N'), round_scores.map {|s| "%3d" % s}.join(" ")]
+        out << "%5d|%5d|%15s|%3s %1s|%s" % [total, max, entry.name,
+          champ.short_name,(bracket.still_alive?(champ) ? 'Y' : 'N'), round_scores.map {|s| "%3d" % s}.join(" ")] << "\n"
       end
-      puts sep
+      out << sep << "\n"
     end
   end
 
   # Shows detailed scores per entry.  For each pick in each game, shows
   # either a positive amount if the pick was correct, 0 if the pick was
   # incorrect, or a '?' if the game has not yet been played.
-  def score_report
+  def score_report(out = $stdout)
     # Compute scores
-    puts "Total games played: #{@bracket.games_played}"
-    puts "Number of entries: #{@entries.size}"
+    out << "Total games played: #{@bracket.games_played}" << "\n"
+    out << "Number of entries: #{@entries.size}" << "\n"
     sep = "-----+---------------+----------------------------------------------------------------------------------"
     if @entries.size > 0
-      puts "Total|      Name     | Round Scores"
-      puts sep
+      out << "Total|      Name     | Round Scores" << "\n"
+      out << sep << "\n"
       fmt1 = "%5d|%15s|%d: %3d %s" 
       fmt2 = "     |               |%d: %3d %s" 
       fmt3 = "     |               |       %s" 
@@ -248,18 +248,18 @@ class Tournament::Pool
           if [1,2].include?(round)
             scores_str_arr = Tournament::Pool.split_line(scores_str, 70)
             if round == 1
-              puts fmt1 % [total, entry.name, round, round_total, scores_str_arr[0]]
+              out << fmt1 % [total, entry.name, round, round_total, scores_str_arr[0]] << "\n"
             else
-              puts fmt2 % [round, round_total, scores_str_arr[0]]
+              out << fmt2 % [round, round_total, scores_str_arr[0]] << "\n"
             end
             scores_str_arr[1..-1].each do |scores_str|
-              puts fmt3 % scores_str
+              out << fmt3 % scores_str << "\n"
             end
           else
-            puts fmt2 % [round, round_total, scores_str]
+            out << fmt2 % [round, round_total, scores_str] << "\n"
           end
         end
-        puts sep
+        out << sep << "\n"
       end
     end
   end
@@ -280,16 +280,16 @@ class Tournament::Pool
   end
 
   # Shows a report of each entry's picks by round.
-  def entry_report
-    puts "There are #{@entries.size} entries."
+  def entry_report(out = $stdout)
+    out << "There are #{@entries.size} entries." << "\n"
     if @entries.size > 0
-      puts "".center(15) + "|" + "First Round".center(128)
-      puts "Name".center(15) + "|" + "Sweet 16".center(64) + "|" + "Elite 8".center(32) +
+      out << "".center(15) + "|" + "First Round".center(128) << "/"
+      out << "Name".center(15) + "|" + "Sweet 16".center(64) + "|" + "Elite 8".center(32) +
         "|" + "Final 4".center(16) + "|" + "Final 2".center(8) + "|" + "Champion".center(15) +
-        "|" + "Tie Break"
-      puts ("-" * 15) + "+" + ("-" * 64) + "+" + ("-" * 32) +
+        "|" + "Tie Break" << "\n"
+      out << ("-" * 15) + "+" + ("-" * 64) + "+" + ("-" * 32) +
         "+" + ("-" * 16) + "+" + ("-" * 8) + "+" + ("-" * 15) +
-        "+" + ("-" * 10)
+        "+" + ("-" * 10) << "\n"
       output = Proc.new do |name, bracket, tie_breaker|
         first_round = bracket.winners[1].map {|t| "%s" % (t.short_name rescue 'Unk')}.join('-')
         sweet_16 = bracket.winners[2].map {|t| "%s" % (t.short_name rescue 'Unk')}.join('-')
@@ -297,12 +297,12 @@ class Tournament::Pool
         final_4 = bracket.winners[4].map {|t| "%s" % (t.short_name rescue 'Unk')}.join('-')
         final_2 = bracket.winners[5].map {|t| "%s" % (t.short_name rescue 'Unk')}.join('-')
         champ = bracket.champion.name rescue 'Unk'
-        puts "               |%128s" % first_round
-        puts "%15s|%64s|%32s|%16s|%8s|%15s|%s" %
-          [name, sweet_16, elite_8, final_4, final_2, champ, tie_breaker.to_s] 
-        puts ("-" * 15) + "+" + ("-" * 64) + "+" + ("-" * 32) +
+        out << "               |%128s" % first_round << "\n"
+        out << "%15s|%64s|%32s|%16s|%8s|%15s|%s" %
+          [name, sweet_16, elite_8, final_4, final_2, champ, tie_breaker.to_s]  << "\n"
+        out << ("-" * 15) + "+" + ("-" * 64) + "+" + ("-" * 32) +
           "+" + ("-" * 16) + "+" + ("-" * 8) + "+" + ("-" * 15) +
-          "+" + ("-" * 10)
+          "+" + ("-" * 10) << "\n"
       end
 
       output.call('Tournament', bracket, '-')
@@ -314,8 +314,8 @@ class Tournament::Pool
   end
 
   # Displays the regions and teams in the region.
-  def region_report
-    puts " Region | Seed | Team               "
+  def region_report(out = $stdout)
+    out << " Region | Seed | Team               " << "\n"
     current_idx = -1
     @regions.each_with_index do |region, idx|
       region[:teams].each do |team|
@@ -323,23 +323,23 @@ class Tournament::Pool
         if idx != current_idx
           region_name =  region[:name]
           current_idx = idx
-          puts "--------+------+-------------------------"
+          out << "--------+------+-------------------------" << "\n"
         end
-        puts "%8s|%6d|%25s" % [region_name, team.seed, "#{team.name} (#{team.short_name})"]
+        out << "%8s|%6d|%25s" % [region_name, team.seed, "#{team.name} (#{team.short_name})"] << "\n"
       end
     end
   end
 
   # When there are four teams left, for each of the 16 possible outcomes
   # shows who will win according to the configured payouts.
-  def final_four_report
+  def final_four_report(out = $stdout)
     if @entries.size == 0
-      puts "There are no entries in the pool."
+      out << "There are no entries in the pool." << "\n"
       return
     end
     if self.bracket.teams_left > 4
-      puts "The final four report should only be run when there"
-      puts "are four or fewer teams left in the tournament."
+      out << "The final four report should only be run when there" << "\n"
+      out << "are four or fewer teams left in the tournament." << "\n"
       return
     end
     total_payout = @entries.size * @entry_fee
@@ -356,24 +356,24 @@ class Tournament::Pool
       end
     end
 
-    print "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
-    puts "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    out << "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    out << "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
     if self.bracket.teams_left <= 2
-      puts "Championship: #{self.bracket.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+      out << "Championship: #{self.bracket.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
     end
-    puts "Payouts"
+    out << "Payouts" << "\n"
     payout_keys.each do |key|
       amount = if @payouts[key] > 0
         @payouts[key].to_f / 100.0 * total_payout
       else
         -@payouts[key]
       end
-      puts "%4s: $%5.2f" % [key, amount]
+      out << "%4s: $%5.2f" % [key, amount] << "\n"
     end
     sep= "--------------+----------------+-----------------------------------------"
-    puts "              |                | Winners      Tie    "
-    puts " Championship |    Champion    | Rank Score Break Name"
-    puts sep
+    out << "              |                | Winners      Tie    " << "\n"
+    out << " Championship |    Champion    | Rank Score Break Name" << "\n"
+    out << sep << "\n"
     self.bracket.each_possible_bracket do |poss|
       rankings = @entries.map{|p| [p, p.picks.score_against(poss)] }.sort_by {|arr| -arr[1] }
       finishers = {}
@@ -433,7 +433,7 @@ class Tournament::Pool
               winner.name
             ]
           end
-          puts line
+          out << line << "\n"
           first_line = false
         end
         payout_count += finish_hash[:entries].size
@@ -445,7 +445,7 @@ class Tournament::Pool
           end
         end
       end
-      puts sep
+      out << sep << "\n"
     end
     nil
   end
@@ -453,10 +453,10 @@ class Tournament::Pool
   # Runs through every possible outcome of the tournament and calculates
   # each entry's chance to win as a percentage of the possible outcomes
   # the entry would win if the tournament came out that way.
-  def possibility_report
+  def possibility_report(out = $stdout)
     $stdout.sync = true
     if @entries.size == 0
-      puts "There are no entries in the pool."
+      out << "There are no entries in the pool." << "\n"
       return
     end
     max_possible_score = @entries.map{|p| 0}
@@ -466,7 +466,7 @@ class Tournament::Pool
     count = 0
     old_percentage = -1 
     old_remaining = 1_000_000_000_000
-    puts "Checking #{self.bracket.number_of_outcomes} possible outcomes"
+    out << "Checking #{self.bracket.number_of_outcomes} possible outcomes" << "\n"
     start = Time.now.to_f
     self.bracket.each_possible_bracket do |poss|
       poss_scores = @entries.map{|p| p.picks.score_against(poss)}
@@ -490,10 +490,10 @@ class Tournament::Pool
         old_remaining = remaining
         old_percentage = percentage.to_i
         hashes = '#' * (percentage.to_i/5) + '>'
-        print "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
+        out << "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
       end
     end
-    puts "\n"
+    out << "\n"
     #puts "\n   Max Scores: #{max_possible_score.inspect}"
     #puts "Highest Place: #{min_ranking.inspect}"
     #puts " Times Winner: #{times_winner.inspect}"
@@ -501,28 +501,28 @@ class Tournament::Pool
     times_winner.each_with_index { |n, i| sort_array << [n, i, min_ranking[i], max_possible_score[i], player_champions[i]] }
     sort_array = sort_array.sort_by {|arr| arr[0] == 0 ? (arr[2] == 0 ? -arr[3] : arr[2]) : -arr[0]}
     #puts "SORT: #{sort_array.inspect}"
-    puts "    Entry           | Win Chance | Highest Place | Curr Score | Max Score | Tie Break  "
-    puts "--------------------+------------+---------------+------------+-----------+------------"
+    out << "    Entry           | Win Chance | Highest Place | Curr Score | Max Score | Tie Break  " << "\n"
+    out << "--------------------+------------+---------------+------------+-----------+------------" << "\n"
     sort_array.each do |arr|
       chance = arr[0].to_f * 100.0 / self.bracket.number_of_outcomes
-      puts "%19s | %10.2f | %13d | %10d | %9d | %7d " %
-        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.bracket), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker]
+      out << "%19s | %10.2f | %13d | %10d | %9d | %7d " %
+        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.bracket), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker] << "\n"
     end
-    puts "Possible Champions For Win"
-    puts "    Entry           |    Champion     |  Ocurrences   |  Chance "
-    puts "--------------------+-----------------+---------------+---------"
+    out << "Possible Champions For Win" << "\n"
+    out << "    Entry           |    Champion     |  Ocurrences   |  Chance " << "\n"
+    out << "--------------------+-----------------+---------------+---------" << "\n"
     sort_array.each do |arr|
       next if arr[4].size == 0
       arr[4].sort_by{|k,v| -v}.each_with_index do |harr, idx| 
         team = harr[0]
         occurences = harr[1]
         if idx == 0
-          puts "%19s | %15s | %13d | %8.2f " % [@entries[arr[1]].name, team.name, occurences, occurences.to_f * 100.0 / arr[0]]
+          out << "%19s | %15s | %13d | %8.2f " % [@entries[arr[1]].name, team.name, occurences, occurences.to_f * 100.0 / arr[0]] << "\n"
         else
-          puts "%19s | %15s | %13d | %8.2f " % ['', team.name, occurences, occurences.to_f * 100.0 / arr[0]]
+          out << "%19s | %15s | %13d | %8.2f " % ['', team.name, occurences, occurences.to_f * 100.0 / arr[0]] << "\n"
         end
       end
-      puts "--------------------+-----------------+---------------+---------"
+      out << "--------------------+-----------------+---------------+---------" << "\n"
     end
     nil
   end

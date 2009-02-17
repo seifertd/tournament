@@ -1,0 +1,35 @@
+<html>
+<head>
+<title><%=TOURNAMENT_TITLE%></title>
+<%= javascript_include_tag 'prototype' %>
+<%= javascript_include_tag 'bracket' %>
+<%= stylesheet_link_tag 'main' %>
+<%= stylesheet_link_tag 'bracket' %>
+<%= stylesheet_link_tag 'scaffold' %>
+</head>
+<body>
+<div id="wrap">
+<div id="nav">
+<ul>
+<li><%= link_to "Home", :controller => 'pool', :action => 'index'%></li>
+<li><%= link_to "Entries", :controller => 'entry', :action => 'index'%></li>
+</ul>
+</div>
+<div id="messages">
+<% if flash[:info] %>
+<div id="info"><%= flash[:info] %></div>
+<% end %>
+<% if flash[:notice] %>
+<div id="notice"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:error] %>
+<div id="error"><%= flash[:error] %></div>
+<% end %>
+</div>
+<div id="main">
+<%= yield %>
+</div>
+<div id="footer"></div>
+</div>
+</body>
+</html>

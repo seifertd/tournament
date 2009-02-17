@@ -1,0 +1,59 @@
+body, html {
+  margin:0;
+  padding:0;
+  color:#000;
+  font-family: sans-serif;
+}
+body {
+  min-width:750px;
+}
+#wrap {
+  margin:0 auto;
+  width:auto;
+}
+#messages {
+  background:#ddd;
+}
+#messages h1 {
+  padding: 5px;
+  margin: 0;
+}
+#nav {
+  background:#c99;
+  padding: 5px;
+}
+#nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#nav li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+#main {
+  float: left;
+  width: auto;
+}
+#main h2, #main h3, #main p {
+  padding: 0 10px;
+}
+#sidebar {
+  float: right;
+  width: 250px;
+}
+#sidebar ul {
+  margin-bottom: 0;
+}
+#sidebar h3, #sidebar p {
+  padding: 0 10px;
+}
+#footer {
+  background:#cc9;
+  clear: both;
+}
+#footer p {
+  padding: 5px;
+  margin: 0;
+}

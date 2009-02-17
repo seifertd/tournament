@@ -31,6 +31,12 @@ Main do
     end
   end
 
+  mode('install_webgui') do
+    description 'Installs the Rails webgui.'
+    def run
+    end
+  end
+
   option('save-file', 's') do
     optional
     argument :required

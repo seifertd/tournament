@@ -1,0 +1,117 @@
+TABLE
+{
+	BORDER-RIGHT: black 1px solid;
+	BORDER-TOP: black 1px solid;
+	BORDER-LEFT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid;
+  background: white url(/images/2009FinalFour.png) center no-repeat;
+}
+
+TH.header
+{
+	font: italic small-caps bold 14px/17px "arial black";
+	color: white;
+	background-color: red;
+	text-align: center;
+}
+
+TH.subheader
+{
+	font: italic small-caps bold 5px/7px "arial black";
+	color: red;
+	background-color: #FFFFCC;
+	BORDER-BOTTOM: black 2px double;
+}
+
+TD
+{
+	width: 150px;
+	text-align: left;
+	valign: bottom;
+	font:9px "arial";
+}
+
+TD.space
+{
+	font: 1px;
+}
+
+TD.odd
+{
+	BORDER-BOTTOM: black 1px solid
+}
+
+TD.oddChampion
+{
+	BORDER-BOTTOM: black 3px double;
+	font: bold 10px "arial";
+	text-align: center;
+}
+
+TD.championLabel
+{
+	text-align: center;
+}
+
+TD.evenLeft
+{
+	BORDER-RIGHT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid
+}
+
+TD.middleLeft
+{
+	BORDER-RIGHT: black 1px solid
+}
+
+TD.evenRight
+{
+	BORDER-LEFT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid;
+}
+
+TD.middleRight
+{
+	BORDER-LEFT: black 1px solid
+}
+
+.brackcell_top
+{
+  border-bottom: 1px solid #191970;
+}
+
+.bracketcell_bottom_left
+{
+  border-right: 1px solid #191970;
+  border-bottom: 1px solid #191970;
+}
+
+.bracketcell_bottom_right
+{
+  border-right: 1px solid #191970;
+  border-bottom: 1px solid #191970;
+}
+
+.teamname
+{
+        font-size : 10px;
+        font-family : Arial, Helvetica, sans-serif;
+        font-weight : bold;
+        cursor: pointer;
+}
+
+.missedpick
+{
+        font-size : 10px;
+        font-family : Arial, Helvetica, sans-serif;
+        font-weight : bold;
+        text-decoration : line-through;
+        color : red;
+}
+
+.pendingpick
+{
+        font-size : 10px;
+        font-family : Arial, Helvetica, sans-serif;
+        color : gray;
+}

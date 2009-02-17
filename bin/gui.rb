@@ -1,5 +1,7 @@
 #!/usr/bin/env shoes
 
+Dir.chdir(File.join(File.dirname(__FILE__), '..'))
+
 require 'yaml'
 require File.join('.', 'lib', 'tournament')
 
