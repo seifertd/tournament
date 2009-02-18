@@ -96,6 +96,15 @@ class Tournament::Bracket
     return round  
   end
 
+  # Returns true if all games have been decided
+  def complete?
+    round = 0
+    while round < self.rounds
+      return false if @winners[round+1].any? {|t| t == UNKNOWN_TEAM}
+    end
+    return true
+  end
+
   # Returns the number of teams left in the bracket.
   def teams_left
     return 1 + @winners.inject(0) { |memo, arr| arr.inject(memo) {|memo, team| memo += (team == UNKNOWN_TEAM ? 1 : 0)} }

@@ -63,6 +63,8 @@
       this.style.backgroundColor='';
       this.style.color = '';
     }
+    elem.addClassName('pendingpick');
+    elem.removeClassName('missedpick');
   }
   function other_idx(idx) {
     return idx % 2 == 0 ? idx - 1 : idx + 1

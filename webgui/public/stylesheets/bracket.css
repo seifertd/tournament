@@ -1,4 +1,4 @@
-TABLE
+TABLE.bracket
 {
 	BORDER-RIGHT: black 1px solid;
 	BORDER-TOP: black 1px solid;
@@ -7,7 +7,7 @@ TABLE
   background: white url(/images/2009FinalFour.png) center no-repeat;
 }
 
-TH.header
+TABLE.bracket TH.header
 {
 	font: italic small-caps bold 14px/17px "arial black";
 	color: white;
@@ -15,7 +15,7 @@ TH.header
 	text-align: center;
 }
 
-TH.subheader
+TABLE.bracket TH.subheader
 {
 	font: italic small-caps bold 5px/7px "arial black";
 	color: red;
@@ -23,7 +23,7 @@ TH.subheader
 	BORDER-BOTTOM: black 2px double;
 }
 
-TD
+TABLE.bracket TD
 {
 	width: 150px;
 	text-align: left;
@@ -31,46 +31,46 @@ TD
 	font:9px "arial";
 }
 
-TD.space
+TABLE.bracket TD.space
 {
 	font: 1px;
 }
 
-TD.odd
+TABLE.bracket TD.odd
 {
 	BORDER-BOTTOM: black 1px solid
 }
 
-TD.oddChampion
+TABLE.bracket TD.oddChampion
 {
 	BORDER-BOTTOM: black 3px double;
 	font: bold 10px "arial";
 	text-align: center;
 }
 
-TD.championLabel
+TABLE.bracket TD.championLabel
 {
 	text-align: center;
 }
 
-TD.evenLeft
+TABLE.bracket TD.evenLeft
 {
 	BORDER-RIGHT: black 1px solid;
 	BORDER-BOTTOM: black 1px solid
 }
 
-TD.middleLeft
+TABLE.bracket TD.middleLeft
 {
 	BORDER-RIGHT: black 1px solid
 }
 
-TD.evenRight
+TABLE.bracket TD.evenRight
 {
 	BORDER-LEFT: black 1px solid;
 	BORDER-BOTTOM: black 1px solid;
 }
 
-TD.middleRight
+TABLE.bracket TD.middleRight
 {
 	BORDER-LEFT: black 1px solid
 }

@@ -6,7 +6,11 @@ class Entry < ActiveRecord::Base
 
   # Override bracket to resolve the db blob to an object
   def bracket
-    @bracket ||= (Marshal.load(self[:bracket]) || Tournament::Bracket.new($pool.bracket.teams))
+    @bracket ||= if self[:bracket]
+      Marshal.load(self[:bracket])
+    else
+      Tournament::Bracket.new($pool.bracket.teams)
+    end
   end
 
   def before_save

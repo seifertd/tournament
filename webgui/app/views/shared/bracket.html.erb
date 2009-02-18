@@ -21,7 +21,8 @@ end
 
 65.upto(127) do |idx|
   game_no = idx - 64
-  winner = @entry.bracket.winner(*@entry.bracket.round_and_game(game_no))
+  round, game = @entry.bracket.round_and_game(game_no)
+  winner = @entry.bracket.winner(round, game)
   ids[idx] = "#{idx}"
   classes[idx] = "teamname "
   onclicks[idx] = "pick(this);"
@@ -30,22 +31,31 @@ end
     teams[idx] = winner.short_name
     onmouseovers[idx] = $ACTIVE_MOUSE_OVER;
     onmouseouts[idx] = $ACTIVE_MOUSE_OUT;
+    incorrect = !$pool.bracket.still_alive?(winner)
+    if incorrect
+      classes[idx] += 'missedpick '
+    end
   else
     #contents[idx] = "Winner game #{idx-64} #{idx}"
     contents[idx] = "&nbsp;"
+    classes[idx] += 'pendingpick '
   end
 end
 %>
-<% form_for(:entry, @entry, :url => {:action => 'edit', :id => @entry.id}, :html => {:onSubmit => 'return submitPicks(this);'}) do |f| -%>
 <%= error_messages_for 'entry' %>
-Entry Name: <%= f.text_field :name %>
-<br/>
-Tie Breaker: <%= f.text_field :tie_break %>
-<br/>
+<% form_for(@entry, :url => {:action => 'edit', :id => @entry.id}, :html => {:onSubmit => 'return submitPicks(this);'}) do |f| -%>
+<table border="0">
+<tr>
+<td><%= f.label :name, "Entry Name"%></td><td><%= f.text_field :name %></td>
+</tr>
+<tr>
+<td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
+</tr>
+</table>
 <input type="hidden" name="picks" id="picks" value="">
 <input type="Submit" value="Save Changes">
 <% end -%>
-<TABLE cellspacing=0 id="bracket_table">
+<TABLE cellspacing=0 class="bracket">
 <TR>
 <TH class="header" colspan="17"><%= TOURNAMENT_TITLE %></TH>
 </TR>

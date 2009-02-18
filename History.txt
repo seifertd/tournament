@@ -1,3 +1,6 @@
+== 2.0.0 / 2009-02-XX
+* Release Rails GUI for self-service entries and admin
+
 == 1.1.1 / 2008-07-07
 * Update rake tasks to bones-2.0.2
 
