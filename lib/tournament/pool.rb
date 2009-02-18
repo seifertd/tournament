@@ -43,6 +43,12 @@ class Tournament::Pool
     end
   end
 
+  # Replace existing matching entry with the provided entry
+  def update_entry(entry)
+    remove_by_name(entry.name)
+    @entries << entry
+  end
+
   # Set a payout.  Takes a rank (or the symbol :last for
   # last place), along with the payout.  The payout may be
   # a positive integer, in which case, it represents a 

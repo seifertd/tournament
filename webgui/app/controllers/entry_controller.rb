@@ -2,8 +2,13 @@ class EntryController < ApplicationController
   layout 'bracket'
   before_filter :login_required
   before_filter :check_access, :only => [:show, :edit]
+  include SavesPicks
 
   def check_access
+    # Admin user
+    return true if current_user.roles.include?(Role[:admin])
+
+    # Check if entry being viewed belongs to current user
     @entry = params[:id] ? Entry.find(params[:id]) : Entry.new({:user_id => current_user.id})
     if current_user != @entry.user
       flash[:info] = "You don't have access to that entry."
@@ -28,20 +33,7 @@ class EntryController < ApplicationController
   end
 
   def edit
-    bracket = @entry.bracket
-    picks = params[:picks]
-    logger.debug("PICKS: #{picks}")
-    picks.split(//).each_with_index do |pick, idx|
-      round, game = bracket.round_and_game(idx+1)
-      logger.debug("Round #{round} game #{game} pick #{pick} idx #{idx}")
-      if pick != '0'
-        pick = pick.to_i - 1
-        team = bracket.matchup(round, game)[pick]
-        logger.debug("      --> Team = #{team.name}")
-        bracket.set_winner(round, game, team)
-      end
-    end
-    @entry.update_attributes(params[:entry])
+    save_picks(@entry)
     if @entry.save
       flash[:info] = "Changes were saved."
       redirect_to :action => 'show', :id => @entry.id

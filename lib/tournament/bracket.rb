@@ -59,6 +59,7 @@ class Tournament::Bracket
 
   # Returns true if the provided team has not lost
   def still_alive?(team)
+    return false if team == UNKNOWN_TEAM
     team_index = @winners[0].index(team)
     game = team_index/2
     round = 1

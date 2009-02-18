@@ -1,0 +1,15 @@
+I have moved the enumerations_mixin plugin to a 
+new location at:
+
+http://svn.protocool.com/public/plugins/enumerations_mixin/
+
+So, if you're looking at this file from a web browser
+and wondering why your svn:externals suddenly stopped working,
+that's why.  
+
+While you're updating your svn:externals you might want
+to take a look at Piston - it's a much better way to 
+manage your plugins and externals:
+
+http://piston.rubyforge.org/
+
