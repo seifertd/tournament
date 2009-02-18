@@ -34,8 +34,10 @@
 <ul>
 <% if session[:user_id] -%>
 <li>Logged in: <%= current_user.login %></li>
+<% unless current_user.roles.include?(Role[:admin]) %>
 <li><%= link_to 'My Entries', :controller => 'entry', :action => 'index'%></li>
 <li><%= link_to 'New Entry', :controller => 'entry', :action => 'new'%></li>
+<% end %>
 </ul>
 <% if current_user.roles.include?(Role[:admin]) %>
 <p>

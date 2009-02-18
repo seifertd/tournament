@@ -33,10 +33,26 @@ class Tournament::Bracket
     end
   end
 
+  # Class representing a scoring strategy where correct picks are
+  # worth the seed number of the winner times a per round 
+  # multiplier (1,2,4,8,16,32)
+  class JoshPatashnikStrategy
+    MULTIPLIERS = [1, 2, 4, 8, 16, 32]
+    def score(pick, winner, loser, round)
+       if winner != UNKNOWN_TEAM && pick == winner
+          return MULTIPLIERS[round-1] * winner.seed
+       end
+       return 0
+    end
+    def description
+      "Games are worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
+    end
+  end
+
   # Returns names of available strategies.  The names returned are suitable
   # for use in the strategy_for_name method
   def self.available_strategies
-    return ['basic_scoring_strategy', 'upset_scoring_strategy']
+    return ['basic_scoring_strategy', 'upset_scoring_strategy', 'josh_patashnik_strategy']
   end
 
   # Returns an instantiated strategy class for the named strategy.
