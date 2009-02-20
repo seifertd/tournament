@@ -1,3 +1,17 @@
 <h1>Pool Administration</h1>
-
-
+<% form_for 'pool', @pool, :url => {:controller => 'admin', :action => 'pool'} do |f| -%>
+<table border="0" width="700px">
+<tr><td>Number of submitted entries</td><td><%=$pool.entries.size%></td></tr>
+<tr><td>Number of pending entries</td><td><%=Entry.count - $pool.entries.size - 1%></td></tr>
+<tr>
+<td><%=f.label 'scoring_strategy'%></td>
+<td>
+<% @available_scoring_strategies.each do |s| -%>
+<%=f.radio_button 'scoring_strategy', s.class.name %> <em><%= s.name %></em>: <%= s.description%>
+<br/>
+<% end -%>
+</td>
+</tr>
+</table>
+<%= submit_tag 'Save'%>
+<% end -%>

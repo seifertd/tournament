@@ -12,6 +12,9 @@ class Tournament::Bracket
     def score(pick, winner, loser, round)
       winner != UNKNOWN_TEAM && pick == winner ? round * 2 : 0
     end
+    def name
+      'Basic'
+    end
     def description
       "Each game is worth 2 times the round number."
     end
@@ -28,6 +31,9 @@ class Tournament::Bracket
       end
       return 0
     end
+    def name
+      'Upset'
+    end
     def description
       "Games are worth #{PER_ROUND.join(', ')} per round plus the seed number of the winning team."
     end
@@ -43,6 +49,9 @@ class Tournament::Bracket
           return MULTIPLIERS[round-1] * winner.seed
        end
        return 0
+    end
+    def name
+      'Josh Patashnik'
     end
     def description
       "Games are worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
