@@ -5,7 +5,7 @@ body, html {
   font-family: sans-serif;
 }
 body {
-  min-width:750px;
+  min-width:700px;
 }
 #wrap {
   margin:0 auto;
@@ -34,14 +34,14 @@ body {
 }
 #main {
   float: left;
-  width: auto;
+  width: 70%;
 }
 #main h2, #main h3, #main p {
   padding: 0 10px;
 }
 #sidebar {
   float: right;
-  width: 250px;
+  width: 30%;
 }
 #sidebar ul {
   margin-bottom: 0;

@@ -1,8 +1,12 @@
 <h1>Pool Administration</h1>
 <% form_for 'pool', @pool, :url => {:controller => 'admin', :action => 'pool'} do |f| -%>
-<table border="0" width="700px">
+<table border="0" width="100%">
 <tr><td>Number of submitted entries</td><td><%=$pool.entries.size%></td></tr>
 <tr><td>Number of pending entries</td><td><%=Entry.count - $pool.entries.size - 1%></td></tr>
+<tr>
+<td><%=f.label 'fee'%></td>
+<td>$<%=f.text_field 'fee', :size => 5, :maxlength => 3%></td>
+</tr>
 <tr>
 <td><%=f.label 'scoring_strategy'%></td>
 <td>
@@ -10,6 +14,26 @@
 <%=f.radio_button 'scoring_strategy', s.class.name %> <em><%= s.name %></em>: <%= s.description%>
 <br/>
 <% end -%>
+</td>
+</tr>
+<tr>
+<td>
+Payouts
+</td>
+<td>
+<table border="0">
+<tr><td><b>Rank</b></td><td><b>Amount</b></td><td><b>Kind</b></td><td><b>Delete?</b></td></tr>
+<% @pool.payouts.each_with_index do |po, idx| -%>
+<% f.fields_for 'payouts', po do |payout_fields| -%>
+<tr>
+<td><%= payout_fields.text_field 'rank', :size => 2, :maxlength => 5, :index => idx%></td>
+<td><%= payout_fields.text_field 'payout', :size => 5, :maxlength => 10, :index => idx%></td>
+<td><%= payout_fields.select 'kind', ['%', '$'], {}, :index => idx%></td>
+<td><%= payout_fields.check_box :_delete, :index => idx %></td>
+</tr>
+<% end -%>
+<% end -%>
+</table>
 </td>
 </tr>
 </table>

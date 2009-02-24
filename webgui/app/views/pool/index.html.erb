@@ -1,3 +1,11 @@
 <h1><%=TOURNAMENT_TITLE%></h1>
 
-Welcome to my pool!
+<p>
+Entry fee: $<%=$pool.entry_fee%>
+</p>
+<p>
+Number of submitted entries: <%=$pool.entries.size%>
+</p>
+<p>
+Number of pending entries: <%=Entry.count - $pool.entries.size - 1 %>
+</p>
