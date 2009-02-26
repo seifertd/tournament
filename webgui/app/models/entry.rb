@@ -1,32 +1,42 @@
 class Entry < ActiveRecord::Base
   belongs_to :user
+  belongs_to :pool
   validates_uniqueness_of :name
   validates_presence_of :tie_break
   validates_presence_of :user_id
-  after_save :update_pool_entry
 
   # Override bracket to resolve the db blob to an object
   def bracket
-    @bracket ||= if self[:bracket]
-      Marshal.load(self[:bracket])
-    else
-      Tournament::Bracket.new($pool.bracket.teams)
+    unless @bracket
+      if self[:data]
+        @bracket = Marshal.load(self[:data])
+      end
+      @bracket ||= Tournament::Bracket.new(self.pool.pool.bracket.teams)
     end
+    @bracket
+  end
+
+  def reset
+    @bracket = Tournament::Bracket.new(self.pool.pool.bracket.teams)
   end
 
   def before_save
-    self[:bracket] = Marshal.dump(@bracket)
+    if @bracket
+      logger.debug("MARSHALLING BRACKET: #{@bracket.inspect}")
+      self[:data] = Marshal.dump(@bracket)
+      logger.debug("DONE MARSHALLING BRACKET")
+    end
+  end
+
+  def after_save
+    if self.bracket.complete? && self.bracket.user_id != self.pool.user_id
+      self.pool.pool.update_entry(self.tournament_entry)
+      self.pool.save!
+    end
   end
 
   def tournament_entry
     @tournament_entry ||= Tournament::Entry.new(self.name, self.bracket, self.tie_break)
   end
 
-  def update_pool_entry
-    return if self.name == "Tournament Bracket"
-    return if !self.bracket.complete?
-    # TODO: Make this safe (Pool saved in db)
-    $pool.update_entry(self.tournament_entry)
-    Tournament.save_pool
-  end
 end

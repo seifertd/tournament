@@ -6,16 +6,16 @@ onmouseovers = {}
 onmouseouts = {}
 contents = {}
 teams = {}
-$ACTIVE_MOUSE_OVER = "this.style.backgroundColor='black';this.style.color='white'"; 
-$ACTIVE_MOUSE_OUT = "this.style.backgroundColor='';this.style.color=''";
-$pool.bracket.teams.each_with_index do |team, idx|
+active_mouse_over = "this.style.backgroundColor='black';this.style.color='white'"; 
+active_mouse_out = "this.style.backgroundColor='';this.style.color=''";
+@pool.bracket.teams.each_with_index do |team, idx|
   idx = idx + 1
   ids[idx] = "#{idx}"
   onclicks[idx] = "pick(this);"
   teams[idx] = team.short_name
   contents[idx] = "<nobr>(#{team.seed}) #{team.name}</nobr>"
-  onmouseovers[idx] = $ACTIVE_MOUSE_OVER;
-  onmouseouts[idx] = $ACTIVE_MOUSE_OUT;
+  onmouseovers[idx] = active_mouse_over;
+  onmouseouts[idx] = active_mouse_out;
   classes[idx] = "teamname "
 end
 
@@ -29,11 +29,18 @@ end
   if winner != :unk
     contents[idx] = winner.short_name
     teams[idx] = winner.short_name
-    onmouseovers[idx] = $ACTIVE_MOUSE_OVER;
-    onmouseouts[idx] = $ACTIVE_MOUSE_OUT;
-    incorrect = !$pool.bracket.still_alive?(winner)
+    onmouseovers[idx] = active_mouse_over;
+    onmouseouts[idx] = active_mouse_out;
+    incorrect = !@pool.bracket.still_alive?(winner)
     if incorrect
       classes[idx] += 'missedpick '
+    else
+      bracket_winner = @pool.bracket.winner(round, game)
+      if bracket_winner == winner
+        classes[idx] += 'correctpick '
+      else
+        classes[idx] += 'pendingpick '
+      end
     end
   else
     #contents[idx] = "Winner game #{idx-64} #{idx}"
@@ -52,12 +59,15 @@ end
 <td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
 </tr>
 </table>
+<input type="hidden" name="pool_id" value="<%=@entry.pool_id%>">
 <input type="hidden" name="picks" id="picks" value="">
 <input type="Submit" value="Save Changes">
+<%= submit_tag 'Cancel Changes', :name => 'cancel', :confirm => 'Are you sure?'%>
+<%= submit_tag 'Reset Picks', :name => 'reset', :confirm => 'Are you sure? Resetting will clear all picks and start the bracket over from scratch!'%>
 <% end -%>
 <TABLE cellspacing=0 class="bracket">
 <TR>
-<TH class="header" colspan="17"><%= TOURNAMENT_TITLE %></TH>
+<TH class="header" colspan="17"><%= @entry.pool.name %></TH>
 </TR>
 <TR>
 <TH class="subheader" colspan="17">&nbsp;</TH>

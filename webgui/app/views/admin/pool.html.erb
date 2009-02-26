@@ -1,8 +1,20 @@
 <h1>Pool Administration</h1>
-<% form_for 'pool', @pool, :url => {:controller => 'admin', :action => 'pool'} do |f| -%>
+<% form_for 'pool', @pool, :url => {:controller => 'admin', :action => 'pool', :id => @pool.id} do |f| -%>
 <table border="0" width="100%">
-<tr><td>Number of submitted entries</td><td><%=$pool.entries.size%></td></tr>
-<tr><td>Number of pending entries</td><td><%=Entry.count - $pool.entries.size - 1%></td></tr>
+<tr><td>Number of submitted entries</td><td><%=@pool.user_entries.size - @pool.pending_entries.size%></td></tr>
+<tr><td>Number of pending entries</td><td><%=@pool.pending_entries.size%></td></tr>
+<tr>
+<td><%=f.label 'name'%></td>
+<td><%=f.text_field 'name', :size => 40, :maxlength => 128%></td>
+</tr>
+<tr>
+<td><%=f.label 'starts_at'%></td>
+<td><%=f.date_select 'starts_at'%></td>
+</tr>
+<tr>
+<td><%=f.label 'active'%></td>
+<td><%=f.check_box 'active'%></td>
+</tr>
 <tr>
 <td><%=f.label 'fee'%></td>
 <td>$<%=f.text_field 'fee', :size => 5, :maxlength => 3%></td>

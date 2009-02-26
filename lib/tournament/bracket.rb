@@ -127,6 +127,7 @@ class Tournament::Bracket
     round = 0
     while round < self.rounds
       return false if @winners[round+1].any? {|t| t == UNKNOWN_TEAM}
+      round += 1
     end
     return true
   end

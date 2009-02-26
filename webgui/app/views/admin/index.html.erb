@@ -1,0 +1,17 @@
+<h1>Pools</h1>
+<% if @pools.size %>
+<table border="0">
+<tr>
+<td><b>Name</b></td>
+<td><b>Starts</b></td>
+</tr>
+<% @pools.each do |p| -%>
+<tr>
+<td><%=link_to p.name, :action => 'pool', :id => p.id%></td>
+<td><%=p.starts_at.to_formatted_s(:short)%></td>
+</tr>
+<% end %>
+</table>
+<% end %>
+
+<%= link_to "Create a new pool", :action => 'pool' %>

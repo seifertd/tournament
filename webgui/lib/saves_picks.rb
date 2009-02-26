@@ -15,6 +15,9 @@ module SavesPicks
         bracket.set_winner(round, game, Tournament::Bracket::UNKNOWN_TEAM) 
       end
     end
-    entry.update_attributes(params[:entry])
+    logger.debug("SAVING ENTRY PARAMS: #{params[:entry].inspect}")
+    entry.attributes = params[:entry]
+    logger.debug("DONE SAVING ENTRY PARAMS")
+    entry.completed = true if bracket.complete?
   end
 end

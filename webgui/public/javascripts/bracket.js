@@ -16,7 +16,6 @@
       }
     }
     $('picks').value = '' + picks;
-    $('games').value = '' + games;
     return true
   }
   function pick(elem) {

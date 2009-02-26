@@ -289,7 +289,7 @@ class Tournament::Pool
   def entry_report(out = $stdout)
     out << "There are #{@entries.size} entries." << "\n"
     if @entries.size > 0
-      out << "".center(15) + "|" + "First Round".center(128) << "/"
+      out << "".center(15) + "|" + "First Round".center(128) << "\n"
       out << "Name".center(15) + "|" + "Sweet 16".center(64) + "|" + "Elite 8".center(32) +
         "|" + "Final 4".center(16) + "|" + "Final 2".center(8) + "|" + "Champion".center(15) +
         "|" + "Tie Break" << "\n"

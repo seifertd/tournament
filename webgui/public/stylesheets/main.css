@@ -7,6 +7,10 @@ body, html {
 body {
   min-width:700px;
 }
+h1 {
+  font-size: 24px;
+  color: gray;
+}
 #wrap {
   margin:0 auto;
   width:auto;
@@ -42,6 +46,7 @@ body {
 #sidebar {
   float: right;
   width: 30%;
+  height: 400px;
 }
 #sidebar ul {
   margin-bottom: 0;
@@ -95,3 +100,12 @@ body {
   list-style: square;
 }
 
+.entryTableHead {
+  background: lightblue;
+}
+.entryTableOdd {
+  background: lightgray;
+}
+.entryTableEven {
+  background: pink;
+}

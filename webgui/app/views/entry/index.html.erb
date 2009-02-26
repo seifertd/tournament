@@ -1,4 +1,4 @@
-<h1>Pool Entries For <%=current_user.login%></h1>
+<h1><%=@pool.name%> Entries For <%=current_user.login%></h1>
 
 <% if @entries.empty? %>
 <p>
@@ -12,5 +12,5 @@ You have no entries.
 </ul>
 <% end %>
 <p>
-<%= link_to 'Create a new entry', :action => 'new' %>
+<%= link_to 'Create a new entry', :action => 'new', :id => @pool.id %>
 </p>

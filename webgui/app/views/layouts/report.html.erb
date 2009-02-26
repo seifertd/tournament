@@ -1,17 +1,19 @@
 <html>
 <head>
 <title><%=TOURNAMENT_TITLE%></title>
-<%= javascript_include_tag 'prototype' %>
-<%= javascript_include_tag 'bracket' %>
 <%= stylesheet_link_tag 'main' %>
-<%= stylesheet_link_tag 'bracket' %>
 </head>
 <body>
 <div id="wrap">
 <div id="nav">
 <ul>
 <li><%= link_to "Home", :controller => 'pool', :action => 'index'%></li>
-<li><%= link_to "Entries", :controller => 'entry', :action => 'index', :id => @entry.pool.id%></li>
+<% if session[:user_id] -%>
+<li><%= link_to "Logout", "/logout"%></li>
+<% else -%>
+<li><%= link_to "Login", "/login"%></li>
+<li><%= link_to "Signup", "/signup"%></li>
+<% end -%>
 </ul>
 </div>
 <div id="messages">
@@ -25,7 +27,7 @@
 <div id="error"><%= flash[:error] %></div>
 <% end %>
 </div>
-<div id="main2">
+<div id="main_report">
 <%= yield %>
 </div>
 <div id="footer">

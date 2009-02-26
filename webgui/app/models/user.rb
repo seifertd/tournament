@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   include Authentication::ByCookieToken
 
   has_many :entries
+  has_many :pools
   has_and_belongs_to_many :roles
 
   validates_presence_of     :login
@@ -28,6 +29,10 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password, :password_confirmation
 
+  # Return all users with admin rol
+  def self.admin_users
+    Role[:admin].users
+  end
 
   # Activates the user in the database.
   def activate!

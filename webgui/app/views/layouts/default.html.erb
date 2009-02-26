@@ -31,28 +31,28 @@
 <%= yield %>
 </div>
 <div id="sidebar">
-<ul>
 <% if session[:user_id] -%>
+<ul>
 <li>Logged in: <%= current_user.login %></li>
-<% unless current_user.roles.include?(Role[:admin]) %>
-<li><%= link_to 'My Entries', :controller => 'entry', :action => 'index'%></li>
-<li><%= link_to 'New Entry', :controller => 'entry', :action => 'new'%></li>
-<% end %>
 </ul>
 <% if current_user.roles.include?(Role[:admin]) %>
 <p>
 <small>ADMIN</small>
 </p>
 <ul>
-<li> <%= link_to 'Pool', :controller => 'admin', :action => 'pool'%></li>
-<li> <%= link_to 'Tournament Bracket', :controller => 'admin', :action => 'bracket'%></li>
-<li> <%= link_to 'All Entries', :controller => 'admin', :action => 'entries'%></li>
-<li> <%= link_to 'Reports', :controller => 'admin', :action => 'reports'%></li>
+<li> <%= link_to 'All Pools', :controller => 'admin', :action => 'index' %></li>
+<% if @pool -%>
+<li> <%= link_to 'Pool', :controller => 'admin', :action => 'pool', :id => @pool.id %></li>
+<li> <%= link_to 'Tournament Bracket', :controller => 'admin', :action => 'bracket', :id => @pool.id %></li>
+<li> <%= link_to 'All Entries', :controller => 'admin', :action => 'entries', :id => @pool.id%></li>
+<li> <%= link_to 'Reports', :controller => 'reports', :action => 'show', :id => @pool.id%></li>
+<% end -%>
 </ul>
-<% end %>
+<% end -%>
 <% end -%>
 </div>
 <div id="footer">
+<%= render :partial => 'shared/admins' %>
 </div>
 </div>
 </body>

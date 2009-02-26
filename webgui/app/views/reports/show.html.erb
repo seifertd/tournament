@@ -1,0 +1,9 @@
+<h1>Reports for <%=@pool.name%></h1>
+<ul>
+<li><%= link_to 'Entries', :report => 'entry'%></li>
+</ul>
+<div id="report">
+<% if params[:report] -%>
+<%= render :partial => "reports/#{params[:report]}" %>
+<% end -%>
+</div>
