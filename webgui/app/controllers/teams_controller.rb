@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+  before_filter :login_required
   skip_before_filter :verify_authenticity_token, :only => [:auto_complete_for_team_name, :auto_complete_for_short_name]
 
   def choose
@@ -65,6 +66,10 @@ class TeamsController < ApplicationController
       end
     end
     redirect_to :action => 'choose', :id => @pool.id
+  end
+
+  def authorized?(action = action_name, resource = nil)
+    return super && admin_authorized?(action_name, resource)
   end
 
 end

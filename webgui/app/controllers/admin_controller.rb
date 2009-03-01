@@ -55,11 +55,7 @@ class AdminController < ApplicationController
   end
 
   def authorized?(action = action_name, resource = nil)
-    unless super && current_user.roles.include?(Role[:admin])
-      flash[:info] = "You are not authorized to perform that action."
-      return false
-    end
-    return true
+    return super && admin_authorized?(action_name, resource)
   end
 
 end

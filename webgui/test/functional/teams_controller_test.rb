@@ -1,10 +1,13 @@
 require 'test_helper'
 
 class TeamsControllerTest < ActionController::TestCase
-  fixtures :pools, :teams, :seedings
+  include AuthenticatedTestHelper
+  fixtures :pools, :teams, :seedings, :users, :roles, :roles_users
   test "set 1 team" do
     initial_seedings = Seeding.count
-    post :change, {:id => 1, :region0 => {:name => 'Midwest', :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}]}}
+    login_as :admin
+    post :change, {:id => 1, :region0 => {:name => 'Midwest',
+      :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}]}}
     after_seedings = Seeding.count
 
     assert_equal 1, after_seedings - initial_seedings, "There should be one additional seeding."
@@ -22,7 +25,10 @@ class TeamsControllerTest < ActionController::TestCase
 
   test "set 2 teams same region" do
     initial_seedings = Seeding.count
-    post :change, {:id => 1, :region0 => {:name => 'Midwest', :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}, {:name => 'Michigan State', :short_name => 'MSU', :seed => 16}]}}
+    login_as :admin
+    post :change, {:id => 1, :region0 => {:name => 'Midwest',
+      :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1},
+      {:name => 'Michigan State', :short_name => 'MSU', :seed => 16}]}}
     after_seedings = Seeding.count
 
     assert_equal 2, after_seedings - initial_seedings, "There should be two additional seedings."
@@ -42,7 +48,10 @@ class TeamsControllerTest < ActionController::TestCase
 
   test "set 2 teams different regions" do
     initial_seedings = Seeding.count
-    post :change, {:id => 1, :region0 => {:name => 'Midwest', :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}]}, :region3 => {:name => 'South', :seedings => [{:name => "Michigan State", :short_name => 'MSU', :seed => 1}]}}
+    login_as :admin
+    post :change, {:id => 1, :region0 => {:name => 'Midwest',
+      :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}]},
+      :region3 => {:name => 'South', :seedings => [{:name => "Michigan State", :short_name => 'MSU', :seed => 1}]}}
     after_seedings = Seeding.count
 
     assert_equal 2, after_seedings - initial_seedings, "There should be two additional seedings."
@@ -75,7 +84,11 @@ class TeamsControllerTest < ActionController::TestCase
 
   test "set 1 team with blanks" do
     initial_seedings = Seeding.count
-    post :change, {:id => 1, :region0 => {:name => 'Midwest', :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1}, {:name => '', :short_name => '', :seed => 2}]}, :region1 => {:name => '', :seedings => [{:name => '', :short_name => '', :seed => 1}]}}
+    login_as :admin
+    post :change, {:id => 1, :region0 => {:name => 'Midwest',
+      :seedings => [{:name => 'Michigan', :short_name => 'UM', :seed => 1},
+      {:name => '', :short_name => '', :seed => 2}]},
+      :region1 => {:name => '', :seedings => [{:name => '', :short_name => '', :seed => 1}]}}
     after_seedings = Seeding.count
 
     assert_equal 1, after_seedings - initial_seedings, "There should be one additional seeding."
@@ -160,6 +173,7 @@ class TeamsControllerTest < ActionController::TestCase
      {"name"=>"Cornell", "seed"=>"14", "short_name"=>"Cor"},
      {"name"=>"Austin Peay", "seed"=>"15", "short_name"=>"APe"},
      {"name"=>"TX Arlington", "seed"=>"16", "short_name"=>"TxA"}]}}
+    login_as :admin
     post :change, input
     p = Pool.find(1)
     assert_not_nil p.data, "The Tournament::Pool object should be saved."
@@ -191,6 +205,7 @@ class TeamsControllerTest < ActionController::TestCase
      {"name"=>"Georgia", "seed"=>"14", "short_name"=>"UG"},
      {"name"=>"Belmont", "seed"=>"15", "short_name"=>"Bel"},
      {"name"=>"Mis. Valley St", "seed"=>"16", "short_name"=>"MVS"}]}}
+    login_as :admin
     post :change, input
     pool = Pool.find(1)
     post :change, input
