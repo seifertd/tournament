@@ -30,14 +30,15 @@ class AdminController < ApplicationController
   end
 
   def pool
-    @available_scoring_strategies = Tournament::Bracket.available_strategies.map{|n| Tournament::Bracket.strategy_for_name(n)}
+    @available_scoring_strategies = Tournament::ScoringStrategy.available_strategies.map{|n| Tournament::ScoringStrategy.strategy_for_name(n)}
     @pool = params[:id] ? Pool.find(params[:id]) : Pool.new
     if request.post?
       @pool.attributes = params[:pool]
       @pool.user_id ||= current_user.id
       if @pool.valid?
         @pool.save!
-        @pool = Pool.find(params[:id])
+        # reload it
+        @pool = Pool.find(@pool.id)
       end
     end
   end

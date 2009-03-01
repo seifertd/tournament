@@ -4,82 +4,19 @@ class Tournament::Bracket
   attr_reader :teams # The teams in the bracket
   attr_reader :rounds # The number of rounds in the bracket
   attr_reader :winners # The winners of each game in the bracket
-  attr_accessor :scoring_strategy # The strategy used to assign points to correct picks
+  attr_reader :scoring_strategy # The strategy used to assign points to correct picks
 
-  # Class representing a scoring strategy where correct picks
-  # are worth 2 X the round number
-  class BasicScoringStrategy
-    def score(pick, winner, loser, round)
-      winner != UNKNOWN_TEAM && pick == winner ? round * 2 : 0
-    end
-    def name
-      'Basic'
-    end
-    def description
-      "Each game is worth 2 times the round number."
-    end
-  end
-
-  # Class representing a scoring strategy where correct picks
-  # are worth a base amount per round (3, 5, 11, 19, 30 and 40)
-  # plus the seed number of the winner.
-  class UpsetScoringStrategy
-    PER_ROUND = [3, 5, 11, 19, 30, 40]
-    def score(pick, winner, loser, round)
-      if winner != UNKNOWN_TEAM && pick == winner
-        return PER_ROUND[round-1] + winner.seed
-      end
-      return 0
-    end
-    def name
-      'Upset'
-    end
-    def description
-      "Games are worth #{PER_ROUND.join(', ')} per round plus the seed number of the winning team."
-    end
-  end
-
-  # Class representing a scoring strategy where correct picks are
-  # worth the seed number of the winner times a per round 
-  # multiplier (1,2,4,8,16,32)
-  class JoshPatashnikStrategy
-    MULTIPLIERS = [1, 2, 4, 8, 16, 32]
-    def score(pick, winner, loser, round)
-       if winner != UNKNOWN_TEAM && pick == winner
-          return MULTIPLIERS[round-1] * winner.seed
-       end
-       return 0
-    end
-    def name
-      'Josh Patashnik'
-    end
-    def description
-      "Games are worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
-    end
-  end
-
-  # Returns names of available strategies.  The names returned are suitable
-  # for use in the strategy_for_name method
-  def self.available_strategies
-    return ['basic_scoring_strategy', 'upset_scoring_strategy', 'josh_patashnik_strategy']
-  end
-
-  # Returns an instantiated strategy class for the named strategy.
-  def self.strategy_for_name(name)
-    clazz = Tournament::Bracket.const_get(name.capitalize.gsub(/_([a-zA-Z])/) {|m| $1.upcase})
-    return clazz.new
-  end
 
   UNKNOWN_TEAM = :unk unless defined?(UNKNOWN_TEAM)
 
   # Creates a new bracket with the given teams
-  def initialize(teams = nil)
+  def initialize(scoring_strategy, teams = nil)
     @teams = teams || [:t1, :t2, :t3, :t4, :t5, :t6, :t7, :t8, :t9, :t10, :t11, :t12, :t13, :t14, :t15, :t16]
     @rounds = (Math.log(@teams.size)/Math.log(2)).to_i
     @winners = [@teams] + (1..@rounds).map do |r|
       [UNKNOWN_TEAM] * games_in_round(r)
     end
-    @scoring_strategy = BasicScoringStrategy.new
+    @scoring_strategy = scoring_strategy
   end
 
   # Returns true if the provided team has not lost
@@ -231,8 +168,7 @@ class Tournament::Bracket
   # Given a binary possibility number, compute the bracket
   # that would result.
   def bracket_for(possibility)
-    pick_bracket = Tournament::Bracket.new(self.teams)
-    pick_bracket.scoring_strategy = self.scoring_strategy
+    pick_bracket = Tournament::Bracket.new(self.scoring_strategy, self.teams)
     round = 1
     while round <= pick_bracket.rounds
       gir = pick_bracket.games_in_round(round)
@@ -384,7 +320,7 @@ class Tournament::Bracket
   # Generates a bracket for the provided teams with a random winner
   # for each game.
   def self.random_bracket(teams = nil)
-    b = Tournament::Bracket.new(teams)
+    b = Tournament::Bracket.new(Tournament::ScoringStrategy::Basic.new, teams)
     1.upto(b.rounds) do |r|
       1.upto(b.games_in_round(r)) { |g| b.set_winner(r, g, b.matchup(r, g)[rand(2)]) }
     end

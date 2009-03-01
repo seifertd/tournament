@@ -1,0 +1,12 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  pool_id: 2
+  team_id: 1
+  region: Region1
+  seed: 1
+
+two:
+  pool_id: 2
+  team_id: 1
+  region: Region2
+  seed: 2

@@ -20,7 +20,7 @@ class Picker < Shoes
       load_data
     else
       @pool = Tournament::Pool.ncaa_2008
-      #@picks = Tournament::Bracket.new(@pool.bracket.teams)
+      #@picks = Tournament::Bracket.new(@pool.scoring_strategy, @pool.bracket.teams)
       @picks = Tournament::Bracket.random_bracket(Tournament::Pool.ncaa_2008.bracket.teams)
     end
     @labels = Array.new(4) {Array.new(6) { Array.new }}

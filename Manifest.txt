@@ -8,6 +8,7 @@ bin/picker
 bin/pool
 lib/tournament.rb
 lib/tournament/bracket.rb
+lib/tournament/scoring_strategy.rb
 lib/tournament/entry.rb
 lib/tournament/pool.rb
 lib/tournament/team.rb

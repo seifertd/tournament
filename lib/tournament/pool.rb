@@ -7,12 +7,14 @@ class Tournament::Pool
   attr_reader :entries  # Tournament::Entry objects for participants
   attr_reader :payouts  # Hash of payouts by rank
   attr_accessor :entry_fee  # The amount each entry paid to participate
+  attr_accessor :scoring_strategy  # The scoring strategy for the pool
 
   # Create a new empty pool with no Regions or Entries
   def initialize
     @regions = Array.new(4)
     @entries = []
     @payouts = {}
+    @scoring_strategy = Tournament::ScoringStrategy::Basic.new
   end
 
   # add regions to the pool.  Champ of region with index = 0 plays
@@ -74,7 +76,7 @@ class Tournament::Pool
         region[:teams]
       end
       all_teams = all_teams.flatten
-      @bracket = Tournament::Bracket.new(all_teams)
+      @bracket = Tournament::Bracket.new(scoring_strategy, all_teams)
     end
     return @bracket
   end
@@ -183,8 +185,8 @@ class Tournament::Pool
     pool.set_payout(2, 20)
     pool.set_payout(3, 10)
     pool.set_payout(:last, -10)
+    pool.scoring_strategy = Tournament::ScoringStrategy::Upset.new
     b = pool.bracket
-    b.scoring_strategy = Tournament::Bracket::UpsetScoringStrategy.new
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
     # Play out the bracket
     32.times { |n| b.set_winner(1,n+1, b.matchup(1, n+1)[rand(2)])}

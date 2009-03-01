@@ -43,9 +43,12 @@
 <li> <%= link_to 'All Pools', :controller => 'admin', :action => 'index' %></li>
 <% if @pool -%>
 <li> <%= link_to 'Pool', :controller => 'admin', :action => 'pool', :id => @pool.id %></li>
+<li> <%= link_to 'Teams', :controller => 'teams', :action => 'choose', :id => @pool.id %></li>
+<% if @pool.ready? %>
 <li> <%= link_to 'Tournament Bracket', :controller => 'admin', :action => 'bracket', :id => @pool.id %></li>
 <li> <%= link_to 'All Entries', :controller => 'admin', :action => 'entries', :id => @pool.id%></li>
 <li> <%= link_to 'Reports', :controller => 'reports', :action => 'show', :id => @pool.id%></li>
+<% end -%>
 <% end -%>
 </ul>
 <% end -%>

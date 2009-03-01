@@ -1,10 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-admin:
-  name: admin
+one:
+  pool_id: 2
+  name: Region1
   position: 0
-# one:
-#   column: value
-#
-# two:
-#   column: value
+
+two:
+  pool_id: 2
+  name: Region2
+  position: 1

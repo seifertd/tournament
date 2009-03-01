@@ -1,0 +1,3051 @@
+Web:  
+   
+    name: Weber State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "329"
+    short_name: Web
+  
+
+VA:  
+   
+    name: Virginia
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "322"
+    short_name: VA
+  
+
+Bwn:  
+   
+    name: Brown
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "85"
+    short_name: Bwn
+  
+
+GT:  
+   
+    name: Georgetown
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "31"
+    short_name: GT
+  
+
+AkS:  
+   
+    name: Arkansas State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "73"
+    short_name: AkS
+  
+
+TPA:  
+   
+    name: Texas-Pan American
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "300"
+    short_name: TPA
+  
+
+SFP:  
+   
+    name: St. Francis (PA)
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "288"
+    short_name: SFP
+  
+
+SCS:  
+   
+    name: South Carolina State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "276"
+    short_name: SCS
+  
+
+SF:  
+   
+    name: San Francisco
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "268"
+    short_name: SF
+  
+
+OkS:  
+   
+    name: Oklahoma State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "242"
+    short_name: OkS
+  
+
+Cen:  
+   
+    name: Centenary
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "95"
+    short_name: Cen
+  
+
+SAl:  
+   
+    name: South Alabama
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "14"
+    short_name: SAl
+  
+
+Wis:  
+   
+    name: Wisconsin
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "27"
+    short_name: Wis
+  
+
+Lip:  
+   
+    name: Lipscomb
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "178"
+    short_name: Lip
+  
+
+BYU:  
+   
+    name: BYU
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "51"
+    short_name: BYU
+  
+
+UNC:  
+   
+    name: North Carolina
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "1"
+    short_name: UNC
+  
+
+Stn:  
+   
+    name: Seton Hall
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "273"
+    short_name: Stn
+  
+
+MoS:  
+   
+    name: Montana State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "208"
+    short_name: MoS
+  
+
+ASt:  
+   
+    name: Alabama State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "68"
+    short_name: ASt
+  
+
+CSF:  
+   
+    name: CSU Fullerton
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "28"
+    short_name: CSF
+  
+
+Ham:  
+   
+    name: Hampton
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "148"
+    short_name: Ham
+  
+
+Val:  
+   
+    name: Valparaiso
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "320"
+    short_name: Val
+  
+
+Tul:  
+   
+    name: Tulsa
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "306"
+    short_name: Tul
+  
+
+SDk:  
+   
+    name: South Dakota
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "277"
+    short_name: SDk
+  
+
+EKy:  
+   
+    name: Eastern Kentucky
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "125"
+    short_name: EKy
+  
+
+TSA:  
+   
+    name: Texas-San Antonio
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "301"
+    short_name: TSA
+  
+
+Nev:  
+   
+    name: Nevada
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "215"
+    short_name: Nev
+  
+
+NMS:  
+   
+    name: New Mexico State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "218"
+    short_name: NMS
+  
+
+Bay:  
+   
+    name: Baylor
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "58"
+    short_name: Bay
+  
+
+UNG:  
+   
+    name: UNC Greensboro
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "314"
+    short_name: UNG
+  
+
+UAB:  
+   
+    name: UAB
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "307"
+    short_name: UAB
+  
+
+Aub:  
+   
+    name: Auburn
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "77"
+    short_name: Aub
+  
+
+Tem:  
+   
+    name: Temple
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "38"
+    short_name: Tem
+  
+
+Van:  
+   
+    name: Vanderbilt
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "23"
+    short_name: Van
+  
+
+Dra:  
+   
+    name: Drake
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "53"
+    short_name: Dra
+  
+
+LaT:  
+   
+    name: Louisiana Tech
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "182"
+    short_name: LaT
+  
+
+HiP:  
+   
+    name: High Point
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "152"
+    short_name: HiP
+  
+
+Tow:  
+   
+    name: Towson
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "303"
+    short_name: Tow
+  
+
+MrS:  
+   
+    name: Morehead State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "209"
+    short_name: MrS
+  
+
+Ten:  
+   
+    name: Tennessee
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "15"
+    short_name: Ten
+  
+
+Jck:  
+   
+    name: Jacksonville
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "169"
+    short_name: Jck
+  
+
+Ore:  
+   
+    name: Oregon
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "36"
+    short_name: Ore
+  
+
+Sts:  
+   
+    name: Stetson
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "292"
+    short_name: Sts
+  
+
+Msh:  
+   
+    name: Marshall
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "192"
+    short_name: Msh
+  
+
+GSo:  
+   
+    name: Georgia Southern
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "143"
+    short_name: GSo
+  
+
+DSt:  
+   
+    name: Delaware State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "116"
+    short_name: DSt
+  
+
+Yal:  
+   
+    name: Yale
+    created_at: 2009-03-01 04:12:33
+    updated_at: 2009-03-01 04:12:33
+    id: "339"
+    short_name: Yal
+  
+
+Sav:  
+   
+    name: Savannah State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "271"
+    short_name: Sav
+  
+
+Ina:  
+   
+    name: Iona
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "164"
+    short_name: Ina
+  
+
+Kan:  
+   
+    name: Kansas
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "17"
+    short_name: Kan
+  
+
+IPF:  
+   
+    name: IPFW
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "166"
+    short_name: IPF
+  
+
+Fur:  
+   
+    name: Furman
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "140"
+    short_name: Fur
+  
+
+LMD:  
+   
+    name: Loyola (MD)
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "186"
+    short_name: LMD
+  
+
+SIU:  
+   
+    name: SIU Edwardsville
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "274"
+    short_name: SIU
+  
+
+Leh:  
+   
+    name: Lehigh
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "176"
+    short_name: Leh
+  
+
+Mia:  
+   
+    name: Miami (FL)
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "45"
+    short_name: Mia
+  
+
+KSU:  
+   
+    name: Kansas St.
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "26"
+    short_name: KSU
+  
+
+Cht:  
+   
+    name: Chattanooga
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "102"
+    short_name: Cht
+  
+
+CMU:  
+   
+    name: Central Michigan
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "98"
+    short_name: CMU
+  
+
+CSN:  
+   
+    name: Cal State Northridge
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "91"
+    short_name: CSN
+  
+
+Ark:  
+   
+    name: Arkansas
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "4"
+    short_name: Ark
+  
+
+Ind:  
+   
+    name: Indiana
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "3"
+    short_name: Ind
+  
+
+Try:  
+   
+    name: Troy
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "304"
+    short_name: Try
+  
+
+GSt:  
+   
+    name: Georgia State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "144"
+    short_name: GSt
+  
+
+Haw:  
+   
+    name: Hawaii
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "151"
+    short_name: Haw
+  
+
+Arm:  
+   
+    name: Army
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "76"
+    short_name: Arm
+  
+
+USt:  
+   
+    name: Utah State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "317"
+    short_name: USt
+  
+
+NCS:  
+   
+    name: North Carolina State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "225"
+    short_name: NCS
+  
+
+ECa:  
+   
+    name: East Carolina
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "122"
+    short_name: ECa
+  
+
+Lou:  
+   
+    name: Louisville
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "11"
+    short_name: Lou
+  
+
+APB:  
+   
+    name: Arkansas-Pine Bluff
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "75"
+    short_name: APB
+  
+
+SJn:  
+   
+    name: St. John's
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "289"
+    short_name: SJn
+  
+
+SeL:  
+   
+    name: Southeastern Louisiana
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "280"
+    short_name: SeL
+  
+
+SCa:  
+   
+    name: South Carolina
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "275"
+    short_name: SCa
+  
+
+JkS:  
+   
+    name: Jacksonville State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "170"
+    short_name: JkS
+  
+
+MES:  
+   
+    name: Maryland-Eastern Shore
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "194"
+    short_name: MES
+  
+
+OD:  
+   
+    name: Old Dominion
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "243"
+    short_name: OD
+  
+
+Cal:  
+   
+    name: California
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "92"
+    short_name: Cal
+  
+
+R:  
+   
+    name: Rutgers
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "261"
+    short_name: R
+  
+
+LI:  
+   
+    name: Long Island
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "180"
+    short_name: LI
+  
+
+NDk:  
+   
+    name: North Dakota
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "228"
+    short_name: NDk
+  
+
+Am:  
+   
+    name: American
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "16"
+    short_name: Am
+  
+
+Loy:  
+   
+    name: Loyola Marymount
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "187"
+    short_name: Loy
+  
+
+JSt:  
+   
+    name: Jackson State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "168"
+    short_name: JSt
+  
+
+Can:  
+   
+    name: Canisius
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "94"
+    short_name: Can
+  
+
+Tex:  
+   
+    name: Texas
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "47"
+    short_name: Tex
+  
+
+Msr:  
+   
+    name: Missouri
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "204"
+    short_name: Msr
+  
+
+CCS:  
+   
+    name: Central Connecticut State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "97"
+    short_name: CCS
+  
+
+TTc:  
+   
+    name: Tennessee Tech
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "296"
+    short_name: TTc
+  
+
+PV&:  
+   
+    name: Prairie View A&M
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "250"
+    short_name: PV&
+  
+
+NCW:  
+   
+    name: North Carolina-Wilmington
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "227"
+    short_name: NCW
+  
+
+Ida:  
+   
+    name: Idaho
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "158"
+    short_name: Ida
+  
+
+BCk:  
+   
+    name: Bethune-Cookman
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "79"
+    short_name: BCk
+  
+
+Ohi:  
+   
+    name: Ohio
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "240"
+    short_name: Ohi
+  
+
+Ctn:  
+   
+    name: Charleston
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "99"
+    short_name: Ctn
+  
+
+Duk:  
+   
+    name: Duke
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "63"
+    short_name: Duk
+  
+
+ORo:  
+   
+    name: Oral Roberts
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "40"
+    short_name: ORo
+  
+
+Cgh:  
+   
+    name: Creighton
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "112"
+    short_name: Cgh
+  
+
+Mst:  
+   
+    name: Marist
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "191"
+    short_name: Mst
+  
+
+NAr:  
+   
+    name: Northern Arizona
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "233"
+    short_name: NAr
+  
+
+Iwa:  
+   
+    name: Iowa
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "165"
+    short_name: Iwa
+  
+
+UA:  
+   
+    name: Arizona
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "62"
+    short_name: UA
+  
+
+Mil:  
+   
+    name: Milwaukee
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "201"
+    short_name: Mil
+  
+
+Gon:  
+   
+    name: Gonzaga
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "29"
+    short_name: Gon
+  
+
+IlC:  
+   
+    name: Illinois-Chicago
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "162"
+    short_name: IlC
+  
+
+Cmb:  
+   
+    name: Campbell
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "93"
+    short_name: Cmb
+  
+
+Hvd:  
+   
+    name: Harvard
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "150"
+    short_name: Hvd
+  
+
+BC:  
+   
+    name: Boston College
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "81"
+    short_name: BC
+  
+
+Wag:  
+   
+    name: Wagner
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "326"
+    short_name: Wag
+  
+
+W-S:  
+   
+    name: Winston-Salem
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "335"
+    short_name: W-S
+  
+
+UTP:  
+   
+    name: UTEP
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "319"
+    short_name: UTP
+  
+
+Min:  
+   
+    name: Minnesota
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "202"
+    short_name: Min
+  
+
+Del:  
+   
+    name: Delaware
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "115"
+    short_name: Del
+  
+
+SMs:  
+   
+    name: Southern Miss
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "283"
+    short_name: SMs
+  
+
+Sie:  
+   
+    name: Siena
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "24"
+    short_name: Sie
+  
+
+FSU:  
+   
+    name: Florida State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "137"
+    short_name: FSU
+  
+
+StB:  
+   
+    name: St. Bonaventure
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "286"
+    short_name: StB
+  
+
+SMt:  
+   
+    name: Southern Methodist
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "282"
+    short_name: SMt
+  
+
+RI:  
+   
+    name: Rhode Island
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "256"
+    short_name: RI
+  
+
+Laf:  
+   
+    name: Lafayette
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "174"
+    short_name: Laf
+  
+
+Bra:  
+   
+    name: Bradley
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "84"
+    short_name: Bra
+  
+
+Den:  
+   
+    name: Denver
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "117"
+    short_name: Den
+  
+
+CAr:  
+   
+    name: Central Arkansas
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "96"
+    short_name: CAr
+  
+
+BG:  
+   
+    name: Bowling Green
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "83"
+    short_name: BG
+  
+
+StC:  
+   
+    name: Santa Clara
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "270"
+    short_name: StC
+  
+
+Fdm:  
+   
+    name: Fordham
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "138"
+    short_name: Fdm
+  
+
+Evn:  
+   
+    name: Evansville
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "129"
+    short_name: Evn
+  
+
+Drt:  
+   
+    name: Dartmouth
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "113"
+    short_name: Drt
+  
+
+TCU:  
+   
+    name: TCU
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "294"
+    short_name: TCU
+  
+
+Duq:  
+   
+    name: Duquesne
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "121"
+    short_name: Duq
+  
+
+UG:  
+   
+    name: Georgia
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "60"
+    short_name: UG
+  
+
+FDk:  
+   
+    name: Fairleigh Dickinson
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "131"
+    short_name: FDk
+  
+
+Bin:  
+   
+    name: Binghamton
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "80"
+    short_name: Bin
+  
+
+ClS:  
+   
+    name: Cleveland State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "106"
+    short_name: ClS
+  
+
+Okl:  
+   
+    name: Oklahoma
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "9"
+    short_name: Okl
+  
+
+BSt:  
+   
+    name: Boise St.
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "12"
+    short_name: BSt
+  
+
+Mis:  
+   
+    name: Mississippi
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "203"
+    short_name: Mis
+  
+
+PSt:  
+   
+    name: Portland St.
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "18"
+    short_name: PSt
+  
+
+SHS:  
+   
+    name: Sam Houston State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "265"
+    short_name: SHS
+  
+
+ApS:  
+   
+    name: Appalachian State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "71"
+    short_name: ApS
+  
+
+W&M:  
+   
+    name: William & Mary
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "334"
+    short_name: W&M
+  
+
+SFl:  
+   
+    name: South Florida
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "278"
+    short_name: SFl
+  
+
+NTx:  
+   
+    name: North Texas
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "231"
+    short_name: NTx
+  
+
+TxA:  
+   
+    name: TX Arlington
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "34"
+    short_name: TxA
+  
+
+Drx:  
+   
+    name: Drexel
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "120"
+    short_name: Drx
+  
+
+VAC:  
+   
+    name: Virginia Commonwealth
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "323"
+    short_name: VAC
+  
+
+UMK:  
+   
+    name: UMKC
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "313"
+    short_name: UMK
+  
+
+USC:  
+   
+    name: USC
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "25"
+    short_name: USC
+  
+
+Mon:  
+   
+    name: Montana
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "207"
+    short_name: Mon
+  
+
+CoS:  
+   
+    name: Colorado State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "110"
+    short_name: CoS
+  
+
+Det:  
+   
+    name: Detroit
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "119"
+    short_name: Det
+  
+
+FAt:  
+   
+    name: Florida Atlantic
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "134"
+    short_name: FAt
+  
+
+Akr:  
+   
+    name: Akron
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "66"
+    short_name: Akr
+  
+
+Cgt:  
+   
+    name: Colgate
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "108"
+    short_name: Cgt
+  
+
+Lam:  
+   
+    name: Lamar
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "175"
+    short_name: Lam
+  
+
+UCD:  
+   
+    name: UC Davis
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "308"
+    short_name: UCD
+  
+
+SSt:  
+   
+    name: Sacramento State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "262"
+    short_name: SSt
+  
+
+Rad:  
+   
+    name: Radford
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "255"
+    short_name: Rad
+  
+
+EIl:  
+   
+    name: Eastern Illinois
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "124"
+    short_name: EIl
+  
+
+UM:  
+   
+    name: Michigan
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "199"
+    short_name: UM
+  
+
+StJ:  
+   
+    name: St. Joseph's
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "10"
+    short_name: StJ
+  
+
+CCa:  
+   
+    name: Coastal Carolina
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "107"
+    short_name: CCa
+  
+
+BaS:  
+   
+    name: Ball State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "78"
+    short_name: BaS
+  
+
+SIl:  
+   
+    name: Southern Illinois
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "281"
+    short_name: SIl
+  
+
+LIL:  
+   
+    name: Loyola (IL)
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "185"
+    short_name: LIL
+  
+
+Nia:  
+   
+    name: Niagara
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "220"
+    short_name: Nia
+  
+
+LSU:  
+   
+    name: LSU
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "188"
+    short_name: LSU
+  
+
+Buf:  
+   
+    name: Buffalo
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "88"
+    short_name: Buf
+  
+
+JmM:  
+   
+    name: James Madison
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "171"
+    short_name: JmM
+  
+
+Pit:  
+   
+    name: Pittsburgh
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "39"
+    short_name: Pit
+  
+
+WiS:  
+   
+    name: Wichita State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "333"
+    short_name: WiS
+  
+
+Was:  
+   
+    name: Washington
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "328"
+    short_name: Was
+  
+
+UCF:  
+   
+    name: UCF
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "312"
+    short_name: UCF
+  
+
+StL:  
+   
+    name: Saint Louis
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "264"
+    short_name: StL
+  
+
+Pri:  
+   
+    name: Princeton
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "252"
+    short_name: Pri
+  
+
+Oak:  
+   
+    name: Oakland
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "239"
+    short_name: Oak
+  
+
+NC&:  
+   
+    name: North Carolina A&T
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "223"
+    short_name: NC&
+  
+
+WKy:  
+   
+    name: W. Kentucky
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "54"
+    short_name: WKy
+  
+
+MTS:  
+   
+    name: Middle Tennessee State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "200"
+    short_name: MTS
+  
+
+Syr:  
+   
+    name: Syracuse
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "293"
+    short_name: Syr
+  
+
+Nic:  
+   
+    name: Nicholls State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "221"
+    short_name: Nic
+  
+
+StM:  
+   
+    name: St. Mary's
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "46"
+    short_name: StM
+  
+
+Hof:  
+   
+    name: Hofstra
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "153"
+    short_name: Hof
+  
+
+HCr:  
+   
+    name: Holy Cross
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "154"
+    short_name: HCr
+  
+
+Vil:  
+   
+    name: Villanova
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "22"
+    short_name: Vil
+  
+
+Eln:  
+   
+    name: Elon
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "128"
+    short_name: Eln
+  
+
+Wy:  
+   
+    name: Wyoming
+    created_at: 2009-03-01 04:12:33
+    updated_at: 2009-03-01 04:12:33
+    id: "338"
+    short_name: Wy
+  
+
+Sea:  
+   
+    name: Seattle
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "272"
+    short_name: Sea
+  
+
+IlS:  
+   
+    name: Illinois State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "161"
+    short_name: IlS
+  
+
+ND:  
+   
+    name: Notre Dame
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "5"
+    short_name: ND
+  
+
+MgS:  
+   
+    name: Morgan State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "210"
+    short_name: MgS
+  
+
+Uta:  
+   
+    name: Utah
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "316"
+    short_name: Uta
+  
+
+UCI:  
+   
+    name: UC Irvine
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "309"
+    short_name: UCI
+  
+
+ASU:  
+   
+    name: Arizona State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "72"
+    short_name: ASU
+  
+
+A&M:  
+   
+    name: Texas A&M
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "52"
+    short_name: A&M
+  
+
+Cpn:  
+   
+    name: Coppin State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "111"
+    short_name: Cpn
+  
+
+StP:  
+   
+    name: St. Peter's
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "290"
+    short_name: StP
+  
+
+OSU:  
+   
+    name: Ohio State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "241"
+    short_name: OSU
+  
+
+Buk:  
+   
+    name: Bucknell
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "87"
+    short_name: Buk
+  
+
+BU:  
+   
+    name: Boston University
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "82"
+    short_name: BU
+  
+
+Mem:  
+   
+    name: Memphis
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "33"
+    short_name: Mem
+  
+
+Por:  
+   
+    name: Portland
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "249"
+    short_name: Por
+  
+
+Nfk:  
+   
+    name: Norfolk State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "222"
+    short_name: Nfk
+  
+
+GBy:  
+   
+    name: Green Bay
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "147"
+    short_name: GBy
+  
+
+HBa:  
+   
+    name: Houston Baptist
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "156"
+    short_name: HBa
+  
+
+Pro:  
+   
+    name: Providence
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "253"
+    short_name: Pro
+  
+
+GTc:  
+   
+    name: Georgia Tech
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "145"
+    short_name: GTc
+  
+
+VAM:  
+   
+    name: Virginia Military
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "324"
+    short_name: VAM
+  
+
+KSt:  
+   
+    name: Kent St.
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "20"
+    short_name: KSt
+  
+
+ULA:  
+   
+    name: UCLA
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "49"
+    short_name: ULA
+  
+
+Bel:  
+   
+    name: Belmont
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "64"
+    short_name: Bel
+  
+
+YSt:  
+   
+    name: Youngstown State
+    created_at: 2009-03-01 04:12:33
+    updated_at: 2009-03-01 04:12:33
+    id: "340"
+    short_name: YSt
+  
+
+WMi:  
+   
+    name: Western Michigan
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "332"
+    short_name: WMi
+  
+
+NCo:  
+   
+    name: Northern Colorado
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "234"
+    short_name: NCo
+  
+
+Mur:  
+   
+    name: Murray State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "211"
+    short_name: Mur
+  
+
+GWa:  
+   
+    name: George Washington
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "142"
+    short_name: GWa
+  
+
+NMx:  
+   
+    name: New Mexico
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "217"
+    short_name: NMx
+  
+
+KnS:  
+   
+    name: Kennesaw State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "172"
+    short_name: KnS
+  
+
+Mne:  
+   
+    name: Maine
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "189"
+    short_name: Mne
+  
+
+WCa:  
+   
+    name: Western Carolina
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "330"
+    short_name: WCa
+  
+
+NFl:  
+   
+    name: North Florida
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "230"
+    short_name: NFl
+  
+
+Mer:  
+   
+    name: Mercer
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "197"
+    short_name: Mer
+  
+
+ETS:  
+   
+    name: East Tennessee State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "123"
+    short_name: ETS
+  
+
+ChS:  
+   
+    name: Chicago State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "103"
+    short_name: ChS
+  
+
+Pen:  
+   
+    name: Pennsylvania
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "247"
+    short_name: Pen
+  
+
+AF:  
+   
+    name: Air Force
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "65"
+    short_name: AF
+  
+
+G-W:  
+   
+    name: Gardner-Webb
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "141"
+    short_name: G-W
+  
+
+CSo:  
+   
+    name: Charleston Southern
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "100"
+    short_name: CSo
+  
+
+WrS:  
+   
+    name: Wright State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "337"
+    short_name: WrS
+  
+
+WkF:  
+   
+    name: Wake Forest
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "327"
+    short_name: WkF
+  
+
+UsU:  
+   
+    name: USC Upstate
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "315"
+    short_name: UsU
+  
+
+LSa:  
+   
+    name: La Salle
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "173"
+    short_name: LSa
+  
+
+Fla:  
+   
+    name: Florida
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "132"
+    short_name: Fla
+  
+
+Mry:  
+   
+    name: Maryland
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "193"
+    short_name: Mry
+  
+
+SDS:  
+   
+    name: San Diego State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "267"
+    short_name: SDS
+  
+
+Pep:  
+   
+    name: Pepperdine
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "248"
+    short_name: Pep
+  
+
+WVa:  
+   
+    name: West Virginia
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "61"
+    short_name: WVa
+  
+
+UCR:  
+   
+    name: UC Riverside
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "310"
+    short_name: UCR
+  
+
+Sou:  
+   
+    name: Southern University
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "284"
+    short_name: Sou
+  
+
+NIl:  
+   
+    name: Northern Illinois
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "235"
+    short_name: NIl
+  
+
+Pur:  
+   
+    name: Purdue
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "57"
+    short_name: Pur
+  
+
+ALR:  
+   
+    name: Arkansas-Little Rock
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "74"
+    short_name: ALR
+  
+
+VAT:  
+   
+    name: Virginia Tech
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "325"
+    short_name: VAT
+  
+
+TxS:  
+   
+    name: Texas Southern
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "299"
+    short_name: TxS
+  
+
+But:  
+   
+    name: Butler
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "13"
+    short_name: But
+  
+
+IUP:  
+   
+    name: IUPUI
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "167"
+    short_name: IUP
+  
+
+McN:  
+   
+    name: McNeese State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "196"
+    short_name: McN
+  
+
+TAC:  
+   
+    name: Texas A&M-CC
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "298"
+    short_name: TAC
+  
+
+MSM:  
+   
+    name: Mt. St. Mary's
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "2"
+    short_name: MSM
+  
+
+Il:  
+   
+    name: Illinois
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "160"
+    short_name: Il
+  
+
+Lgw:  
+   
+    name: Longwood
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "181"
+    short_name: Lgw
+  
+
+Dav:  
+   
+    name: Davidson
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "30"
+    short_name: Dav
+  
+
+Bry:  
+   
+    name: Bryant University
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "86"
+    short_name: Bry
+  
+
+APe:  
+   
+    name: Austin Peay
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "48"
+    short_name: APe
+  
+
+Pac:  
+   
+    name: Pacific
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "245"
+    short_name: Pac
+  
+
+NIo:  
+   
+    name: Northern Iowa
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "236"
+    short_name: NIo
+  
+
+Nea:  
+   
+    name: Northeastern
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "232"
+    short_name: Nea
+  
+
+Mnm:  
+   
+    name: Monmouth
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "206"
+    short_name: Mnm
+  
+
+Cin:  
+   
+    name: Cincinnati
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "104"
+    short_name: Cin
+  
+
+TnM:  
+   
+    name: Tennessee-Martin
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "297"
+    short_name: TnM
+  
+
+CPy:  
+   
+    name: Cal Poly
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "89"
+    short_name: CPy
+  
+
+Neb:  
+   
+    name: Nebraska
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "214"
+    short_name: Neb
+  
+
+Hou:  
+   
+    name: Houston
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "155"
+    short_name: Hou
+  
+
+SFA:  
+   
+    name: Stephen F. Austin
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "291"
+    short_name: SFA
+  
+
+ScH:  
+   
+    name: Sacred Heart
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "263"
+    short_name: ScH
+  
+
+Pby:  
+   
+    name: Presbyterian
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "251"
+    short_name: Pby
+  
+
+Nvy:  
+   
+    name: Navy
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "213"
+    short_name: Nvy
+  
+
+MsS:  
+   
+    name: Missouri State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "205"
+    short_name: MsS
+  
+
+Day:  
+   
+    name: Dayton
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "114"
+    short_name: Day
+  
+
+UBC:  
+   
+    name: UMBC
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "32"
+    short_name: UBC
+  
+
+SJS:  
+   
+    name: San Jose State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "269"
+    short_name: SJS
+  
+
+Lib:  
+   
+    name: Liberty
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "177"
+    short_name: Lib
+  
+
+LBS:  
+   
+    name: Long Beach State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "179"
+    short_name: LBS
+  
+
+How:  
+   
+    name: Howard
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "157"
+    short_name: How
+  
+
+Clm:  
+   
+    name: Clemson
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "21"
+    short_name: Clm
+  
+
+RbM:  
+   
+    name: Robert Morris
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "260"
+    short_name: RbM
+  
+
+OrS:  
+   
+    name: Oregon State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "244"
+    short_name: OrS
+  
+
+Hrt:  
+   
+    name: Hartford
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "149"
+    short_name: Hrt
+  
+
+FSt:  
+   
+    name: Fresno State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "139"
+    short_name: FSt
+  
+
+TSt:  
+   
+    name: Tennessee State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "295"
+    short_name: TSt
+  
+
+NW:  
+   
+    name: Northwestern
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "237"
+    short_name: NW
+  
+
+Man:  
+   
+    name: Manhattan
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "190"
+    short_name: Man
+  
+
+FGC:  
+   
+    name: Florida Gulf Coast
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "135"
+    short_name: FGC
+  
+
+Cit:  
+   
+    name: Citadel
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "105"
+    short_name: Cit
+  
+
+Sta:  
+   
+    name: Stanford
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "43"
+    short_name: Sta
+  
+
+Col:  
+   
+    name: Colorado
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "109"
+    short_name: Col
+  
+
+SUt:  
+   
+    name: Southern Utah
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "285"
+    short_name: SUt
+  
+
+SMS:  
+   
+    name: Southeast Missouri State
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "279"
+    short_name: SMS
+  
+
+Cha:  
+   
+    name: Charlotte
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "101"
+    short_name: Cha
+  
+
+NJI:  
+   
+    name: N.J.I.T.
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "212"
+    short_name: NJI
+  
+
+NHa:  
+   
+    name: New Hampshire
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "216"
+    short_name: NHa
+  
+
+MSU:  
+   
+    name: Michigan St.
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "37"
+    short_name: MSU
+  
+
+FAM:  
+   
+    name: Florida A&M
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "133"
+    short_name: FAM
+  
+
+EMU:  
+   
+    name: Eastern Michigan
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "126"
+    short_name: EMU
+  
+
+Frf:  
+   
+    name: Fairfield
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "130"
+    short_name: Frf
+  
+
+FIn:  
+   
+    name: Florida International
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "136"
+    short_name: FIn
+  
+
+Con:  
+   
+    name: Connecticut
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "55"
+    short_name: Con
+  
+
+Ken:  
+   
+    name: Kentucky
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "42"
+    short_name: Ken
+  
+
+Ver:  
+   
+    name: Vermont
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "321"
+    short_name: Ver
+  
+
+NDS:  
+   
+    name: North Dakota State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "229"
+    short_name: NDS
+  
+
+Ala:  
+   
+    name: Alabama
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "67"
+    short_name: Ala
+  
+
+MVS:  
+   
+    name: Mis. Valley St
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "50"
+    short_name: MVS
+  
+
+GM:  
+   
+    name: George Mason
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "6"
+    short_name: GM
+  
+
+Tln:  
+   
+    name: Tulane
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "305"
+    short_name: Tln
+  
+
+Mar:  
+   
+    name: Marquette
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "41"
+    short_name: Mar
+  
+
+ISt:  
+   
+    name: Idaho State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "159"
+    short_name: ISt
+  
+
+Alb:  
+   
+    name: Albany
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "69"
+    short_name: Alb
+  
+
+Wof:  
+   
+    name: Wofford
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "336"
+    short_name: Wof
+  
+
+Rch:  
+   
+    name: Richmond
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "258"
+    short_name: Rch
+  
+
+Win:  
+   
+    name: Winthrop
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "8"
+    short_name: Win
+  
+
+Xav:  
+   
+    name: Xavier
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "59"
+    short_name: Xav
+  
+
+Mas:  
+   
+    name: Massachusetts
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "195"
+    short_name: Mas
+  
+
+MiS:  
+   
+    name: Mississippi St.
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "35"
+    short_name: MiS
+  
+
+Alc:  
+   
+    name: Alcorn State
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "70"
+    short_name: Alc
+  
+
+EWa:  
+   
+    name: Eastern Washington
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "127"
+    short_name: EWa
+  
+
+WSt:  
+   
+    name: Washington St.
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "7"
+    short_name: WSt
+  
+
+InS:  
+   
+    name: Indiana State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "163"
+    short_name: InS
+  
+
+MOH:  
+   
+    name: Miami (OH)
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "198"
+    short_name: MOH
+  
+
+NOr:  
+   
+    name: New Orleans
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "219"
+    short_name: NOr
+  
+
+WIl:  
+   
+    name: Western Illinois
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "331"
+    short_name: WIl
+  
+
+Tol:  
+   
+    name: Toledo
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "302"
+    short_name: Tol
+  
+
+Qui:  
+   
+    name: Quinnipiac
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "254"
+    short_name: Qui
+  
+
+PSU:  
+   
+    name: Penn State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "246"
+    short_name: PSU
+  
+
+NWS:  
+   
+    name: Northwestern State
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "238"
+    short_name: NWS
+  
+
+NCA:  
+   
+    name: North Carolina-Asheville
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "226"
+    short_name: NCA
+  
+
+DPl:  
+   
+    name: DePaul
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "118"
+    short_name: DPl
+  
+
+Cor:  
+   
+    name: Cornell
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "44"
+    short_name: Cor
+  
+
+ULV:  
+   
+    name: UNLV
+    created_at: 2009-03-01 01:58:18
+    updated_at: 2009-03-01 01:58:18
+    id: "19"
+    short_name: ULV
+  
+
+SB:  
+   
+    name: UC Santa Barbara
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "311"
+    short_name: SB
+  
+
+GrS:  
+   
+    name: Grambling State
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "146"
+    short_name: GrS
+  
+
+Ric:  
+   
+    name: Rice
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "257"
+    short_name: Ric
+  
+
+NCC:  
+   
+    name: North Carolina Central
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "224"
+    short_name: NCC
+  
+
+LaL:  
+   
+    name: Louisiana-Lafayette
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "183"
+    short_name: LaL
+  
+
+UVa:  
+   
+    name: Utah Valley
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "318"
+    short_name: UVa
+  
+
+SFN:  
+   
+    name: St. Francis (NY)
+    created_at: 2009-03-01 04:12:32
+    updated_at: 2009-03-01 04:12:32
+    id: "287"
+    short_name: SFN
+  
+
+Sam:  
+   
+    name: Samford
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "266"
+    short_name: Sam
+  
+
+Rid:  
+   
+    name: Rider
+    created_at: 2009-03-01 04:12:31
+    updated_at: 2009-03-01 04:12:31
+    id: "259"
+    short_name: Rid
+  
+
+SD:  
+    name: San Diego
+    created_at: 2009-03-01 01:58:19
+    updated_at: 2009-03-01 01:58:19
+    id: "56"
+    short_name: SD
+LaM:  
+    name: Louisiana-Monroe
+    created_at: 2009-03-01 04:12:30
+    updated_at: 2009-03-01 04:12:30
+    id: "184"
+    short_name: LaM
+CSB:  
+    name: Cal State Bakersfield
+    created_at: 2009-03-01 04:12:29
+    updated_at: 2009-03-01 04:12:29
+    id: "90"
+    short_name: CSB

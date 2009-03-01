@@ -20,7 +20,7 @@ Main do
 
   def init_pool
     @pool = Tournament::Pool.ncaa_2008
-    @pool.bracket.scoring_strategy = Tournament::Bracket.strategy_for_name(params['scoring'].value)
+    @pool.scoring_strategy = Tournament::ScoringStrategy.strategy_for_name(params['scoring'].value)
   end
 
   def save_pool
@@ -52,14 +52,14 @@ Main do
       argument :required
       arity 1
       default 'basic_scoring_strategy'
-      validate {|s| Tournament::Bracket.available_strategies.include?(s)}
-      description "Sets the scoring strategy, should be one of #{Tournament::Bracket.available_strategies.join(', ')}"
+      validate {|s| Tournament::ScoringStrategy.available_strategies.include?(s)}
+      description "Sets the scoring strategy, should be one of #{Tournament::ScoringStrategy.available_strategies.join(', ')}"
     end
     def run
       init_pool
       puts "Initialized new pool"
       puts "Scoring:"
-      puts @pool.bracket.scoring_strategy.description
+      puts @pool.scoring_strategy.description
       save_pool
     end
   end

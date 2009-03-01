@@ -11,13 +11,13 @@ class Entry < ActiveRecord::Base
       if self[:data]
         @bracket = Marshal.load(self[:data])
       end
-      @bracket ||= Tournament::Bracket.new(self.pool.pool.bracket.teams)
+      @bracket ||= Tournament::Bracket.new(self.pool.scoring_strategy, self.pool.pool.bracket.teams)
     end
     @bracket
   end
 
   def reset
-    @bracket = Tournament::Bracket.new(self.pool.pool.bracket.teams)
+    @bracket = Tournament::Bracket.new(self.pool.scoring_strategy, self.pool.pool.bracket.teams)
   end
 
   def before_save
