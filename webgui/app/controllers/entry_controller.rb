@@ -1,8 +1,9 @@
 class EntryController < ApplicationController
   layout 'bracket'
   before_filter :login_required
-  before_filter :check_access, :only => [:show, :edit]
+  before_filter :check_access, :only => [:show, :edit, :print, :pdf]
   include SavesPicks
+  include PdfHelper
 
   def check_access
     # Resolve the entry
@@ -36,6 +37,16 @@ class EntryController < ApplicationController
     @pool = @entry.pool.pool
   end
 
+  def print
+    @pool = @entry.pool.pool
+    render :layout => 'print'
+  end
+
+  def pdf
+    @pool = @entry.pool.pool
+    make_and_send_pdf("/entry/print", 'entry.pdf', true)
+  end
+
   def edit
     if params[:reset] == 'Reset Picks'
       @entry.reset
@@ -58,6 +69,11 @@ class EntryController < ApplicationController
     if @entry.save
       logger.debug("DONE SAVING ENTRY")
       flash[:info] = "Changes were saved."
+      if !@entry.completed
+        flash[:notice] = "You still have remaining games in this entry to pick."
+      else
+        flash[:notice] = "You have made all picks in this entry."
+      end
       redirect_to :action => 'show', :id => @entry.id
     else
       flash[:error] = "Could not save entry."

@@ -7,7 +7,7 @@ You have no entries.
 <% else %>
 <ul>
 <% @entries.each do |entry| %>
-<li><%= link_to entry.name, :action => 'show', :id => entry.id %>
+<li><%= link_to entry.name, :action => 'show', :id => entry.id %> <% if entry.completed %><span class="entryCompleted">COMPLETED</span><%else%><span class="entryPending">PENDING</span><%end%></li>
 <% end %>
 </ul>
 <% end %>

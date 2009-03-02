@@ -24,3 +24,5 @@ ActionMailer::Base.smtp_settings = {
   :password  => "hl4llUah",
   :authentication  => :login
     } 
+
+PRINCE_PATH='/home/doug/tools/prince/bin/prince'

@@ -29,7 +29,7 @@ class Entry < ActiveRecord::Base
   end
 
   def after_save
-    if self.bracket.complete? && self.bracket.user_id != self.pool.user_id
+    if self.bracket.complete? && self.user_id != self.pool.user_id
       self.pool.pool.update_entry(self.tournament_entry)
       self.pool.save!
     end

@@ -1,0 +1,125 @@
+TABLE.bracket
+{
+	BORDER-RIGHT: black 1px solid;
+	BORDER-TOP: black 1px solid;
+	BORDER-LEFT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid;
+  background: white url(/images/2009FinalFour.png) center no-repeat;
+}
+
+TABLE.bracket TH.header
+{
+	font: italic small-caps bold 10px/14px "arial black";
+	color: white;
+	background-color: red;
+	text-align: center;
+}
+
+TABLE.bracket TH.subheader
+{
+	font: italic small-caps bold 7px/7px "arial black";
+	color: red;
+	background-color: #FFFFCC;
+	BORDER-BOTTOM: black 2px double;
+}
+
+TABLE.bracket TD
+{
+	width: 150px;
+	text-align: left;
+	valign: bottom;
+	font:7px "arial";
+}
+
+TABLE.bracket TD.space
+{
+	font: 1px;
+}
+
+TABLE.bracket TD.odd
+{
+	BORDER-BOTTOM: black 1px solid
+}
+
+TABLE.bracket TD.oddChampion
+{
+	BORDER-BOTTOM: black 3px double;
+	font: bold 7px "arial";
+	text-align: center;
+}
+
+TABLE.bracket TD.championLabel
+{
+	text-align: center;
+}
+
+TABLE.bracket TD.evenLeft
+{
+	BORDER-RIGHT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid
+}
+
+TABLE.bracket TD.middleLeft
+{
+	BORDER-RIGHT: black 1px solid
+}
+
+TABLE.bracket TD.evenRight
+{
+	BORDER-LEFT: black 1px solid;
+	BORDER-BOTTOM: black 1px solid;
+}
+
+TABLE.bracket TD.middleRight
+{
+	BORDER-LEFT: black 1px solid
+}
+
+.brackcell_top
+{
+  border-bottom: 1px solid #191970;
+}
+
+.bracketcell_bottom_left
+{
+  border-right: 1px solid #191970;
+  border-bottom: 1px solid #191970;
+}
+
+.bracketcell_bottom_right
+{
+  border-right: 1px solid #191970;
+  border-bottom: 1px solid #191970;
+}
+
+.teamname
+{
+        font-size : 7px;
+        font-family : Arial, Helvetica, sans-serif;
+        font-weight : bold;
+        cursor: pointer;
+}
+
+.missedpick
+{
+        font-size : 7px;
+        font-family : Arial, Helvetica, sans-serif;
+        font-weight : bold;
+        text-decoration : line-through;
+        color : red;
+}
+
+.correctpick
+{
+        font-size : 7px;
+        font-family : Arial, Helvetica, sans-serif;
+        font-weight : bold;
+        color : green;
+}
+
+.pendingpick
+{
+        font-size : 7px;
+        font-family : Arial, Helvetica, sans-serif;
+        color : gray;
+}
