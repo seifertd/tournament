@@ -17,7 +17,7 @@
 <p>
 <i>Same color region champs play each other in final four:</i>
 </p>
-<%= form_tag "/teams/change/#{@pool.id}", :method => "POST" %>
+<%= form_tag({:controller => 'teams', :action => 'change', :id => @pool.id}, {:method => "POST"}) %>
 <% @pool.region_seedings.each_with_index do |arr, index| -%>
 <% region_name = arr[0]; teams = arr[1] %>
 <div class="<%= cycle('regionLeft', 'regionRight', :name => 'tbclass')%> <%= cycle('regionTop', 'regionTop', 'regionBottom', 'regionBottom', :name => 'lrclass')%>">
