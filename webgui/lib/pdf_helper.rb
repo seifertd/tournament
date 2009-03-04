@@ -2,6 +2,11 @@
 module PdfHelper
   require 'prince'
 
+  def self.prince_available?
+    p = Prince.new()
+    p.exe_path !~ /no prince/
+  end
+
   private
     # Makes a pdf, returns it as data...
     def make_pdf(template_path, pdf_name, landscape=false)

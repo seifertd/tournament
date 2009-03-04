@@ -1,6 +1,6 @@
 require 'tournament'
 require 'yaml'
 
-TOURNAMENT_TITLE = "UpTake Pick'em & Win"
-ADMIN_EMAIL = 'doug+pool@dseifert.net'
+TOURNAMENT_TITLE = "Tournament"
+ADMIN_EMAIL = 'admin'
 TOURNAMENT_FQ_WEBROOT = 'http://localhost:3000'
