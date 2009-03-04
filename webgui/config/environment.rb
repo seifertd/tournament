@@ -72,5 +72,7 @@ Rails::Initializer.run do |config|
 
   # Activate observers that should always be running
   # Please note that observers generated using script/generate observer need to have an _observer suffix
-  config.active_record.observers = :user_observer
+  # DAS: This is the wrong approach to sending out emails I think
+  # I prefer the controllers to send the emails, not the model
+  #config.active_record.observers = :user_observer
 end
