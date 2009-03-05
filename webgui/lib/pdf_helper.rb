@@ -14,6 +14,7 @@ module PdfHelper
       # Sets style sheets on PDF renderer.
       prince.add_style_sheets(
         "#{RAILS_ROOT}/public/stylesheets/main.css",
+        "#{RAILS_ROOT}/public/stylesheets/bracket.css",
         "#{RAILS_ROOT}/public/stylesheets/bracket-print.css",
         "#{RAILS_ROOT}/public/stylesheets/prince.css"
       )
