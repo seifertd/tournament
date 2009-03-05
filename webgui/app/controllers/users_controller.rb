@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if success && @user.errors.empty?
       email_error = false
       begin
-        UserMailer.deliver_signup_notification(user, activate_path(:activation_code => user.activation_code, :only_path => false))
+        UserMailer.deliver_signup_notification(@user, activate_path(:activation_code => @user.activation_code, :only_path => false))
       rescue Exception => e
         logger.error("ERROR: Could not deliver activation request email, user account will remain unactive: #{e}")
         email_error = true
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
         flash[:error] = "We were unable to send you an activation email, please contact the pool administrator to get your account activated."
       end
     else
-      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
+      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin."
       render :action => 'new'
     end
   end
