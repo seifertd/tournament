@@ -10,6 +10,9 @@ require 'tournament'
 task :default => 'spec:run'
 
 depend_on 'main'
+depend_on 'rake'
+depend_on 'rails'
+depend_on 'sqlite3-ruby'
 
 PROJ.name = 'tournament'
 PROJ.authors = 'Douglas A. Seifert'

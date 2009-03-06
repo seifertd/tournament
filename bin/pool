@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
-require File.expand_path(
-    File.join(File.dirname(__FILE__), '..', 'lib', 'tournament'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'tournament'))
 
 require 'rubygems'
 require 'main'
 require 'yaml'
+require 'fileutils'
+require 'net/http'
+require 'uri'
 
 Main do
 
@@ -33,20 +35,102 @@ Main do
 
   mode('install_webgui') do
     description 'Installs the Rails webgui.'
+    option('web-dir', 'W') do
+      required
+      argument :required
+      arity 1
+      description "Installation directory for the Rails application."
+    end
+    option('site-name', 'S') do
+      optional
+      argument :required
+      default 'Tournament'
+      arity 1
+      description "Web site name used in <title> tags an email subject lines."
+    end
+    option('relative-root', 'R') do
+      optional
+      argument :required
+      arity 1
+      description "Relative URL root if you are installing the web application as a subdirectory in an existing website."
+    end
+    option('admin-email') do
+      optional
+      argument :required
+      default 'admin'
+      arity 1
+      description "Email address of the admin account."
+    end
+    option('email-server') do
+      optional
+      argument :required
+      arity 1
+      description "SMTP email server name."
+    end
+    option('email-port') do
+      cast :int
+      optional
+      argument :required
+      default 25
+      arity 1
+      description "SMTP email server port."
+    end
+    option('email-domain') do
+      optional
+      argument :required
+      arity 1
+      description "SMTP email server HELO domain."
+    end
+    option('email-user') do
+      optional
+      argument :required
+      arity 1
+      description "SMTP email server user name."
+    end
+    option('email-password') do
+      optional
+      argument :required
+      arity 1
+      description "SMTP email server user name."
+    end
+    option('email-auth') do
+      optional
+      argument :required
+      default 'login'
+      arity 1
+      validate {|ea| ['login', 'plain', 'cram_md5'].include?(ea)}
+      description "SMTP email server authentication type."
+    end
+    option('use-princexml', 'X') do
+      optional
+      argument :required
+      arity 1
+      description "Location of prince xml command line program, or directory into which the program will be installed after being downloaded from the Prince XML website."
+    end
+    option('tmp-dir', 't') do
+      optional
+      argument :required
+      default '/tmp'
+      arity 1
+      description "Temp directory location."
+    end
     def run
     end
   end
 
-  option('save-file', 's') do
-    optional
-    argument :required
-    default 'pool.yml'
-    arity 1
-    description "Save file for the pool."
+  mixin :savefile do
+    option('save-file', 's') do
+      optional
+      argument :required
+      default 'pool.yml'
+      arity 1
+      description "Save file for the pool."
+    end
   end
 
   mode('setup') do
     description "Sets up the pool the first time"
+    mixin :savefile
     option('scoring', 'S') do
       optional
       argument :required
@@ -65,6 +149,7 @@ Main do
   end
 
   mode('update') do
+    mixin :savefile
     option('entry', 'e') do
       optional
       argument :required
@@ -81,6 +166,7 @@ Main do
   end
 
   mode('fee') do
+    mixin :savefile
     argument('amount') do
       required
       cast :integer
@@ -95,6 +181,7 @@ Main do
   end
 
   mode('payout') do
+    mixin :savefile
     option('constant-amount', 'C') do
       optional
       arity 1
@@ -128,6 +215,7 @@ Main do
   end
 
   mode('entry') do
+    mixin :savefile
     option('add', 'a') do
       optional
       argument :required
@@ -157,6 +245,7 @@ Main do
   end
   
   mode('dump') do
+    mixin :savefile
     option('entry', 'e') do
       optional
       argument :required
@@ -173,6 +262,7 @@ Main do
   end
 
   mode('report') do
+    mixin :savefile
     available_reports = Tournament::Pool.instance_methods(false).map do |name|
       if idx = name.index("_report")
         name[0,idx]

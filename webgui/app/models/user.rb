@@ -34,6 +34,17 @@ class User < ActiveRecord::Base
     Role[:admin].users
   end
 
+  def self.create_admin_user(options = {})
+    [:login, :email, :name, :password].each do |attr_name|
+      raise "create_admin_user needs key #{attr_name.inspect} in options hash" unless options[attr_name]
+    end
+    options[:password_confirmation] = options[:password]
+    u = new(options)
+    u.activated_at = Time.now
+    u.roles << Role[:admin]
+    u.save!
+  end
+
   # Activates the user in the database.
   def activate!
     @activated = true
