@@ -19,7 +19,9 @@ Total Entries: <%= pool.user_entries.size%>
 <br/>
 <% if current_user -%>
 Entries for <%= current_user.login%>: <%= link_to pool.entries_for(current_user).size, :controller => 'entry', :action => 'index', :id => pool.id %>
+<% if pool.accepting_entries? -%>
 <%= link_to 'Add New Entry', :controller => 'entry', :action => 'new', :id => pool.id %>
+<% end -%>
 <br/>
 <% else -%>
 <i>To enter this pool, please <%= link_to 'login', '/login'%> or <%= link_to 'signup', '/signup'%></i>

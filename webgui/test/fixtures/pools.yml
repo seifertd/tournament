@@ -11,4 +11,4 @@ two:
   name: Test Pool 2
   data:
   started: false
-  starts_at: 2009-02-24 18:29:26
+  starts_at: <%= Time.now + 5.days %>

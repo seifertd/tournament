@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password, :password_confirmation
 
-  # Return all users with admin rol
+  # Return all users with admin role
   def self.admin_users
     Role[:admin].users
   end
@@ -43,6 +43,11 @@ class User < ActiveRecord::Base
     u.activated_at = Time.now
     u.roles << Role[:admin]
     u.save!
+  end
+
+  # Returns true if user has the given role
+  def has_role?(role)
+    return roles.include?(Role[role])
   end
 
   # Activates the user in the database.

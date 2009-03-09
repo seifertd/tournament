@@ -127,7 +127,11 @@ class Pool < ActiveRecord::Base
     @payouts << PayoutData.new
   end
 
+  def accepting_entries?
+    return ready? && Time.now < starts_at
+  end
+
   def self.active_pools
-    Pool.find(:all, :conditions => {:active => true})
+    Pool.find(:all, :conditions => ['active = ?', true])
   end
 end

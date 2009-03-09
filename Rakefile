@@ -14,6 +14,7 @@ depend_on 'rake'
 depend_on 'rails'
 depend_on 'sqlite3-ruby'
 
+
 PROJ.name = 'tournament'
 PROJ.authors = 'Douglas A. Seifert'
 PROJ.email = 'doug+rubyforge@dseifert.net'
@@ -29,5 +30,4 @@ PROJ.exclude << '^tags$'
 
 PROJ.rdoc.opts = ["--line-numbers", "--inline-source"]
 PROJ.rdoc.template = "tasks/jamis.rb"
-
 # EOF

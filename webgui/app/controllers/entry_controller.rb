@@ -2,6 +2,7 @@ class EntryController < ApplicationController
   layout 'bracket'
   before_filter :login_required
   before_filter :check_access, :only => [:show, :edit, :print, :pdf]
+  before_filter :pool_taking_edits, :only => [:edit]
   include SavesPicks
   include PdfHelper
 
@@ -10,14 +11,27 @@ class EntryController < ApplicationController
     @entry = params[:id] ? Entry.find(params[:id]) : Entry.new({:user_id => current_user.id, :pool_id => params[:pool_id]})
 
     # Admin user
-    return true if current_user.roles.include?(Role[:admin])
+    return true if current_user.has_role?(:admin)
 
     # Check if entry being viewed belongs to current user
     if current_user != @entry.user
       flash[:info] = "You don't have access to that entry."
-      redirect_to '/'
+      redirect_to root_path
       return false
     end
+    return true
+  end
+
+  def pool_taking_edits
+    # Admin user can do anything
+    return true if current_user.has_role?(:admin)
+    
+    if Time.now > @entry.pool.starts_at
+      flash[:error] = "You can't make changes to your entry, the pool has already started."
+      redirect_to :action => 'show'
+      return false
+    end
+
     return true
   end
 
