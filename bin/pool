@@ -40,6 +40,7 @@ Main do
       argument :required
       arity 1
       description "Installation directory for the Rails application."
+      error(:after) { puts usage.to_s }
     end
     option('site-name', 'S') do
       optional
