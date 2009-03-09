@@ -115,6 +115,40 @@ Main do
       description "Temp directory location."
     end
     def run
+      installer = Tournament::WebguiInstaller.new(params['web-dir'].value)
+      installer.tmp_dir = params['tmp-dir'].value
+      if params['use-princexml'].given?
+        prince_xml = params['use-princexml'].value
+        if File.exist?(prince_xml) && File.executable?(prince_xml) && !File.directory?(prince_xml)
+          puts "=> USING PRINCE XML EXECUTABLE #{prince_xml}"
+        elsif File.exist?(prince_xml) && File.executable?(prince_xml) && File.directory?(prince_xml)
+          puts "=> INSTALLING PRINCE XML INTO #{prince_xml}"
+          installer.install_prince(prince_xml)
+          prince_xml = File.join(prince_xml, 'bin', 'prince')
+        else
+          print usage.to_s
+          exit_warn!
+        end
+        def prince_xml.given?; true; end
+        def prince_xml.value; self; end
+        params['prince-path'] = prince_xml
+      else
+        prince_path = ''
+        def prince_path.given?; false; end
+        def prince_path.value; self; end
+        params['prince-path'] = prince_path
+      end
+      puts "=> INSTALLING TOURNAMENT WEB GUI INTO #{installer.install_dir}"
+      installer.install_webgui
+      puts "=> ADJUSTING TOURNAMENT WEB GUI CONFIGURATION"
+      installer.adjust_configuration(params)
+
+      puts "=> INSTALLATION COMPLETE."
+      puts "You should now change to #{installer.install_dir} and"
+      puts "perform the following steps:"
+      puts "  1. RAILS_ENV=production rake db:migrate"
+      puts "  2. RAILS_ENV=production rake \"admin:create[admin,#{params['admin-email'].value},Joe Admin,password]\""
+      puts "     You should substitute your desired admin user login, name and password."
     end
   end
 

@@ -34,6 +34,22 @@ class WebguiInstallerTest < Test::Unit::TestCase
     assert_match /PRINCE_PATH = "PRINCE_PATH"/, File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
   end
 
+  def test_install_webgui_minimal
+    @installer.install_webgui
+    assert File.exist?(@installer.install_dir)
+    @installer.adjust_configuration( 
+      {
+        'prince-path' => Val.new('foo'),
+        'admin-email' => Val.new('admin@admin.com'),
+        'site-name' => Val.new('My Site')
+      }
+    )
+    new_config = File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
+    assert_match /PRINCE_PATH = "foo"/, new_config
+    assert_match /TOURNAMENT_TITLE = "My Site"/, new_config
+    assert_match /ADMIN_EMAIL = "admin@admin.com"/, new_config
+  end
+
   #def test_prince_install
   #  @installer.install_prince(File.join(@tmp_dir, 'prince_install'))
   #end

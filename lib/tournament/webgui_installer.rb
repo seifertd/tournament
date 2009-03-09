@@ -33,6 +33,7 @@ class Tournament::WebguiInstaller
   def adjust_configuration(config_options = {})
     config_file = File.expand_path(File.join(@source_dir, 'config', 'initializers', 'pool.rb'))
     target_config = File.expand_path(File.join(@install_dir, 'config', 'initializers', 'pool.rb'))
+    puts "  -> Adjusting #{config_file} -> #{target_config}"
     config_contents = File.read(config_file)
     if config_options['email-server'] && config_options['email-server'].given?
       smtp_config = {}
@@ -45,6 +46,10 @@ class Tournament::WebguiInstaller
       def smtp_config.given?; true; end
       def smtp_config.value; self; end
       config_options['smtp-configuration'] = smtp_config
+    else
+      smtp_config = {}
+      def smtp_config.given?; false; end
+      config_options['smtp-configuration'] = smtp_config
     end
     [
       ['site-name', 'TOURNAMENT_TITLE'],
@@ -54,13 +59,17 @@ class Tournament::WebguiInstaller
       ['prince-path', 'PRINCE_PATH']
     ].each do |config_name, constant_name|
       if config_options[config_name] && config_options[config_name].given?
+        puts "  -> Setting config option #{config_name} to #{config_options[config_name].value}"
         re = /#{constant_name} =([^\n]+)/m
         config_contents.gsub!(re) do |m|
           "#{constant_name} = #{config_options[config_name].value.inspect}\n"
         end
+      else
+        puts "  -> Not setting config option #{config_name}"
       end
     end
 
+    puts "  -> Writing #{target_config}"
     File.open(target_config, "w") do |f|
       f.write config_contents
     end
