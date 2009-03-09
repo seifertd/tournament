@@ -55,11 +55,11 @@ Main do
       description "Relative URL root if you are installing the web application as a subdirectory in an existing website."
     end
     option('admin-email') do
-      optional
+      required
       argument :required
-      default 'admin'
       arity 1
       description "Email address of the admin account."
+      error(:after) { puts usage.to_s }
     end
     option('email-server') do
       optional
@@ -117,6 +117,7 @@ Main do
     def run
       installer = Tournament::WebguiInstaller.new(params['web-dir'].value)
       installer.tmp_dir = params['tmp-dir'].value
+      options = params.to_options
       if params['use-princexml'].given?
         prince_xml = params['use-princexml'].value
         if File.exist?(prince_xml) && File.executable?(prince_xml) && !File.directory?(prince_xml)
@@ -129,19 +130,12 @@ Main do
           print usage.to_s
           exit_warn!
         end
-        def prince_xml.given?; true; end
-        def prince_xml.value; self; end
-        params['prince-path'] = prince_xml
-      else
-        prince_path = ''
-        def prince_path.given?; false; end
-        def prince_path.value; self; end
-        params['prince-path'] = prince_path
+        options['prince-path'] = prince_xml
       end
       puts "=> INSTALLING TOURNAMENT WEB GUI INTO #{installer.install_dir}"
       installer.install_webgui
       puts "=> ADJUSTING TOURNAMENT WEB GUI CONFIGURATION"
-      installer.adjust_configuration(params)
+      installer.adjust_configuration(options)
 
       puts "=> INSTALLATION COMPLETE."
       puts "You should now change to #{installer.install_dir} and"

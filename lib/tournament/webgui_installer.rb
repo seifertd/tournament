@@ -35,20 +35,14 @@ class Tournament::WebguiInstaller
     target_config = File.expand_path(File.join(@install_dir, 'config', 'initializers', 'pool.rb'))
     puts "  -> Adjusting #{config_file} -> #{target_config}"
     config_contents = File.read(config_file)
-    if config_options['email-server'] && config_options['email-server'].given?
+    if config_options['email-server']
       smtp_config = {}
-      smtp_config[:address] = config_options['email-server'].value
-      smtp_config[:port] = config_options['email-port'].value
-      smtp_config[:domain] = config_options['email-domain'].value if config_options['email-domain'].given?
-      smtp_config[:user_name] = config_options['email-user'].value if config_options['email-user'].given?
-      smtp_config[:password] = config_options['email-password'].value if config_options['email-password'].given?
-      smtp_config[:authentication] = config_options['email-auth'].value.to_sym if config_options['email-auth'].given?
-      def smtp_config.given?; true; end
-      def smtp_config.value; self; end
-      config_options['smtp-configuration'] = smtp_config
-    else
-      smtp_config = {}
-      def smtp_config.given?; false; end
+      smtp_config[:address] = config_options['email-server']
+      smtp_config[:port] = config_options['email-port']
+      smtp_config[:domain] = config_options['email-domain'] if config_options['email-domain']
+      smtp_config[:user_name] = config_options['email-user'] if config_options['email-user']
+      smtp_config[:password] = config_options['email-password'] if config_options['email-password']
+      smtp_config[:authentication] = config_options['email-auth'].to_sym if config_options['email-auth']
       config_options['smtp-configuration'] = smtp_config
     end
     [
@@ -58,11 +52,11 @@ class Tournament::WebguiInstaller
       ['smtp-configuration', 'SMTP_CONFIGURATION'],
       ['prince-path', 'PRINCE_PATH']
     ].each do |config_name, constant_name|
-      if config_options[config_name] && config_options[config_name].given?
-        puts "  -> Setting config option #{config_name} to #{config_options[config_name].value}"
+      if config_options[config_name]
+        puts "  -> Setting config option #{config_name} to #{config_options[config_name]}"
         re = /#{constant_name} =([^\n]+)/m
         config_contents.gsub!(re) do |m|
-          "#{constant_name} = #{config_options[config_name].value.inspect}\n"
+          "#{constant_name} = #{config_options[config_name].inspect}\n"
         end
       else
         puts "  -> Not setting config option #{config_name}"

@@ -2,12 +2,6 @@ require 'test/unit'
 require 'tournament'
 require 'fileutils'
 
-class Val
-  def initialize(val); @val = val; end
-  def given?; true; end
-  def value; @val; end
-end
-
 class WebguiInstallerTest < Test::Unit::TestCase
   def setup
     @tmp_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'tmp'))
@@ -29,7 +23,7 @@ class WebguiInstallerTest < Test::Unit::TestCase
     @installer.install_webgui
     assert File.exist?(@installer.install_dir)
     @installer.adjust_configuration( 
-      Hash.new {|h,k| h[k] = Val.new(k.gsub('-', '_').upcase) }
+      Hash.new {|h,k| h[k] = k.gsub('-', '_').upcase }
     )
     assert_match /PRINCE_PATH = "PRINCE_PATH"/, File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
   end
@@ -39,9 +33,9 @@ class WebguiInstallerTest < Test::Unit::TestCase
     assert File.exist?(@installer.install_dir)
     @installer.adjust_configuration( 
       {
-        'prince-path' => Val.new('foo'),
-        'admin-email' => Val.new('admin@admin.com'),
-        'site-name' => Val.new('My Site')
+        'prince-path' => 'foo',
+        'admin-email' => 'admin@admin.com',
+        'site-name' => 'My Site'
       }
     )
     new_config = File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
