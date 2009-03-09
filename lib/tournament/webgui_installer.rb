@@ -27,7 +27,9 @@ class Tournament::WebguiInstaller
   end
 
   def install_webgui
-    FileUtils.cp_r(@source_dir, @install_dir)
+    raise "Installation target #{@install_dir} exists and is NOT a directory." if File.exist?(@install_dir) && !File.directory?(@install_dir)
+    FileUtils.mkdir_p(@install_dir) unless File.exist?(@install_dir)
+    FileUtils.cp_r("#{@source_dir}/.", @install_dir, :preserve => false, :verbose => true)
   end
 
   def adjust_configuration(config_options = {})

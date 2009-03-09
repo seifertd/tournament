@@ -25,7 +25,20 @@ class WebguiInstallerTest < Test::Unit::TestCase
     @installer.adjust_configuration( 
       Hash.new {|h,k| h[k] = k.gsub('-', '_').upcase }
     )
-    assert_match /PRINCE_PATH = "PRINCE_PATH"/, File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
+    assert_match(/PRINCE_PATH = "PRINCE_PATH"/, File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb')))
+  end
+
+  def test_reinstall
+    @installer.install_webgui
+    assert File.exist?(@installer.install_dir)
+
+    # HACK: How do do this?
+    system("chmod -R u+w #{@installer.install_dir}")
+
+    # Do it again
+    @installer.install_webgui
+    
+    assert !File.exist?(File.join(@installer.install_dir, 'webgui'))
   end
 
   def test_install_webgui_minimal
@@ -39,9 +52,9 @@ class WebguiInstallerTest < Test::Unit::TestCase
       }
     )
     new_config = File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
-    assert_match /PRINCE_PATH = "foo"/, new_config
-    assert_match /TOURNAMENT_TITLE = "My Site"/, new_config
-    assert_match /ADMIN_EMAIL = "admin@admin.com"/, new_config
+    assert_match(/PRINCE_PATH = "foo"/, new_config)
+    assert_match(/TOURNAMENT_TITLE = "My Site"/, new_config)
+    assert_match(/ADMIN_EMAIL = "admin@admin.com"/, new_config)
   end
 
   #def test_prince_install
