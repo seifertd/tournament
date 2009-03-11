@@ -273,7 +273,8 @@ from played to unknown outcome.
 
 == SHOES GUI REQUIREMENTS:
 
-* shoes-0.r396 (GUI Only)
+Verified working on
+* shoes raisins v1134
 
 == INSTALL:
 
