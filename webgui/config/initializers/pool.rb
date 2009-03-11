@@ -16,9 +16,7 @@ ADMIN_EMAIL = 'admin' unless defined?(ADMIN_EMAIL)
 RELATIVE_URL_ROOT = nil
 
 if RELATIVE_URL_ROOT
-  Rails::Initializer.run do |config|
-    config.action_controller.relative_url_root = RELATIVE_URL_ROOT
-  end
+  ActionController::Base.relative_url_root = RELATIVE_URL_ROOT
 end
 
 # Provide keys needed by ActionMailer.smtp_settings.  See Rails
@@ -26,10 +24,8 @@ end
 SMTP_CONFIGURATION = {}
 
 if SMTP_CONFIGURATION.size > 0
-  Rails::Initializer.run do |config|
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = SMTP_CONFIGURATION
-  end
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = SMTP_CONFIGURATION
 end
 
 # Full path to the prince xml executable if you want printable
