@@ -3,6 +3,12 @@
 * Make reports account for tournament tie breaker.
 * YAML format change from version 1.X.  Old pool data won't work
   with this version.
+* Added Josh Pasternak scoring strategy.  Correct picks are worth
+  the winning team seed number * a per round multiplier.  See
+  http://blogs.tnr.com/tnr/blogs/the_plank/archive/2008/03/27/ncaa-pool-scoring-system-rant.aspx
+  for details.
+* Many library improvements and refactorings.
+* 2.0.1 release with final 2009 NCAA tournament seedings forthcoming
 
 == 1.1.1 / 2008-07-07
 * Update rake tasks to bones-2.0.2
