@@ -1,0 +1,44 @@
+== 2.0.0 / 2009-02-XX
+* Release Rails GUI for self-service entries and admin
+* Make reports account for tournament tie breaker.
+* YAML format change from version 1.X.  Old pool data won't work
+  with this version.
+* Added Josh Pasternak scoring strategy.  Correct picks are worth
+  the winning team seed number * a per round multiplier.  See
+  http://blogs.tnr.com/tnr/blogs/the_plank/archive/2008/03/27/ncaa-pool-scoring-system-rant.aspx
+  for details.
+* Many library improvements and refactorings.
+* 2.0.1 release with final 2009 NCAA tournament seedings forthcoming
+
+== 1.1.1 / 2008-07-07
+* Update rake tasks to bones-2.0.2
+
+== 1.1.0 / 2008-03-29
+
+* Add ability to configure entry fee and payout amounts
+* Change final four report to use the entry fee and payout amount configuration
+* Fix bug with cached @number_of_outcomes in Tournament::Pool class.
+* Add to the possibility report a listing of each entry that could place first
+  that shows frequency of which team would have to be champion for 
+  the entry to place first.
+
+== 1.0.0 / 2008-03-26
+
+* Change the pool command line script usage to make it simpler (I hope)
+* Add a new report: final_four
+* FIXME: Final four report assumes payouts go to 1st and 2nd and last places.
+  This should be configurable.
+
+== 0.0.3 / 2008-03-23
+
+* Bugfix the picker wrapper script.  Getting used to bones/rubyforge.
+
+== 0.0.2 / 2008-03-23
+
+* Changed the picker wrapper script to ruby because it seems that
+  that is what rubyforge tools expect.
+
+== 0.0.1 / 2008-03-23
+
+* Initial Release
+

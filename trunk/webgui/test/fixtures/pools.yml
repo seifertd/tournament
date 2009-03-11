@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  name: Test Pool 1
+  data:
+  started: false
+  starts_at: 2009-02-24 18:29:26
+
+two:
+  id: 2
+  name: Test Pool 2
+  data:
+  started: false
+  starts_at: <%= Time.now + 5.days %>

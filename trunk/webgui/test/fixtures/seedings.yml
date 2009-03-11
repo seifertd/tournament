@@ -1,0 +1,12 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+<% 4.times do |region| %>
+<% 16.times do |seed| %>
+<% team = region * 16 + seed + 1 %>
+region<%=region%>seed<%=seed%>:
+  id: <%= team %>
+  pool_id: 2
+  team_id: <%=team%>
+  region: Region<%=region%>
+  seed: <%=seed+1%>
+<% end %>
+<% end %>

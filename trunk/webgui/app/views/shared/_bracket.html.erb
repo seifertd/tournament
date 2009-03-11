@@ -1,0 +1,1296 @@
+<%
+is_editable = defined?(editable) ? editable : (current_user.has_role?(:admin) || Time.now < @entry.pool.starts_at)
+classes = {}
+ids = {}
+onclicks = {}
+onmouseovers = {}
+onmouseouts = {}
+contents = {}
+teams = {}
+active_mouse_over = "this.style.backgroundColor='black';this.style.color='white'"; 
+active_mouse_out = "this.style.backgroundColor='';this.style.color=''";
+if !is_editable
+  active_mouse_over = ""; 
+  active_mouse_out = "";
+end
+@pool.tournament_entry.picks.teams.each_with_index do |team, idx|
+  idx = idx + 1
+  ids[idx] = "#{idx}"
+  onclicks[idx] = is_editable ? "pick(this);" : ''
+  teams[idx] = team.short_name
+  contents[idx] = "<nobr>(#{team.seed}) #{team.name}</nobr>"
+  onmouseovers[idx] = active_mouse_over;
+  onmouseouts[idx] = active_mouse_out;
+  classes[idx] = "teamname "
+end
+
+65.upto(127) do |idx|
+  game_no = idx - 64
+  round, game = @entry.bracket.round_and_game(game_no)
+  winner = @entry.bracket.winner(round, game)
+  ids[idx] = "#{idx}"
+  classes[idx] = "teamname "
+  onclicks[idx] = is_editable ? "pick(this);" : ''
+  if winner != :unk
+    contents[idx] = winner.short_name
+    teams[idx] = winner.short_name
+    onmouseovers[idx] = active_mouse_over;
+    onmouseouts[idx] = active_mouse_out;
+    incorrect = !@pool.tournament_entry.picks.still_alive?(winner)
+    if incorrect
+      classes[idx] += 'missedpick '
+    else
+      bracket_winner = @pool.tournament_entry.picks.winner(round, game)
+      if bracket_winner == winner
+        classes[idx] += 'correctpick '
+      else
+        classes[idx] += 'pendingpick '
+      end
+    end
+  else
+    #contents[idx] = "Winner game #{idx-64} #{idx}"
+    contents[idx] = "&nbsp;"
+    classes[idx] += 'pendingpick '
+  end
+end
+%>
+<%= error_messages_for 'entry' %>
+<% form_for(@entry, :url => {:action => 'edit', :id => @entry.id}, :html => {:onSubmit => (is_editable ? 'return submitPicks(this);' : 'return false')}) do |f| -%>
+<table border="0">
+<tr>
+<td><%= f.label :name, "Entry Name"%></td><td><%= f.text_field :name %></td>
+</tr>
+<tr>
+<td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
+</tr>
+<tr>
+<td colspan="2">
+<small>
+Current Score: <%= @entry.bracket.score_against(@pool.tournament_entry.picks, @pool.scoring_strategy) %> Max. Possible Score: <%= @entry.bracket.maximum_score(@pool.tournament_entry.picks, @pool.scoring_strategy) %>
+</small>
+</td>
+</table>
+<input type="hidden" name="pool_id" value="<%=@entry.pool_id%>">
+<input type="hidden" name="picks" id="picks" value="">
+<% if is_editable %>
+<input type="Submit" value="Save Changes">
+<%= submit_tag 'Cancel Changes', :name => 'cancel', :confirm => 'Are you sure?'%>
+<%= submit_tag 'Reset Picks', :name => 'reset', :confirm => 'Are you sure? Resetting will clear all picks and start the bracket over from scratch!'%>
+<% end -%>
+<% end -%>
+<TABLE cellspacing=0 class="bracket">
+<TR>
+<TH class="header" colspan="17"><%= @entry.pool.name %></TH>
+</TR>
+<TR>
+<TH class="subheader" colspan="17">&nbsp;</TH>
+</TR>
+<TR>
+<TD class="space" colspan="17">&nbsp;</TD>
+<!-- SEED 1 TOP  1/33 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd">
+<span class="<%=classes[1]%>" id="<%=ids[1]%>" team="<%=teams[1]%>" onclick="<%=onclicks[1]%>" onmouseover="<%=onmouseovers[1]%>" onmouseout="<%=onmouseouts[1]%>"><%=contents[1]%></span>
+</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[33]%>" id="<%=ids[33]%>" team="<%=teams[33]%>" onclick="<%=onclicks[33]%>" onmouseover="<%=onmouseovers[33]%>" onmouseout="<%=onmouseouts[33]%>"><%=contents[33]%></span></TD>
+</TR>
+<!-- WINNER 65  & 81 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[65]%>" id="<%=ids[65]%>" team="<%=teams[65]%>" onclick="<%=onclicks[65]%>" onmouseover="<%=onmouseovers[65]%>" onmouseout="<%=onmouseouts[65]%>"><%=contents[65]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[81]%>" id="<%=ids[81]%>" team="<%=teams[81]%>" onclick="<%=onclicks[81]%>" onmouseover="<%=onmouseovers[81]%>" onmouseout="<%=onmouseouts[81]%>"><%=contents[81]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 16 TOP 2/34-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[2]%>" id="<%=ids[2]%>" team="<%=teams[2]%>" onclick="<%=onclicks[2]%>" onmouseover="<%=onmouseovers[2]%>" onmouseout="<%=onmouseouts[2]%>"><%=contents[2]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[34]%>" id="<%=ids[34]%>" team="<%=teams[34]%>" onclick="<%=onclicks[34]%>" onmouseover="<%=onmouseovers[34]%>" onmouseout="<%=onmouseouts[34]%>"><%=contents[34]%></span></TD>
+</TR>
+<!-- WINNER 97 & 105 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[97]%>" id="<%=ids[97]%>" team="<%=teams[97]%>" onclick="<%=onclicks[97]%>" onmouseover="<%=onmouseovers[97]%>" onmouseout="<%=onmouseouts[97]%>"><%=contents[97]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[105]%>" id="<%=ids[105]%>" team="<%=teams[105]%>" onclick="<%=onclicks[105]%>" onmouseover="<%=onmouseovers[105]%>" onmouseout="<%=onmouseouts[105]%>"><%=contents[105]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 8 TOP 3/35-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[3]%>" id="<%=ids[3]%>" team="<%=teams[3]%>" onclick="<%=onclicks[3]%>" onmouseover="<%=onmouseovers[3]%>" onmouseout="<%=onmouseouts[3]%>"><%=contents[3]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[35]%>" id="<%=ids[35]%>" team="<%=teams[35]%>" onclick="<%=onclicks[35]%>" onmouseover="<%=onmouseovers[35]%>" onmouseout="<%=onmouseouts[35]%>"><%=contents[35]%></span></TD>
+</TR>
+<!-- WINNER 66 & 82 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[66]%>" id="<%=ids[66]%>" team="<%=teams[66]%>" onclick="<%=onclicks[66]%>" onmouseover="<%=onmouseovers[66]%>" onmouseout="<%=onmouseouts[66]%>"><%=contents[66]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[82]%>" id="<%=ids[82]%>" team="<%=teams[82]%>" onclick="<%=onclicks[82]%>" onmouseover="<%=onmouseovers[82]%>" onmouseout="<%=onmouseouts[82]%>"><%=contents[82]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 9 4/36-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[4]%>" id="<%=ids[4]%>" team="<%=teams[4]%>" onclick="<%=onclicks[4]%>" onmouseover="<%=onmouseovers[4]%>" onmouseout="<%=onmouseouts[4]%>"><%=contents[4]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[36]%>" id="<%=ids[36]%>" team="<%=teams[36]%>" onclick="<%=onclicks[36]%>" onmouseover="<%=onmouseovers[36]%>" onmouseout="<%=onmouseouts[36]%>"><%=contents[36]%></span></TD>
+</TR>
+<!-- WINNER 113 & 117 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[113]%>" id="<%=ids[113]%>" team="<%=teams[113]%>" onclick="<%=onclicks[113]%>" onmouseover="<%=onmouseovers[113]%>" onmouseout="<%=onmouseouts[113]%>"><%=contents[113]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[117]%>" id="<%=ids[117]%>" team="<%=teams[117]%>" onclick="<%=onclicks[117]%>" onmouseover="<%=onmouseovers[117]%>" onmouseout="<%=onmouseouts[117]%>"><%=contents[117]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 5 TOP 5/37 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[5]%>" id="<%=ids[5]%>" team="<%=teams[5]%>" onclick="<%=onclicks[5]%>" onmouseover="<%=onmouseovers[5]%>" onmouseout="<%=onmouseouts[5]%>"><%=contents[5]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[37]%>" id="<%=ids[37]%>" team="<%=teams[37]%>" onclick="<%=onclicks[37]%>" onmouseover="<%=onmouseovers[37]%>" onmouseout="<%=onmouseouts[37]%>"><%=contents[37]%></span></TD>
+</TR>
+<!-- WINNER 67 & 83 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[67]%>" id="<%=ids[67]%>" team="<%=teams[67]%>" onclick="<%=onclicks[67]%>" onmouseover="<%=onmouseovers[67]%>" onmouseout="<%=onmouseouts[67]%>"><%=contents[67]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[83]%>" id="<%=ids[83]%>" team="<%=teams[83]%>" onclick="<%=onclicks[83]%>" onmouseover="<%=onmouseovers[83]%>" onmouseout="<%=onmouseouts[83]%>"><%=contents[83]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 12 TOP 6/38-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[6]%>" id="<%=ids[6]%>" team="<%=teams[6]%>" onclick="<%=onclicks[6]%>" onmouseover="<%=onmouseovers[6]%>" onmouseout="<%=onmouseouts[6]%>"><%=contents[6]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[38]%>" id="<%=ids[38]%>" team="<%=teams[38]%>" onclick="<%=onclicks[38]%>" onmouseover="<%=onmouseovers[38]%>" onmouseout="<%=onmouseouts[38]%>"><%=contents[38]%></span></TD>
+</TR>
+<!-- WINNER 98 & 106 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[98]%>" id="<%=ids[98]%>" team="<%=teams[98]%>" onclick="<%=onclicks[98]%>" onmouseover="<%=onmouseovers[98]%>" onmouseout="<%=onmouseouts[98]%>"><%=contents[98]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[106]%>" id="<%=ids[106]%>" team="<%=teams[106]%>" onclick="<%=onclicks[106]%>" onmouseover="<%=onmouseovers[106]%>" onmouseout="<%=onmouseouts[106]%>"><%=contents[106]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 12 7/39 TOP -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[7]%>" id="<%=ids[7]%>" team="<%=teams[7]%>" onclick="<%=onclicks[7]%>" onmouseover="<%=onmouseovers[7]%>" onmouseout="<%=onmouseouts[7]%>"><%=contents[7]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[39]%>" id="<%=ids[39]%>" team="<%=teams[39]%>" onclick="<%=onclicks[39]%>" onmouseover="<%=onmouseovers[39]%>" onmouseout="<%=onmouseouts[39]%>"><%=contents[39]%></span></TD>
+</TR>
+<!-- WINNER 68 & 84 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[68]%>" id="<%=ids[68]%>" team="<%=teams[68]%>" onclick="<%=onclicks[68]%>" onmouseover="<%=onmouseovers[68]%>" onmouseout="<%=onmouseouts[68]%>"><%=contents[68]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[84]%>" id="<%=ids[84]%>" team="<%=teams[84]%>" onclick="<%=onclicks[84]%>" onmouseover="<%=onmouseovers[84]%>" onmouseout="<%=onmouseouts[84]%>"><%=contents[84]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 13 8/40 TOP -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[8]%>" id="<%=ids[8]%>" team="<%=teams[8]%>" onclick="<%=onclicks[8]%>" onmouseover="<%=onmouseovers[8]%>" onmouseout="<%=onmouseouts[8]%>"><%=contents[8]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[40]%>" id="<%=ids[40]%>" team="<%=teams[40]%>" onclick="<%=onclicks[40]%>" onmouseover="<%=onmouseovers[40]%>" onmouseout="<%=onmouseouts[40]%>"><%=contents[40]%></span></TD>
+</TR>
+<!-- WINNER 121 & 123 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[121]%>" id="<%=ids[121]%>" team="<%=teams[121]%>" onclick="<%=onclicks[121]%>" onmouseover="<%=onmouseovers[121]%>" onmouseout="<%=onmouseouts[121]%>"><%=contents[121]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[123]%>" id="<%=ids[123]%>" team="<%=teams[123]%>" onclick="<%=onclicks[123]%>" onmouseover="<%=onmouseovers[123]%>" onmouseout="<%=onmouseouts[123]%>"><%=contents[123]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 6 TOP 9/41-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[9]%>" id="<%=ids[9]%>" team="<%=teams[9]%>" onclick="<%=onclicks[9]%>" onmouseover="<%=onmouseovers[9]%>" onmouseout="<%=onmouseouts[9]%>"><%=contents[9]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[41]%>" id="<%=ids[41]%>" team="<%=teams[41]%>" onclick="<%=onclicks[41]%>" onmouseover="<%=onmouseovers[41]%>" onmouseout="<%=onmouseouts[41]%>"><%=contents[41]%></span></TD>
+</TR>
+<!-- WINNER 69 & 85 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[69]%>" id="<%=ids[69]%>" team="<%=teams[69]%>" onclick="<%=onclicks[69]%>" onmouseover="<%=onmouseovers[69]%>" onmouseout="<%=onmouseouts[69]%>"><%=contents[69]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[85]%>" id="<%=ids[85]%>" team="<%=teams[85]%>" onclick="<%=onclicks[85]%>" onmouseover="<%=onmouseovers[85]%>" onmouseout="<%=onmouseouts[85]%>"><%=contents[85]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 11 TOP   10/42-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[10]%>" id="<%=ids[10]%>" team="<%=teams[10]%>" onclick="<%=onclicks[10]%>" onmouseover="<%=onmouseovers[10]%>" onmouseout="<%=onmouseouts[10]%>"><%=contents[10]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[42]%>" id="<%=ids[42]%>" team="<%=teams[42]%>" onclick="<%=onclicks[42]%>" onmouseover="<%=onmouseovers[42]%>" onmouseout="<%=onmouseouts[42]%>"><%=contents[42]%></span></TD>
+</TR>
+<!-- WINNER 99 & 107 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[99]%>" id="<%=ids[99]%>" team="<%=teams[99]%>" onclick="<%=onclicks[99]%>" onmouseover="<%=onmouseovers[99]%>" onmouseout="<%=onmouseouts[99]%>"><%=contents[99]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[107]%>" id="<%=ids[107]%>" team="<%=teams[107]%>" onclick="<%=onclicks[107]%>" onmouseover="<%=onmouseovers[107]%>" onmouseout="<%=onmouseouts[107]%>"><%=contents[107]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 3 TOP 11/43-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[11]%>" id="<%=ids[11]%>" team="<%=teams[11]%>" onclick="<%=onclicks[11]%>" onmouseover="<%=onmouseovers[11]%>" onmouseout="<%=onmouseouts[11]%>"><%=contents[11]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[43]%>" id="<%=ids[43]%>" team="<%=teams[43]%>" onclick="<%=onclicks[43]%>" onmouseover="<%=onmouseovers[43]%>" onmouseout="<%=onmouseouts[43]%>"><%=contents[43]%></span></TD>
+</TR>
+<!-- WINNER 70 & 86 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[70]%>" id="<%=ids[70]%>" team="<%=teams[70]%>" onclick="<%=onclicks[70]%>" onmouseover="<%=onmouseovers[70]%>" onmouseout="<%=onmouseouts[70]%>"><%=contents[70]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[86]%>" id="<%=ids[86]%>" team="<%=teams[86]%>" onclick="<%=onclicks[86]%>" onmouseover="<%=onmouseovers[86]%>" onmouseout="<%=onmouseouts[86]%>"><%=contents[86]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 14 TOP 12/44-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[12]%>" id="<%=ids[12]%>" team="<%=teams[12]%>" onclick="<%=onclicks[12]%>" onmouseover="<%=onmouseovers[12]%>" onmouseout="<%=onmouseouts[12]%>"><%=contents[12]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[44]%>" id="<%=ids[44]%>" team="<%=teams[44]%>" onclick="<%=onclicks[44]%>" onmouseover="<%=onmouseovers[44]%>" onmouseout="<%=onmouseouts[44]%>"><%=contents[44]%></span></TD>
+</TR>
+<!-- WINNER 114 & 118 & Champion (127) -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[114]%>" id="<%=ids[114]%>" team="<%=teams[114]%>" onclick="<%=onclicks[114]%>" onmouseover="<%=onmouseovers[114]%>" onmouseout="<%=onmouseouts[114]%>"><%=contents[114]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="oddChampion"><span class="<%=classes[127]%>" id="<%=ids[127]%>" team="<%=teams[127]%>" onclick="<%=onclicks[127]%>" onmouseover="<%=onmouseovers[127]%>" onmouseout="<%=onmouseouts[127]%>"><%=contents[127]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[118]%>" id="<%=ids[118]%>" team="<%=teams[118]%>" onclick="<%=onclicks[118]%>" onmouseover="<%=onmouseovers[118]%>" onmouseout="<%=onmouseouts[118]%>"><%=contents[118]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 7 TOP   13/45 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[13]%>" id="<%=ids[13]%>" team="<%=teams[13]%>" onclick="<%=onclicks[13]%>" onmouseover="<%=onmouseovers[13]%>" onmouseout="<%=onmouseouts[13]%>"><%=contents[13]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="championLabel">National Champion</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[45]%>" id="<%=ids[45]%>" team="<%=teams[45]%>" onclick="<%=onclicks[45]%>" onmouseover="<%=onmouseovers[45]%>" onmouseout="<%=onmouseouts[45]%>"><%=contents[45]%></span></TD>
+</TR>
+<!-- WINNER 71 & 87 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[71]%>" id="<%=ids[71]%>" team="<%=teams[71]%>" onclick="<%=onclicks[71]%>" onmouseover="<%=onmouseovers[71]%>" onmouseout="<%=onmouseouts[71]%>"><%=contents[71]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[87]%>" id="<%=ids[87]%>" team="<%=teams[87]%>" onclick="<%=onclicks[87]%>" onmouseover="<%=onmouseovers[87]%>" onmouseout="<%=onmouseouts[87]%>"><%=contents[87]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 10 TOP 14/46-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[14]%>" id="<%=ids[14]%>" team="<%=teams[14]%>" onclick="<%=onclicks[14]%>" onmouseover="<%=onmouseovers[14]%>" onmouseout="<%=onmouseouts[14]%>"><%=contents[14]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[46]%>" id="<%=ids[46]%>" team="<%=teams[46]%>" onclick="<%=onclicks[46]%>" onmouseover="<%=onmouseovers[46]%>" onmouseout="<%=onmouseouts[46]%>"><%=contents[46]%></span></TD>
+</TR>
+<!-- WINNER 100 & 108 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[100]%>" id="<%=ids[100]%>" team="<%=teams[100]%>" onclick="<%=onclicks[100]%>" onmouseover="<%=onmouseovers[100]%>" onmouseout="<%=onmouseouts[100]%>"><%=contents[100]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[108]%>" id="<%=ids[108]%>" team="<%=teams[108]%>" onclick="<%=onclicks[108]%>" onmouseover="<%=onmouseovers[108]%>" onmouseout="<%=onmouseouts[108]%>"><%=contents[108]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 2 TOP 15/47-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[15]%>" id="<%=ids[15]%>" team="<%=teams[15]%>" onclick="<%=onclicks[15]%>" onmouseover="<%=onmouseovers[15]%>" onmouseout="<%=onmouseouts[15]%>"><%=contents[15]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[47]%>" id="<%=ids[47]%>" team="<%=teams[47]%>" onclick="<%=onclicks[47]%>" onmouseover="<%=onmouseovers[47]%>" onmouseout="<%=onmouseouts[47]%>"><%=contents[47]%></span></TD>
+</TR>
+<!-- WINNER 72 & 88 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[72]%>" id="<%=ids[72]%>" team="<%=teams[72]%>" onclick="<%=onclicks[72]%>" onmouseover="<%=onmouseovers[72]%>" onmouseout="<%=onmouseouts[72]%>"><%=contents[72]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[88]%>" id="<%=ids[88]%>" team="<%=teams[88]%>" onclick="<%=onclicks[88]%>" onmouseover="<%=onmouseovers[88]%>" onmouseout="<%=onmouseouts[88]%>"><%=contents[88]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 16 TOP 16/48-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[16]%>" id="<%=ids[16]%>" team="<%=teams[16]%>" onclick="<%=onclicks[16]%>" onmouseover="<%=onmouseovers[16]%>" onmouseout="<%=onmouseouts[16]%>"><%=contents[16]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[48]%>" id="<%=ids[48]%>" team="<%=teams[48]%>" onclick="<%=onclicks[48]%>" onmouseover="<%=onmouseovers[48]%>" onmouseout="<%=onmouseouts[48]%>"><%=contents[48]%></span></TD>
+</TR>
+<!-- WINNER 125 & 126 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[125]%>" id="<%=ids[125]%>" team="<%=teams[125]%>" onclick="<%=onclicks[125]%>" onmouseover="<%=onmouseovers[125]%>" onmouseout="<%=onmouseouts[125]%>"><%=contents[125]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[126]%>" id="<%=ids[126]%>" team="<%=teams[126]%>" onclick="<%=onclicks[126]%>" onmouseover="<%=onmouseovers[126]%>" onmouseout="<%=onmouseouts[126]%>"><%=contents[126]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 1 BOTTOM 17/49-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[17]%>" id="<%=ids[17]%>" team="<%=teams[17]%>" onclick="<%=onclicks[17]%>" onmouseover="<%=onmouseovers[17]%>" onmouseout="<%=onmouseouts[17]%>"><%=contents[17]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[49]%>" id="<%=ids[49]%>" team="<%=teams[49]%>" onclick="<%=onclicks[49]%>" onmouseover="<%=onmouseovers[49]%>" onmouseout="<%=onmouseouts[49]%>"><%=contents[49]%></span></TD>
+</TR>
+<!-- WINNER 73 & 89 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[73]%>" id="<%=ids[73]%>" team="<%=teams[73]%>" onclick="<%=onclicks[73]%>" onmouseover="<%=onmouseovers[73]%>" onmouseout="<%=onmouseouts[73]%>"><%=contents[73]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[89]%>" id="<%=ids[89]%>" team="<%=teams[89]%>" onclick="<%=onclicks[89]%>" onmouseover="<%=onmouseovers[89]%>" onmouseout="<%=onmouseouts[89]%>"><%=contents[89]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 16 BOTTOM 18/50-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[18]%>" id="<%=ids[18]%>" team="<%=teams[18]%>" onclick="<%=onclicks[18]%>" onmouseover="<%=onmouseovers[18]%>" onmouseout="<%=onmouseouts[18]%>"><%=contents[18]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[50]%>" id="<%=ids[50]%>" team="<%=teams[50]%>" onclick="<%=onclicks[50]%>" onmouseover="<%=onmouseovers[50]%>" onmouseout="<%=onmouseouts[50]%>"><%=contents[50]%></span></TD>
+</TR>
+<!-- WINNER 101 & 109 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[101]%>" id="<%=ids[101]%>" team="<%=teams[101]%>" onclick="<%=onclicks[101]%>" onmouseover="<%=onmouseovers[101]%>" onmouseout="<%=onmouseouts[101]%>"><%=contents[101]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[109]%>" id="<%=ids[109]%>" team="<%=teams[109]%>" onclick="<%=onclicks[109]%>" onmouseover="<%=onmouseovers[109]%>" onmouseout="<%=onmouseouts[109]%>"><%=contents[109]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 8 BOTTOM 19/51-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[19]%>" id="<%=ids[19]%>" team="<%=teams[19]%>" onclick="<%=onclicks[19]%>" onmouseover="<%=onmouseovers[19]%>" onmouseout="<%=onmouseouts[19]%>"><%=contents[19]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[51]%>" id="<%=ids[51]%>" team="<%=teams[51]%>" onclick="<%=onclicks[51]%>" onmouseover="<%=onmouseovers[51]%>" onmouseout="<%=onmouseouts[51]%>"><%=contents[51]%></span></TD>
+</TR>
+<!-- WINNER 74 & 90 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[74]%>" id="<%=ids[74]%>" team="<%=teams[74]%>" onclick="<%=onclicks[74]%>" onmouseover="<%=onmouseovers[74]%>" onmouseout="<%=onmouseouts[74]%>"><%=contents[74]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[90]%>" id="<%=ids[90]%>" team="<%=teams[90]%>" onclick="<%=onclicks[90]%>" onmouseover="<%=onmouseovers[90]%>" onmouseout="<%=onmouseouts[90]%>"><%=contents[90]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 9 BOTTOM 20/52-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[20]%>" id="<%=ids[20]%>" team="<%=teams[20]%>" onclick="<%=onclicks[20]%>" onmouseover="<%=onmouseovers[20]%>" onmouseout="<%=onmouseouts[20]%>"><%=contents[20]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[52]%>" id="<%=ids[52]%>" team="<%=teams[52]%>" onclick="<%=onclicks[52]%>" onmouseover="<%=onmouseovers[52]%>" onmouseout="<%=onmouseouts[52]%>"><%=contents[52]%></span></TD>
+</TR>
+<!-- WINNER 115 & 119 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[115]%>" id="<%=ids[115]%>" team="<%=teams[115]%>" onclick="<%=onclicks[115]%>" onmouseover="<%=onmouseovers[115]%>" onmouseout="<%=onmouseouts[115]%>"><%=contents[115]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[119]%>" id="<%=ids[119]%>" team="<%=teams[119]%>" onclick="<%=onclicks[119]%>" onmouseover="<%=onmouseovers[119]%>" onmouseout="<%=onmouseouts[119]%>"><%=contents[119]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 5 BOTTOM 21/53-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[21]%>" id="<%=ids[21]%>" team="<%=teams[21]%>" onclick="<%=onclicks[21]%>" onmouseover="<%=onmouseovers[21]%>" onmouseout="<%=onmouseouts[21]%>"><%=contents[21]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[53]%>" id="<%=ids[53]%>" team="<%=teams[53]%>" onclick="<%=onclicks[53]%>" onmouseover="<%=onmouseovers[53]%>" onmouseout="<%=onmouseouts[53]%>"><%=contents[53]%></span></TD>
+</TR>
+<!-- WINNER 75 & 91 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[75]%>" id="<%=ids[75]%>" team="<%=teams[75]%>" onclick="<%=onclicks[75]%>" onmouseover="<%=onmouseovers[75]%>" onmouseout="<%=onmouseouts[75]%>"><%=contents[75]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[91]%>" id="<%=ids[91]%>" team="<%=teams[91]%>" onclick="<%=onclicks[91]%>" onmouseover="<%=onmouseovers[91]%>" onmouseout="<%=onmouseouts[91]%>"><%=contents[91]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 12 BOTTOM 22/54-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[22]%>" id="<%=ids[22]%>" team="<%=teams[22]%>" onclick="<%=onclicks[22]%>" onmouseover="<%=onmouseovers[22]%>" onmouseout="<%=onmouseouts[22]%>"><%=contents[22]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[54]%>" id="<%=ids[54]%>" team="<%=teams[54]%>" onclick="<%=onclicks[54]%>" onmouseover="<%=onmouseovers[54]%>" onmouseout="<%=onmouseouts[54]%>"><%=contents[54]%></span></TD>
+</TR>
+<!-- WINNER 102 & 110 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[102]%>" id="<%=ids[102]%>" team="<%=teams[102]%>" onclick="<%=onclicks[102]%>" onmouseover="<%=onmouseovers[102]%>" onmouseout="<%=onmouseouts[102]%>"><%=contents[102]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[110]%>" id="<%=ids[110]%>" team="<%=teams[110]%>" onclick="<%=onclicks[110]%>" onmouseover="<%=onmouseovers[110]%>" onmouseout="<%=onmouseouts[110]%>"><%=contents[110]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 4 BOTTOM 23/55-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[23]%>" id="<%=ids[23]%>" team="<%=teams[23]%>" onclick="<%=onclicks[23]%>" onmouseover="<%=onmouseovers[23]%>" onmouseout="<%=onmouseouts[23]%>"><%=contents[23]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[55]%>" id="<%=ids[55]%>" team="<%=teams[55]%>" onclick="<%=onclicks[55]%>" onmouseover="<%=onmouseovers[55]%>" onmouseout="<%=onmouseouts[55]%>"><%=contents[55]%></span></TD>
+</TR>
+<!-- WINNER 76 & 92 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[76]%>" id="<%=ids[76]%>" team="<%=teams[76]%>" onclick="<%=onclicks[76]%>" onmouseover="<%=onmouseovers[76]%>" onmouseout="<%=onmouseouts[76]%>"><%=contents[76]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[92]%>" id="<%=ids[92]%>" team="<%=teams[92]%>" onclick="<%=onclicks[92]%>" onmouseover="<%=onmouseovers[92]%>" onmouseout="<%=onmouseouts[92]%>"><%=contents[92]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 13 BOTTOM 24/56-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[24]%>" id="<%=ids[24]%>" team="<%=teams[24]%>" onclick="<%=onclicks[24]%>" onmouseover="<%=onmouseovers[24]%>" onmouseout="<%=onmouseouts[24]%>"><%=contents[24]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[56]%>" id="<%=ids[56]%>" team="<%=teams[56]%>" onclick="<%=onclicks[56]%>" onmouseover="<%=onmouseovers[56]%>" onmouseout="<%=onmouseouts[56]%>"><%=contents[56]%></span></TD>
+</TR>
+<!-- WINNER 122 & 124 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[122]%>" id="<%=ids[122]%>" team="<%=teams[122]%>" onclick="<%=onclicks[122]%>" onmouseover="<%=onmouseovers[122]%>" onmouseout="<%=onmouseouts[122]%>"><%=contents[122]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[124]%>" id="<%=ids[124]%>" team="<%=teams[124]%>" onclick="<%=onclicks[124]%>" onmouseover="<%=onmouseovers[124]%>" onmouseout="<%=onmouseouts[124]%>"><%=contents[124]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 6 BOTTOM 25/57-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[25]%>" id="<%=ids[25]%>" team="<%=teams[25]%>" onclick="<%=onclicks[25]%>" onmouseover="<%=onmouseovers[25]%>" onmouseout="<%=onmouseouts[25]%>"><%=contents[25]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[57]%>" id="<%=ids[57]%>" team="<%=teams[57]%>" onclick="<%=onclicks[57]%>" onmouseover="<%=onmouseovers[57]%>" onmouseout="<%=onmouseouts[57]%>"><%=contents[57]%></span></TD>
+</TR>
+<!-- WINNER 77 & 93 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[77]%>" id="<%=ids[77]%>" team="<%=teams[77]%>" onclick="<%=onclicks[77]%>" onmouseover="<%=onmouseovers[77]%>" onmouseout="<%=onmouseouts[77]%>"><%=contents[77]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[93]%>" id="<%=ids[93]%>" team="<%=teams[93]%>" onclick="<%=onclicks[93]%>" onmouseover="<%=onmouseovers[93]%>" onmouseout="<%=onmouseouts[93]%>"><%=contents[93]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 11 BOTTOM 26/58-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[26]%>" id="<%=ids[26]%>" team="<%=teams[26]%>" onclick="<%=onclicks[26]%>" onmouseover="<%=onmouseovers[26]%>" onmouseout="<%=onmouseouts[26]%>"><%=contents[26]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[58]%>" id="<%=ids[58]%>" team="<%=teams[58]%>" onclick="<%=onclicks[58]%>" onmouseover="<%=onmouseovers[58]%>" onmouseout="<%=onmouseouts[58]%>"><%=contents[58]%></span></TD>
+</TR>
+<!-- WINNER 103 & 111 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[103]%>" id="<%=ids[103]%>" team="<%=teams[103]%>" onclick="<%=onclicks[103]%>" onmouseover="<%=onmouseovers[103]%>" onmouseout="<%=onmouseouts[103]%>"><%=contents[103]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[111]%>" id="<%=ids[111]%>" team="<%=teams[111]%>" onclick="<%=onclicks[111]%>" onmouseover="<%=onmouseovers[111]%>" onmouseout="<%=onmouseouts[111]%>"><%=contents[111]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 3 BOTTOM 27/59-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[27]%>" id="<%=ids[27]%>" team="<%=teams[27]%>" onclick="<%=onclicks[27]%>" onmouseover="<%=onmouseovers[27]%>" onmouseout="<%=onmouseouts[27]%>"><%=contents[27]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[59]%>" id="<%=ids[59]%>" team="<%=teams[59]%>" onclick="<%=onclicks[59]%>" onmouseover="<%=onmouseovers[59]%>" onmouseout="<%=onmouseouts[59]%>"><%=contents[59]%></span></TD>
+</TR>
+<!-- WINNER 78 & 94 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[78]%>" id="<%=ids[78]%>" team="<%=teams[78]%>" onclick="<%=onclicks[78]%>" onmouseover="<%=onmouseovers[78]%>" onmouseout="<%=onmouseouts[78]%>"><%=contents[78]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[94]%>" id="<%=ids[94]%>" team="<%=teams[94]%>" onclick="<%=onclicks[94]%>" onmouseover="<%=onmouseovers[94]%>" onmouseout="<%=onmouseouts[94]%>"><%=contents[94]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 14 BOTTOM 28/60-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[28]%>" id="<%=ids[28]%>" team="<%=teams[28]%>" onclick="<%=onclicks[28]%>" onmouseover="<%=onmouseovers[28]%>" onmouseout="<%=onmouseouts[28]%>"><%=contents[28]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[60]%>" id="<%=ids[60]%>" team="<%=teams[60]%>" onclick="<%=onclicks[60]%>" onmouseover="<%=onmouseovers[60]%>" onmouseout="<%=onmouseouts[60]%>"><%=contents[60]%></span></TD>
+</TR>
+<!-- WINNER 116 & 120 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[116]%>" id="<%=ids[116]%>" team="<%=teams[116]%>" onclick="<%=onclicks[116]%>" onmouseover="<%=onmouseovers[116]%>" onmouseout="<%=onmouseouts[116]%>"><%=contents[116]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[120]%>" id="<%=ids[120]%>" team="<%=teams[120]%>" onclick="<%=onclicks[120]%>" onmouseover="<%=onmouseovers[120]%>" onmouseout="<%=onmouseouts[120]%>"><%=contents[120]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 7 BOTTOM 29/61-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[29]%>" id="<%=ids[29]%>" team="<%=teams[29]%>" onclick="<%=onclicks[29]%>" onmouseover="<%=onmouseovers[29]%>" onmouseout="<%=onmouseouts[29]%>"><%=contents[29]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[61]%>" id="<%=ids[61]%>" team="<%=teams[61]%>" onclick="<%=onclicks[61]%>" onmouseover="<%=onmouseovers[61]%>" onmouseout="<%=onmouseouts[61]%>"><%=contents[61]%></span></TD>
+</TR>
+<!-- WINNER 79 & 95 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[79]%>" id="<%=ids[79]%>" team="<%=teams[79]%>" onclick="<%=onclicks[79]%>" onmouseover="<%=onmouseovers[79]%>" onmouseout="<%=onmouseouts[79]%>"><%=contents[79]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[95]%>" id="<%=ids[95]%>" team="<%=teams[95]%>" onclick="<%=onclicks[95]%>" onmouseover="<%=onmouseovers[95]%>" onmouseout="<%=onmouseouts[95]%>"><%=contents[95]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 10 BOTTOM 30/62-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[30]%>" id="<%=ids[30]%>" team="<%=teams[30]%>" onclick="<%=onclicks[30]%>" onmouseover="<%=onmouseovers[30]%>" onmouseout="<%=onmouseouts[30]%>"><%=contents[30]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[62]%>" id="<%=ids[62]%>" team="<%=teams[62]%>" onclick="<%=onclicks[62]%>" onmouseover="<%=onmouseovers[62]%>" onmouseout="<%=onmouseouts[62]%>"><%=contents[62]%></span></TD>
+</TR>
+<!-- WINNER 104 & 112 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[104]%>" id="<%=ids[104]%>" team="<%=teams[104]%>" onclick="<%=onclicks[104]%>" onmouseover="<%=onmouseovers[104]%>" onmouseout="<%=onmouseouts[104]%>"><%=contents[104]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[112]%>" id="<%=ids[112]%>" team="<%=teams[112]%>" onclick="<%=onclicks[112]%>" onmouseover="<%=onmouseovers[112]%>" onmouseout="<%=onmouseouts[112]%>"><%=contents[112]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+</TR>
+<!-- SEED 2 BOTTOM 31/63-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[31]%>" id="<%=ids[31]%>" team="<%=teams[31]%>" onclick="<%=onclicks[31]%>" onmouseover="<%=onmouseovers[31]%>" onmouseout="<%=onmouseouts[31]%>"><%=contents[31]%></span></TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="middleRight">&nbsp;</TD>
+<TD class="odd"><span class="<%=classes[63]%>" id="<%=ids[63]%>" team="<%=teams[63]%>" onclick="<%=onclicks[63]%>" onmouseover="<%=onmouseovers[63]%>" onmouseout="<%=onmouseouts[63]%>"><%=contents[63]%></span></TD>
+</TR>
+<!-- WINNER 80 & 96 -->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="middleLeft">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[80]%>" id="<%=ids[80]%>" team="<%=teams[80]%>" onclick="<%=onclicks[80]%>" onmouseover="<%=onmouseovers[80]%>" onmouseout="<%=onmouseouts[80]%>"><%=contents[80]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[96]%>" id="<%=ids[96]%>" team="<%=teams[96]%>" onclick="<%=onclicks[96]%>" onmouseover="<%=onmouseovers[96]%>" onmouseout="<%=onmouseouts[96]%>"><%=contents[96]%></span></TD>
+<TD class="middleRight">&nbsp;</TD>
+</TR>
+<!-- SEED 15 BOTTOM 32/64-->
+<TR>
+<TD class="space">&nbsp;</TD>
+<TD class="evenLeft"><span class="<%=classes[32]%>" id="<%=ids[32]%>" team="<%=teams[32]%>" onclick="<%=onclicks[32]%>" onmouseover="<%=onmouseovers[32]%>" onmouseout="<%=onmouseouts[32]%>"><%=contents[32]%></span></TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="space">&nbsp;</TD>
+<TD class="evenRight"><span class="<%=classes[64]%>" id="<%=ids[64]%>" team="<%=teams[64]%>" onclick="<%=onclicks[64]%>" onmouseover="<%=onmouseovers[64]%>" onmouseout="<%=onmouseouts[64]%>"><%=contents[64]%></span></TD>
+</TR>
+<TR>
+<TD colspan="17" class="space">&nbsp;</TD>
+</TR>
+<TR>
+<TH class="subheader" colspan="17">&nbsp;</TH>
+</TR>
+</TABLE>

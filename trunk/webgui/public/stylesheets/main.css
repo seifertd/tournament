@@ -1,0 +1,144 @@
+body, html {
+  margin:0;
+  padding:0;
+  color:#000;
+  font-family: sans-serif;
+}
+body {
+  min-width:700px;
+}
+h1 {
+  font-size: 24px;
+  color: gray;
+}
+#wrap {
+  margin:0 auto;
+  width:auto;
+}
+#messages {
+  background:#ddd;
+}
+#messages h1 {
+  padding: 5px;
+  margin: 0;
+}
+#nav {
+  background:#c99;
+  padding: 5px;
+}
+#nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#nav li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+#main {
+  float: left;
+  width: 70%;
+}
+#main h2, #main h3, #main p {
+  padding: 0 10px;
+}
+#sidebar {
+  float: right;
+  width: 30%;
+  height: 400px;
+}
+#sidebar ul {
+  margin-bottom: 0;
+}
+#sidebar h3, #sidebar p {
+  padding: 0 10px;
+}
+#footer {
+  background:#cc9;
+  clear: both;
+}
+#footer p {
+  padding: 5px;
+  margin: 0;
+}
+
+/* Errors */
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#ErrorExplanation {
+  width: 400px;
+  border: 2px solid #red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#ErrorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#ErrorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#ErrorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+.entryCompleted {
+  color: green;
+  font-size: 8px;
+}
+.entryPending {
+  color: red;
+  font-size: 8px;
+}
+.entryTableHead {
+  background: lightblue;
+}
+.entryTableOdd {
+  background: lightgray;
+}
+.entryTableEven {
+  background: pink;
+}
+
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+}
+div.auto_complete ul {
+  border:1px solid #888;
+  margin:0;
+  padding:0;
+  width:100%;
+  list-style-type:none;
+}
+div.auto_complete ul li {
+  margin:0;
+  padding:3px;
+}
+div.auto_complete ul li.selected {
+  background-color: #ffb;
+}
+div.auto_complete ul strong.highlight {
+  color: #800; 
+  margin:0;
+  padding:0;
+}
+

@@ -1,0 +1,62 @@
+<html>
+<head>
+<title><%=TOURNAMENT_TITLE%></title>
+<%= stylesheet_link_tag 'main' %>
+</head>
+<body>
+<div id="wrap">
+<div id="nav">
+<ul>
+<li><%= link_to "Home", :controller => 'pool', :action => 'index'%></li>
+<% if session[:user_id] -%>
+<li><%= link_to "Logout", :controller => 'sessions', :action => 'destroy'%></li>
+<% else -%>
+<li><%= link_to "Login", :controller => 'sessions', :action => 'new'%></li>
+<li><%= link_to "Signup", :controller => 'users', :action => 'new'%></li>
+<% end -%>
+</ul>
+</div>
+<div id="messages">
+<% if flash[:info] %>
+<div id="info"><%= flash[:info] %></div>
+<% end %>
+<% if flash[:notice] %>
+<div id="notice"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:error] %>
+<div id="error"><%= flash[:error] %></div>
+<% end %>
+</div>
+<div id="main">
+<%= yield %>
+</div>
+<div id="sidebar">
+<% if session[:user_id] -%>
+<ul>
+<li>Logged in: <%= current_user.login %></li>
+</ul>
+<% if current_user.roles.include?(Role[:admin]) %>
+<p>
+<small>ADMIN</small>
+</p>
+<ul>
+<li> <%= link_to 'All Pools', :controller => 'admin', :action => 'index' %></li>
+<% if @pool -%>
+<li> <%= link_to 'Pool', :controller => 'admin', :action => 'pool', :id => @pool.id %></li>
+<li> <%= link_to 'Teams', :controller => 'teams', :action => 'choose', :id => @pool.id %></li>
+<% if @pool.ready? %>
+<li> <%= link_to 'Tournament Bracket', :controller => 'admin', :action => 'bracket', :id => @pool.id %></li>
+<li> <%= link_to 'All Entries', :controller => 'admin', :action => 'entries', :id => @pool.id%></li>
+<li> <%= link_to 'Reports', :controller => 'reports', :action => 'show', :id => @pool.id%></li>
+<% end -%>
+<% end -%>
+</ul>
+<% end -%>
+<% end -%>
+</div>
+<div id="footer">
+<%= render :partial => 'shared/admins' %>
+</div>
+</div>
+</body>
+</html>

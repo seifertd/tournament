@@ -1,0 +1,12 @@
+<h1>Reports for <%=@pool.name%></h1>
+<ul>
+<li><%= link_to 'Region', :report => 'region'%></li>
+<li><%= link_to 'Entries', :report => 'entry'%></li>
+<li><%= link_to 'Score', :report => 'score'%></li>
+<li><%= link_to 'Leader', :report => 'leader'%></li>
+</ul>
+<div id="report">
+<% if params[:report] -%>
+<%= render :partial => "reports/report", :locals => {:report => params[:report]}%>
+<% end -%>
+</div>
