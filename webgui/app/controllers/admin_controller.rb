@@ -8,7 +8,7 @@ class AdminController < ApplicationController
       @pool = @entry.pool
       save_picks(@entry)
       if @entry.save
-        @pool.pool.bracket = @entry.bracket
+        @pool.pool.tournament_entry = @entry.tournament_entry
         @pool.save
         flash[:info] = "Tournament bracket updated."
         redirect_to :action => 'bracket', :id => @pool.id

@@ -15,5 +15,15 @@ config.action_controller.perform_caching             = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = true
+# Include your app's configuration here:
+ActionMailer::Base.smtp_settings = {
+  :address  => "smtp.comcast.net",
+  :port  => 25, 
+  :domain  => "comcast.net",
+  :user_name  => 'doug.seifert@comcast.net',
+  :password  => "ccSBBatl1",
+  :authentication  => :login
+} 
 
+ADMIN_EMAIL='doug+ncaa@dseifert.net'
 PRINCE_PATH='/home/doug/tools/prince/bin/prince'

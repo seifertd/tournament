@@ -7,7 +7,7 @@ class Tournament::Pool
   attr_reader :entries  # Tournament::Entry objects for participants
   attr_reader :payouts  # Hash of payouts by rank
   attr_accessor :entry_fee  # The amount each entry paid to participate
-  attr_accessor :scoring_strategy  # The scoring strategy for the pool
+  attr_reader :scoring_strategy  # The scoring strategy for the pool
 
   # Create a new empty pool with no Regions or Entries
   def initialize
@@ -29,6 +29,11 @@ class Tournament::Pool
   # Add an Tournament::Entry object to the pool
   def add_entry(entry)
     @entries << entry
+  end
+
+  # Set new scoring strategy.  This should not be allowed.
+  def scoring_strategy=(new_strat)
+    @scoring_strategy = new_strat
   end
 
   # Add an Tournament::Entry object to the pool after reading the Tournament::Entry
@@ -64,11 +69,11 @@ class Tournament::Pool
     @payouts[rank] = payout
   end
 
-  # Creates a bracket for the pool by combining all the
+  # Creates a entry for the pool by combining all the
   # regions into one bracket of 64 teams.  By default the
-  # bracket uses the basic scoring strategy.
-  def bracket
-    unless @bracket
+  # entry bracket uses the basic scoring strategy.
+  def tournament_entry
+    unless @tournament_entry
       if @regions.compact.size != 4
         raise "Not all regions have been set."
       end
@@ -76,15 +81,16 @@ class Tournament::Pool
         region[:teams]
       end
       all_teams = all_teams.flatten
-      @bracket = Tournament::Bracket.new(scoring_strategy, all_teams)
+      bracket = Tournament::Bracket.new(all_teams)
+      @tournament_entry = Tournament::Entry.new('Tournament Entry', bracket, nil)
     end
-    return @bracket
+    return @tournament_entry
   end
 
   # Replaces the pool's bracket (as in after updating the bracket
   # for game results)
-  def bracket=(new_bracket)
-    @bracket = new_bracket
+  def tournament_entry=(new_entry)
+    @tournament_entry = new_entry
   end
 
   # Creates a Pool object for the 2008 NCAA tournament
@@ -186,7 +192,7 @@ class Tournament::Pool
     pool.set_payout(3, 10)
     pool.set_payout(:last, -10)
     pool.scoring_strategy = Tournament::ScoringStrategy::Upset.new
-    b = pool.bracket
+    b = pool.tournament_entry.picks
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
     # Play out the bracket
     32.times { |n| b.set_winner(1,n+1, b.matchup(1, n+1)[rand(2)])}
@@ -197,7 +203,7 @@ class Tournament::Pool
     #1.times { |n| b.set_winner(6,n+1, b.matchup(6, n+1)[rand(2)])}
     picks.each_with_index {|p, idx| pool.add_entry Tournament::Entry.new("picker_#{idx}", p) }
     picks.each_with_index do |p, idx|
-      puts "Score #{idx+1}: #{p.score_against(b)}"
+      puts "Score #{idx+1}: #{p.score_against(b, pool.scoring_strategy)}"
     end
     pool.region_report
     pool.leader_report
@@ -210,24 +216,45 @@ class Tournament::Pool
   # Generate the leader board report.  Shows each entry sorted by current 
   # score and gives a breakdown of score by round.
   def leader_report(out = $stdout)
-    out << "Total games played: #{@bracket.games_played}" << "\n"
+    out << "Total games played: #{tournament_entry.picks.games_played}" << "\n"
+    if tournament_entry.picks.complete?
+      out << "Champion: #{tournament_entry.picks.champion.name}" << "\n"
+    end
+    out << "Pool Tie Break: #{tournament_entry.tie_breaker || '-'}" << "\n"
     out << "Number of entries: #{@entries.size}" << "\n"
+    current_rank = 1
     if @entries.size > 0
-      out << " Curr| Max |               |Champ| Round Scores" << "\n"
-      out << "Score|Score|      Name     |Live?|" + (1..bracket.rounds).to_a.map{|r| "%3d" % r}.join(" ") << "\n"
-      sep ="-----+-----+---------------+-----+" + ("-" * 4 * bracket.rounds)
+      out << "    | Curr| Max |               |Champ| Tie | Round Scores" << "\n"
+      out << "Rank|Score|Score|      Name     |Live?|Break|" + (1..tournament_entry.picks.rounds).to_a.map{|r| "%3d" % r}.join(" ") << "\n"
+      sep ="----+-----+-----+---------------+-----+-----+" + ("-" * 4 * tournament_entry.picks.rounds)
       out << sep << "\n"
-      @entries.sort_by {|e| -e.picks.score_against(bracket)}.each do |entry|
-        total = entry.picks.score_against(bracket)
-        max = entry.picks.maximum_score(bracket)
+      @entries.sort do |e1, e2|
+        s1 = e1.picks.score_against(tournament_entry.picks, self.scoring_strategy)
+        s2 = e2.picks.score_against(tournament_entry.picks, self.scoring_strategy)
+        if s1 == s2 && tournament_entry.tie_breaker
+          s1 = 0 - (e1.tie_breaker - tournament_entry.tie_breaker).abs
+          s2 = 0 - (e2.tie_breaker - tournament_entry.tie_breaker).abs
+        end
+        s2 <=> s1
+      end.inject(nil) do |last_entry, entry|
+        total = entry.picks.score_against(tournament_entry.picks, self.scoring_strategy)
+        max = entry.picks.maximum_score(tournament_entry.picks, self.scoring_strategy)
         champ = entry.picks.champion
         round_scores = []
-        1.upto(bracket.rounds) do |round|
-          scores = entry.picks.scores_for_round(round, bracket)
+        1.upto(tournament_entry.picks.rounds) do |round|
+          scores = entry.picks.scores_for_round(round, tournament_entry.picks, self.scoring_strategy)
           round_scores << scores.inject(0) {|sum, arr| sum += (arr[0] ? arr[0] : 0)}
         end
-        out << "%5d|%5d|%15s|%3s %1s|%s" % [total, max, entry.name,
-          champ.short_name,(bracket.still_alive?(champ) ? 'Y' : 'N'), round_scores.map {|s| "%3d" % s}.join(" ")] << "\n"
+        rank_display = nil
+        if last_entry && !tournament_entry.tie_breaker && total == last_entry.bracket.score_against(tournament_entry.picks, self.scoring_strategy)
+          rank_display = 'TIE'
+        else
+          rank_display = "%4d" % current_rank
+        end
+        out << "%4s|%5d|%5d|%15s|%3s %1s|%5d|%s" % [rank_display, total, max, entry.name,
+          champ.short_name,(tournament_entry.picks.still_alive?(champ) ? 'Y' : 'N'), entry.tie_breaker || '-', round_scores.map {|s| "%3d" % s}.join(" ")] << "\n"
+        current_rank += 1
+        entry
       end
       out << sep << "\n"
     end
@@ -238,7 +265,7 @@ class Tournament::Pool
   # incorrect, or a '?' if the game has not yet been played.
   def score_report(out = $stdout)
     # Compute scores
-    out << "Total games played: #{@bracket.games_played}" << "\n"
+    out << "Total games played: #{tournament_entry.picks.games_played}" << "\n"
     out << "Number of entries: #{@entries.size}" << "\n"
     sep = "-----+---------------+----------------------------------------------------------------------------------"
     if @entries.size > 0
@@ -247,10 +274,10 @@ class Tournament::Pool
       fmt1 = "%5d|%15s|%d: %3d %s" 
       fmt2 = "     |               |%d: %3d %s" 
       fmt3 = "     |               |       %s" 
-      @entries.sort_by {|e| -e.picks.score_against(bracket)}.each do |entry|
-        total = entry.picks.score_against(bracket)
-        1.upto(bracket.rounds) do |round|
-          scores = entry.picks.scores_for_round(round, bracket)
+      @entries.sort_by {|e| -e.picks.score_against(tournament_entry.picks, self.scoring_strategy)}.each do |entry|
+        total = entry.picks.score_against(tournament_entry.picks, self.scoring_strategy)
+        1.upto(tournament_entry.picks.rounds) do |round|
+          scores = entry.picks.scores_for_round(round, tournament_entry.picks, self.scoring_strategy)
           round_total = scores.inject(0) {|sum, arr| sum += (arr[0] ? arr[0] : 0)}
           scores_str = scores.map{|arr| "#{arr[1].short_name}=#{arr[0] ? arr[0] : '?'}"}.join(" ")
           if [1,2].include?(round)
@@ -313,7 +340,7 @@ class Tournament::Pool
           "+" + ("-" * 10) << "\n"
       end
 
-      output.call('Tournament', bracket, '-')
+      output.call('Tournament', tournament_entry.picks, tournament_entry.tie_breaker || '-')
 
       @entries.sort_by{|e| e.name}.each do |entry|
         output.call(entry.name, entry.picks, entry.tie_breaker)
@@ -345,7 +372,7 @@ class Tournament::Pool
       out << "There are no entries in the pool." << "\n"
       return
     end
-    if self.bracket.teams_left > 4
+    if self.tournament_entry.picks.teams_left > 4
       out << "The final four report should only be run when there" << "\n"
       out << "are four or fewer teams left in the tournament." << "\n"
       return
@@ -364,10 +391,10 @@ class Tournament::Pool
       end
     end
 
-    out << "Final Four: #{self.bracket.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
-    out << "    #{self.bracket.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
-    if self.bracket.teams_left <= 2
-      out << "Championship: #{self.bracket.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
+    out << "Final Four: #{self.tournament_entry.picks.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}"
+    out << "    #{self.tournament_entry.picks.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
+    if self.tournament_entry.picks.teams_left <= 2
+      out << "Championship: #{self.tournament_entry.picks.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")}" << "\n"
     end
     out << "Payouts" << "\n"
     payout_keys.each do |key|
@@ -382,8 +409,21 @@ class Tournament::Pool
     out << "              |                | Winners      Tie    " << "\n"
     out << " Championship |    Champion    | Rank Score Break Name" << "\n"
     out << sep << "\n"
-    self.bracket.each_possible_bracket do |poss|
-      rankings = @entries.map{|p| [p, p.picks.score_against(poss)] }.sort_by {|arr| -arr[1] }
+    self.tournament_entry.picks.each_possible_bracket do |poss|
+      rankings = @entries.map{|p| [p, p.picks.score_against(poss, self.scoring_strategy)] }.sort do |a1, a2|
+         if a1[1] == a2[1]
+           # Use tiebreak
+           if self.tournament_entry.tie_breaker
+             tb1 = (a1[0].tie_breaker - self.tournament_entry.tie_breaker).abs
+             tb2 = (a2[0].tie_breaker - self.tournament_entry.tie_breaker).abs
+             tb1 <=> tb2
+           else
+             0
+           end 
+         else
+           a2[1] <=> a1[1]
+         end
+      end
       finishers = {}
       @payouts.each do |rank, payout|
         finishers[rank] = {}
@@ -474,10 +514,10 @@ class Tournament::Pool
     count = 0
     old_percentage = -1 
     old_remaining = 1_000_000_000_000
-    out << "Checking #{self.bracket.number_of_outcomes} possible outcomes" << "\n"
+    out << "Checking #{self.tournament_entry.picks.number_of_outcomes} possible outcomes" << "\n"
     start = Time.now.to_f
-    self.bracket.each_possible_bracket do |poss|
-      poss_scores = @entries.map{|p| p.picks.score_against(poss)}
+    self.tournament_entry.picks.each_possible_bracket do |poss|
+      poss_scores = @entries.map{|p| p.picks.score_against(poss, self.scoring_strategy)}
       sort_scores = poss_scores.sort.reverse
       @entries.each_with_index do |entry, i|
         score = poss_scores[i]
@@ -490,10 +530,10 @@ class Tournament::Pool
         end
       end
       count += 1
-      percentage = (count * 100.0 / self.bracket.number_of_outcomes)
+      percentage = (count * 100.0 / self.tournament_entry.picks.number_of_outcomes)
       elapsed = Time.now.to_f - start
       spp = elapsed / count
-      remaining = ((self.bracket.number_of_outcomes - count) * spp).to_i
+      remaining = ((self.tournament_entry.picks.number_of_outcomes - count) * spp).to_i
       if (percentage.to_i != old_percentage) || (remaining < old_remaining)
         old_remaining = remaining
         old_percentage = percentage.to_i
@@ -512,9 +552,9 @@ class Tournament::Pool
     out << "    Entry           | Win Chance | Highest Place | Curr Score | Max Score | Tie Break  " << "\n"
     out << "--------------------+------------+---------------+------------+-----------+------------" << "\n"
     sort_array.each do |arr|
-      chance = arr[0].to_f * 100.0 / self.bracket.number_of_outcomes
+      chance = arr[0].to_f * 100.0 / self.tournament_entry.picks.number_of_outcomes
       out << "%19s | %10.2f | %13d | %10d | %9d | %7d " %
-        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.bracket), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker] << "\n"
+        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.tournament_entry.picks, self.scoring_strategy), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker] << "\n"
     end
     out << "Possible Champions For Win" << "\n"
     out << "    Entry           |    Champion     |  Ocurrences   |  Chance " << "\n"

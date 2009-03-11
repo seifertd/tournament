@@ -30,7 +30,7 @@ Shoes.app :width => WINDOW_WIDTH, :height => 600 do
     load_data
   else
     @entry = Tournament::Entry.new
-    @entry.picks = Tournament::Bracket.new(@pool.scoring_strategy, @pool.bracket.teams)
+    @entry.picks = Tournament::Bracket.new(@pool.scoring_strategy, @pool.tournament_entry.picks.teams)
     #@picks = Tournament::Bracket.random_bracket(Tournament::Pool.ncaa_2008.bracket.teams)
   end
 

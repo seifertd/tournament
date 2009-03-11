@@ -67,7 +67,7 @@ class Pool < ActiveRecord::Base
         region_counter += 1
       end
       # Resolve the bracket
-      @pool.bracket
+      @pool.tournament_entry.bracket
     else
       @pool = Tournament::Pool.new
     end
@@ -98,7 +98,11 @@ class Pool < ActiveRecord::Base
   end
 
   def marshal_pool
-    self.pool.scoring_strategy = FormObject.class_get(@scoring_strategy).new if @scoring_strategy
+    logger.debug("Before saving pool: AR Pool scoring strategy = #{@scoring_strategy.inspect}")
+    if @scoring_strategy
+      ss_obj =FormObject.class_get(@scoring_strategy).new
+      self.pool.scoring_strategy = ss_obj
+    end
     self.pool.entry_fee = @fee
     self.pool.payouts.clear
     if @payouts

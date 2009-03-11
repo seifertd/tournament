@@ -189,7 +189,7 @@ Main do
     def run
       load_pool
       tournament = YAML::load_file(params['entry'].value)
-      @pool.bracket = tournament.picks
+      @pool.tournament_entry = tournament
       save_pool 
     end
   end
@@ -283,9 +283,8 @@ Main do
     end
     def run
       load_pool
-      tournament = Tournament::Entry.new('Tournament', @pool.bracket, 0)
       File.open(params['entry'].value, "w") do |f|
-        YAML::dump(tournament, f)
+        YAML::dump(@pool.tournament_entry, f)
       end
     end
   end
