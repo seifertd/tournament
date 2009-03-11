@@ -1,8 +1,0 @@
-<p>
-<i>Need help?</i>  Contact an admin ...
-<ul>
-<% Role[:admin].users.each do |admin| -%>
-<li><%= admin.name %> <%= link_to admin.email, "mailto:#{admin.email}" %>
-<% end -%>
-</ul>
-</p>

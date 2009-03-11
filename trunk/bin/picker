@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-dir = File.dirname(File.expand_path(File.join(__FILE__, ".."))) 
-
-file = ARGV[0].nil? ? '' : File.join(Dir.pwd, ARGV[0])
-
-Dir.chdir(dir)
-
-system("./bin/gui.rb #{file}")
