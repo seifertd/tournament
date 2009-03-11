@@ -10,4 +10,7 @@ class Tournament::Entry
     @picks = picks
     @tie_breaker = tie_breaker
   end
+
+  # Alias picks as bracket
+  alias_method :bracket, :picks
 end

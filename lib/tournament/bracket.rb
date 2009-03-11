@@ -4,19 +4,17 @@ class Tournament::Bracket
   attr_reader :teams # The teams in the bracket
   attr_reader :rounds # The number of rounds in the bracket
   attr_reader :winners # The winners of each game in the bracket
-  attr_reader :scoring_strategy # The strategy used to assign points to correct picks
 
 
   UNKNOWN_TEAM = :unk unless defined?(UNKNOWN_TEAM)
 
   # Creates a new bracket with the given teams
-  def initialize(scoring_strategy, teams = nil)
+  def initialize(teams = nil)
     @teams = teams || [:t1, :t2, :t3, :t4, :t5, :t6, :t7, :t8, :t9, :t10, :t11, :t12, :t13, :t14, :t15, :t16]
     @rounds = (Math.log(@teams.size)/Math.log(2)).to_i
     @winners = [@teams] + (1..@rounds).map do |r|
       [UNKNOWN_TEAM] * games_in_round(r)
     end
-    @scoring_strategy = scoring_strategy
   end
 
   # Returns true if the provided team has not lost
@@ -168,7 +166,7 @@ class Tournament::Bracket
   # Given a binary possibility number, compute the bracket
   # that would result.
   def bracket_for(possibility)
-    pick_bracket = Tournament::Bracket.new(self.scoring_strategy, self.teams)
+    pick_bracket = Tournament::Bracket.new(self.teams)
     round = 1
     while round <= pick_bracket.rounds
       gir = pick_bracket.games_in_round(round)
@@ -260,8 +258,8 @@ class Tournament::Bracket
   end
 
   # Compute the maximum possible score if all remaining picks in this 
-  # bracket turn out to be correct.
-  def maximum_score(other_bracket)
+  # bracket turn out to be correct using the given scoring strategy.
+  def maximum_score(other_bracket, scoring_strategy)
     score = 0
     round = 1
     while round <= self.rounds
@@ -271,7 +269,7 @@ class Tournament::Bracket
         winner, loser = other_bracket.winner_and_loser(round, game)
         pick = self.winner(round, game)
         winner = pick if winner == UNKNOWN_TEAM && other_bracket.still_alive?(pick)
-        score += other_bracket.scoring_strategy.score(pick, winner, loser, round)
+        score += scoring_strategy.score(pick, winner, loser, round)
         game += 1
       end
       round += 1
@@ -280,8 +278,9 @@ class Tournament::Bracket
   end
 
   # Computes the total score of this bracket using other_bracket
-  # as the guide
-  def score_against(other_bracket)
+  # to determine correct picks.  Use the provided scoring strategy
+  # to compute the score.
+  def score_against(other_bracket, scoring_strategy)
     score = 0
     round = 1
     while round <= self.rounds
@@ -289,7 +288,7 @@ class Tournament::Bracket
       game = 1
       while game <= games_in_round
         winner, loser = other_bracket.winner_and_loser(round, game)
-        score += other_bracket.scoring_strategy.score(self.winner(round, game), winner, loser, round)
+        score += scoring_strategy.score(self.winner(round, game), winner, loser, round)
         #puts "round #{round} game #{game} winner #{winner} loser #{loser} pick #{self.winner(round,game)}"
         game += 1
       end
@@ -299,19 +298,20 @@ class Tournament::Bracket
   end
 
   # Compute the score for a particular round against the other_bracket
+  # using the provided scoring strategy.
   # Returns an array of two element arrays, one for each game in the
   # round.  The first element of the subarray is the score and the
   # second element is the team that was picked.  If the winner of the 
   # game is unknown (because it has not been played), the score element
   # will be nil.
-  def scores_for_round(round, other_bracket)
+  def scores_for_round(round, other_bracket, scoring_strategy)
     games_in_round = self.games_in_round(round)
     return (1..games_in_round).to_a.map do |g|
       winner, loser = other_bracket.winner_and_loser(round, g)
       pick = self.winner(round, g)
       score = nil
       if winner != UNKNOWN_TEAM || !other_bracket.still_alive?(pick)
-        score = other_bracket.scoring_strategy.score(pick, winner, loser, round)
+        score = scoring_strategy.score(pick, winner, loser, round)
       end
       [score, pick]
     end
@@ -320,7 +320,7 @@ class Tournament::Bracket
   # Generates a bracket for the provided teams with a random winner
   # for each game.
   def self.random_bracket(teams = nil)
-    b = Tournament::Bracket.new(Tournament::ScoringStrategy::Basic.new, teams)
+    b = Tournament::Bracket.new(teams)
     1.upto(b.rounds) do |r|
       1.upto(b.games_in_round(r)) { |g| b.set_winner(r, g, b.matchup(r, g)[rand(2)]) }
     end

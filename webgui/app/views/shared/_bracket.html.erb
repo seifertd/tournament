@@ -13,7 +13,7 @@ if !is_editable
   active_mouse_over = ""; 
   active_mouse_out = "";
 end
-@pool.bracket.teams.each_with_index do |team, idx|
+@pool.tournament_entry.picks.teams.each_with_index do |team, idx|
   idx = idx + 1
   ids[idx] = "#{idx}"
   onclicks[idx] = is_editable ? "pick(this);" : ''
@@ -36,11 +36,11 @@ end
     teams[idx] = winner.short_name
     onmouseovers[idx] = active_mouse_over;
     onmouseouts[idx] = active_mouse_out;
-    incorrect = !@pool.bracket.still_alive?(winner)
+    incorrect = !@pool.tournament_entry.picks.still_alive?(winner)
     if incorrect
       classes[idx] += 'missedpick '
     else
-      bracket_winner = @pool.bracket.winner(round, game)
+      bracket_winner = @pool.tournament_entry.picks.winner(round, game)
       if bracket_winner == winner
         classes[idx] += 'correctpick '
       else
@@ -63,6 +63,12 @@ end
 <tr>
 <td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
 </tr>
+<tr>
+<td colspan="2">
+<small>
+Current Score: <%= @entry.bracket.score_against(@pool.tournament_entry.picks, @pool.scoring_strategy) %> Max. Possible Score: <%= @entry.bracket.maximum_score(@pool.tournament_entry.picks, @pool.scoring_strategy) %>
+</small>
+</td>
 </table>
 <input type="hidden" name="pool_id" value="<%=@entry.pool_id%>">
 <input type="hidden" name="picks" id="picks" value="">
