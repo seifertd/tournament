@@ -90,6 +90,7 @@ webgui/config/environments/test.rb
 webgui/config/initializers/inflections.rb
 webgui/config/initializers/mime_types.rb
 webgui/config/initializers/new_rails_defaults.rb
+webgui/config/initializers/ordinal.rb
 webgui/config/initializers/pool.rb
 webgui/config/initializers/site_keys.rb
 webgui/config/locales/en.yml
