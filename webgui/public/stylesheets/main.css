@@ -11,6 +11,22 @@ h1 {
   font-size: 24px;
   color: gray;
 }
+.poollistblock {
+  margin-left: 10px;
+}
+.poollistinfo {
+  margin-left: 20px;
+  font-size: small;
+}
+.poollistinfodetail {
+  margin-left: 40px;
+  text-indent: -40px;
+}
+.poollisthead {
+  font-size: 14px;
+  font-weight: bold;
+  color: green;
+}
 #wrap {
   margin:0 auto;
   width:auto;
@@ -142,3 +158,26 @@ div.auto_complete ul strong.highlight {
   padding:0;
 }
 
+/* CSS Tooltips */
+a.info {
+  position:relative; /*this is the key*/
+  z-index:24;
+  text-decoration:none
+}
+
+a.info:hover {
+  z-index:25;
+}
+
+a.info span {
+  display: none
+}
+
+a.info:hover span { /*the span will display just on :hover state*/
+  display:block;
+  position:absolute;
+  top:-2em; left:2em; width:400px;
+  border:1px solid #0cf;
+  padding: 5px;
+  background-color:#cff; color:#000;
+}

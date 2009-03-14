@@ -2,8 +2,8 @@
 
 <% if Pool.active_pools.size > 0 %>
 <% Pool.active_pools.each do |pool| -%>
-<p>
-<%= pool.name %>
+<div class="poollistblock">
+<span class="poollisthead"><%= pool.name %></span>
 <small>
 <% if current_user && pool.user_id == current_user.id %>
 &nbsp;
@@ -12,11 +12,25 @@
 <% end %>
 <%= link_to '[Reports]', "/reports/#{pool.id}"%>
 </small>
-<br/>
-Starts: <%= pool.starts_at.to_date.to_formatted_s(:short)%>
+<div class="poollistinfo">
+<div class="poollistinfodetail">
+Starts: <%= pool.starts_at.to_date.to_formatted_s(:long)%>
 Pending Entries: <%= pool.pending_entries.size%>
 Total Entries: <%= pool.user_entries.size%>
-<br/>
+</div>
+<div class="poollistinfodetail">
+Entry Fee: $<%=pool.fee%>
+</div>
+<div class="poollistinfodetail">
+Payouts:
+<% pool.payouts.delete_if{|p| p.kind.blank?}.sort_by {|p| p.rank }.each do |p| -%>
+<%=p.rank != 'L' ? p.rank.to_i.ordinal : 'Last'%>: <%= p.kind if p.kind == '$'%><%=p.payout%><%=p.kind if p.kind != '$'%>&nbsp;&nbsp;
+<% end -%>
+</div>
+<div class="poollistinfodetail">
+Scoring: <%=pool.pool.scoring_strategy.description%>
+</div>
+<div class="poollistinfodetail">
 <% if current_user -%>
 Entries for <%= current_user.login%>: <%= link_to pool.entries_for(current_user).size, :controller => 'entry', :action => 'index', :id => pool.id %>
 <% if pool.accepting_entries? -%>
@@ -26,11 +40,13 @@ Entries for <%= current_user.login%>: <%= link_to pool.entries_for(current_user)
 <% else -%>
 <i>To enter this pool, please <%= link_to 'login', '/login'%> or <%= link_to 'signup', '/signup'%></i>
 <% end -%>
-</p>
+</div>
+</div>
+</div>
 <% end -%>
 <% else -%>
-<p>
+<div>
 There are no active pools.  Please come back in a bit or contact
 an administrator.
-</p>
+</div>
 <% end -%>
