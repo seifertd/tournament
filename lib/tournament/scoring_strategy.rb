@@ -90,7 +90,7 @@ module Tournament::ScoringStrategy
   # Returns names of available strategies.  The names returned are suitable
   # for use in the strategy_for_name method
   def self.available_strategies
-    return ['basic', 'upset', 'josh_patashnik', 'tweaked_josh_patashnik', 'constant_value]
+    return ['basic', 'upset', 'josh_patashnik', 'tweaked_josh_patashnik', 'constant_value']
   end
 
   # Returns an instantiated strategy class for the named strategy.
