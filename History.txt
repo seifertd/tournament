@@ -1,4 +1,10 @@
-== 2.0.0 / 2009-02-XX
+== 2.1.0 / 2009-03-15
+* Update for 2009 NCAA tournament seedings
+* Leader board report is HTML instead of text
+* Minor formatting changes for main page
+* 2.1.1 release when play-in game is decided.
+
+== 2.0.0 / 2009-03-12
 * Release Rails GUI for self-service entries and admin
 * Make reports account for tournament tie breaker.
 * YAML format change from version 1.X.  Old pool data won't work

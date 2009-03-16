@@ -10,7 +10,8 @@
 <%= link_to '[Edit]', :controller => 'admin', :action => 'pool', :id => pool.id %>
 <%= link_to '[Entries]', :controller => 'admin', :action => 'entries', :id => pool.id %>
 <% end %>
-<%= link_to '[Reports]', "/reports/#{pool.id}"%>
+<%= link_to '[Leader Board]', :controller => 'reports', :action => 'show', :id => pool.id, :report => 'leader' %>
+<%= link_to '[Reports]', :controller => 'reports', :action => 'show', :id => pool.id %>
 </small>
 <div class="poollistinfo">
 <div class="poollistinfodetail">
