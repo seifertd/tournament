@@ -1,3 +1,7 @@
+== 2.1.2 / 2009-03-16
+* Add two new scoring strategies.
+* Another release forthcoming when play-in game is decided.
+
 == 2.1.1 / 2009-03-16
 * Fix bug when changing entry name after it has been completed
   and therefore added to the backing Tournament::Pool object

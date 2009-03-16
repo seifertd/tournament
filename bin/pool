@@ -164,7 +164,7 @@ Main do
       optional
       argument :required
       arity 1
-      default 'basic_scoring_strategy'
+      default 'basic'
       validate {|s| Tournament::ScoringStrategy.available_strategies.include?(s)}
       description "Sets the scoring strategy, should be one of #{Tournament::ScoringStrategy.available_strategies.join(', ')}"
     end

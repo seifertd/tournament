@@ -48,9 +48,14 @@ The pool manager would use this program as follows:
       base amount per round plus the seed number of the winner.  As
       pre-configured, the base amounts per round are 3, 5, 11, 19, 30
       and 40 points.
-   3. The Josh Patashnik stratgy: each correct pick is worth the
+   3. The Josh Patashnik strategy: each correct pick is worth the
       winner's seed number X a round multiplier.  The multipliers
       are 1, 2, 4, 8, 16 and 32 points.
+   4. Tweaked Josh Patashnik strategy: each correct pick is worth the
+      winner's seed number X a round multiplier.  The multipliers
+      are 1, 2, 4, 8, 12 and 22 points.
+   4. Constant Value strategy: each correct pick is worth exactly
+      one (1) point, regardless of round.
    If your scoring strategy is not one of the above, you will have to
    add a class to the ScoringStrategy module, in file
    lib/tournament/scoring_strategy.rb.
@@ -59,9 +64,9 @@ The pool manager would use this program as follows:
 
 3. Initialize the pool
 
-       pool setup [--scoring=upset_scoring_strategy]
+       pool setup [--scoring=upset]
 
-   Use the --scoring argument to change to the upset favoring 
+   Use the --scoring argument to change from the default basic scoring
    strategy.  If the basic strategy is ok, the --scoring argument is
    not required.
 

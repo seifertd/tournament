@@ -12,7 +12,21 @@ module Tournament::ScoringStrategy
       'Basic'
     end
     def description
-      "Each game is worth 2 times the round number."
+      "Each correct pick is worth 2 times the round number."
+    end
+  end
+
+  # Class representing a scoring strategy where correct picks
+  # are worth 1 point each, regardless of round
+  class ConstantValue
+    def score(pick, winner, loser, round)
+      winner != Tournament::Bracket::UNKNOWN_TEAM && pick == winner ? 1 : 0
+    end
+    def name
+      'Constant Value'
+    end
+    def description
+      "Each correct pick is worth 1 point, regardless of the round."
     end
   end
 
@@ -31,7 +45,7 @@ module Tournament::ScoringStrategy
       'Upset'
     end
     def description
-      "Games are worth #{PER_ROUND.join(', ')} per round plus the seed number of the winning team."
+      "Each correct pick is worth #{PER_ROUND.join(', ')} per round plus the seed number of the winning team."
     end
   end
 
@@ -50,14 +64,33 @@ module Tournament::ScoringStrategy
       'Josh Patashnik'
     end
     def description
-      "Games are worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
+      "Each correct pick is worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
+    end
+  end
+
+  # Class representing a scoring strategy where correct picks are
+  # worth the seed number of the winner times a per round 
+  # multiplier (1,2,4,8,12,22)
+  class TweakedJoshPatashnik
+    MULTIPLIERS = [1, 2, 4, 8, 12, 22]
+    def score(pick, winner, loser, round)
+       if winner != Tournament::Bracket::UNKNOWN_TEAM && pick == winner
+          return MULTIPLIERS[round-1] * winner.seed
+       end
+       return 0
+    end
+    def name
+      'Tweaked Josh Patashnik'
+    end
+    def description
+      "Each correct pick is worth the seed number of the winning team times a per round multiplier: #{MULTIPLIERS.join(', ')}"
     end
   end
 
   # Returns names of available strategies.  The names returned are suitable
   # for use in the strategy_for_name method
   def self.available_strategies
-    return ['basic', 'upset', 'josh_patashnik']
+    return ['basic', 'upset', 'josh_patashnik', 'tweaked_josh_patashnik', 'constant_value]
   end
 
   # Returns an instantiated strategy class for the named strategy.
