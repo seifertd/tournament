@@ -211,6 +211,22 @@ name, "email" for the administrators email address, "name" for the
 admin user's name (eg, "Joe Admin"), and "password" for the desired
 admin account password
 
+=== UPDATING THE WEB GUI:
+
+If the tournament gem is updated, you can pull in the changes as follows:
+
+ 1. Update your tournament gem
+
+    sudo gem update tournament
+
+ 2. Rerun the same pool install_webgui command you used to install originally
+
+ 3. Pull in any released db migrations:
+
+    cd $install_dir; RAILS_ENV=production rake db:migrate
+
+ 4. Reload your web server configuration (nginx, apache, etc.)
+
 === USING THE WEB GUI:
 
 Load the entry page in your brower.  Log in as the admin user you 

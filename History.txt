@@ -1,8 +1,14 @@
+== 2.1.1 / 2009-03-16
+* Fix bug when changing entry name after it has been completed
+  and therefore added to the backing Tournament::Pool object
+* Another release forthcoming when play-in game is decided.
+
 == 2.1.0 / 2009-03-15
+* Update for 2009 NCAA tournament seedings
 * Update for 2009 NCAA tournament seedings
 * Leader board report is HTML instead of text
 * Minor formatting changes for main page
-* 2.1.1 release when play-in game is decided.
+* Another release forthcoming when play-in game is decided.
 
 == 2.0.0 / 2009-03-12
 * Release Rails GUI for self-service entries and admin
@@ -14,7 +20,7 @@
   http://blogs.tnr.com/tnr/blogs/the_plank/archive/2008/03/27/ncaa-pool-scoring-system-rant.aspx
   for details.
 * Many library improvements and refactorings.
-* 2.0.1 release with final 2009 NCAA tournament seedings forthcoming
+* Another release forthcoming with final 2009 NCAA tournament seedings forthcoming
 
 == 1.1.1 / 2008-07-07
 * Update rake tasks to bones-2.0.2
