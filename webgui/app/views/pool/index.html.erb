@@ -39,7 +39,7 @@ Entries for <%= current_user.login%>: <%= link_to pool.entries_for(current_user)
 <% end -%>
 <br/>
 <% else -%>
-<i>To enter this pool, please <%= link_to 'login', '/login'%> or <%= link_to 'signup', '/signup'%></i>
+<i>To enter this pool, please <%= link_to 'login', login_path%> or <%= link_to 'signup', signup_path%></i>
 <% end -%>
 </div>
 </div>
