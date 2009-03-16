@@ -1,0 +1,26 @@
+table.report {
+  border-spacing: 0px;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  border-collapse: separate;
+  text-align: center;
+}
+table.report td {
+  padding: 5px;
+  border-bottom: 2px solid black;
+}
+table.report thead {
+  background: lightblue;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  font-weight: bold;
+  vertical-align: bottom;
+}
+table.report tbody tr.even {
+  background: lightyellow;
+}
+table.report tbody tr.odd {
+  background: white;
+}

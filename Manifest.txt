@@ -71,6 +71,7 @@ webgui/app/views/layouts/default.html.erb
 webgui/app/views/layouts/print.html.erb
 webgui/app/views/layouts/report.html.erb
 webgui/app/views/pool/index.html.erb
+webgui/app/views/reports/_leader.html.erb
 webgui/app/views/reports/_report.html.erb
 webgui/app/views/reports/show.html.erb
 webgui/app/views/sessions/new.html.erb
@@ -148,6 +149,7 @@ webgui/public/stylesheets/bracket.css
 webgui/public/stylesheets/main.css
 webgui/public/stylesheets/prince.css
 webgui/public/stylesheets/prince_landscape.css
+webgui/public/stylesheets/reports.css
 webgui/script/about
 webgui/script/console
 webgui/script/dbconsole

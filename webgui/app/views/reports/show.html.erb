@@ -7,6 +7,6 @@
 </ul>
 <div id="report">
 <% if params[:report] -%>
-<%= render :partial => "reports/report", :locals => {:report => params[:report]}%>
+<%= render :partial => "reports/report", :locals => {:report => params[:report], :pool => @pool.pool}%>
 <% end -%>
 </div>

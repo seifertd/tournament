@@ -1,0 +1,80 @@
+<% if show_header %>
+<h1>Leader Report</h1>
+<ul>
+<li>Total games played: <%= pool.tournament_entry.picks.games_played %></li>
+<% if pool.tournament_entry.picks.complete? %>
+<li>Champion: <%=pool.tournament_entry.picks.champion.name%></li>
+<% end %>
+<li>Pool Tie Break: <%=pool.tournament_entry.tie_breaker || '-' %></li>
+<li>Number of entries: <%=pool.entries.size%></li>
+</ul>
+<% end %>
+<%
+    current_rank = 1
+    if pool.entries.size > 0
+%>
+<table class="report">
+<thead>
+<tr>
+<td rowspan="2">Rank</td>
+<td rowspan="2">Current<br/>Score</td>
+<td rowspan="2">Max Score</td>
+<td rowspan="2">Entry Name</td>
+<td rowspan="2">Champ<br/>Alive?</td>
+<td rowspan="2">Tie<br/>Break</td>
+<td colspan="6">Round Scores</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+</tr>
+</thead>
+<tbody>
+<%
+  pool.entries.sort do |e1, e2|
+    s1 = e1.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
+    s2 = e2.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
+    if s1 == s2 && pool.tournament_entry.tie_breaker
+      s1 = 0 - (e1.tie_breaker - pool.tournament_entry.tie_breaker).abs
+      s2 = 0 - (e2.tie_breaker - pool.tournament_entry.tie_breaker).abs
+    end
+    s2 <=> s1
+  end.inject(nil) do |last_entry, entry|
+    total = entry.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
+    max = entry.picks.maximum_score(pool.tournament_entry.picks, pool.scoring_strategy)
+    champ = entry.picks.champion
+    round_scores = []
+    1.upto(pool.tournament_entry.picks.rounds) do |round|
+      scores = entry.picks.scores_for_round(round, pool.tournament_entry.picks, pool.scoring_strategy)
+      round_scores << scores.inject(0) {|sum, arr| sum += (arr[0] ? arr[0] : 0)}
+    end
+    rank_display = nil
+    if last_entry && !pool.tournament_entry.tie_breaker && total == last_entry.bracket.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
+      rank_display = 'TIE'
+    else
+      rank_display = "%4d" % current_rank
+    end
+%>
+<tr class="<%=cycle('even', 'odd', :name => 'rtclass')%>">
+<td><%=rank_display%></td>
+<td><%=total%></td>
+<td><%=max%></td>
+<td><%=entry.name%></td>
+<td><%=champ.short_name%> <%=pool.tournament_entry.picks.still_alive?(champ) ? 'Y' : 'N'%></td>
+<td><%=entry.tie_breaker || '-'%></td>
+<% round_scores.each do |rs| %>
+<td><%=rs%></td>
+<% end %>
+</tr>
+<%
+    current_rank += 1
+    entry
+  end
+end
+%>
+</tbody>
+</table>

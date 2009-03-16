@@ -1,11 +1,17 @@
+<% if report == 'leader' %>
+<%= render :partial => 'leader', :locals => {:pool => pool, :show_header => true}%>
+<br/>
+<br/>
+<% else %>
 <h2><%=report.capitalize%> Report</h2>
 <%
 report_output = ''
 report_method = "#{report}_report".to_sym
-@pool.pool.send(report_method, report_output)
+pool.send(report_method, report_output)
 %>
 <pre>
 <small>
 <%= report_output %>
 </small>
 </pre>
+<% end %>
