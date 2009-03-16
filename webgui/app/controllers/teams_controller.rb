@@ -22,6 +22,7 @@ class TeamsController < ApplicationController
 
   def change
     @pool = Pool.find(params[:id])
+    Pool.transaction do
     [0,1,2,3].each do |region_idx|
       region_hash = params["region#{region_idx}".to_sym]
       next unless region_hash
@@ -40,7 +41,11 @@ class TeamsController < ApplicationController
       logger.debug("SAVING SEEDINGS: #{region_hash[:seedings].inspect}")
       region_hash[:seedings].each do |seeding_hash|
         next if seeding_hash[:name].blank? || seeding_hash[:short_name].blank?
-        team = Team.find_or_create_by_short_name(seeding_hash[:short_name], :name => seeding_hash[:name])
+        team = Team.find_or_initialize_by_short_name(seeding_hash[:short_name]) {|t| t.name = seeding_hash[:name]}
+        if team.new_record?
+          logger.debug("SAVING NEW TEAM for region #{region_idx}, seed: #{seeding_hash[:seed]}, name: #{team.name}, short: #{team.short_name}")
+          team.save!
+        end
         existing_region = @pool.region_seedings.find{|rn, rs| rn == region_name}
         existing_team = nil
         if existing_region
@@ -56,10 +61,12 @@ class TeamsController < ApplicationController
             existing_seeding.save!
           end
         else
+          logger.debug("SAVING NEW SEEDING for region #{region_idx}, seed: #{seeding_hash[:seed]}, team name: #{team.name}, short: #{team.short_name}, team id: #{team.id}")
           @pool.seedings.create(:team_id => team.id, :region => region_name, :seed => seeding_hash[:seed])
         end 
       end
-      @pool.save
+      @pool.save!
+      end
       if @pool.ready?
         @pool.initialize_tournament_pool
         @pool.save

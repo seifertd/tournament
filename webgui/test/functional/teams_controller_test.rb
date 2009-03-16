@@ -213,4 +213,89 @@ class TeamsControllerTest < ActionController::TestCase
     assert_equal 16, pool.region_seedings[0][1].uniq.size, "OOPS! There are dupe teams in region 0 teams list"
     assert_equal input["region0"]["seedings"].map {|h| h["short_name"]}, pool.region_seedings[0][1].uniq.map{|t| t.short_name}, "Teams are out of order or otherwise not equal"
   end
+
+  test "save entire bracket with nonexistant team" do
+    input = {
+      "action"=>"change", "id"=>"1", "controller"=>"teams",
+      "region1"=>{"name"=>"West",
+       "seedings"=>[{"name"=>"Connecticut", "seed"=>"1", "short_name"=>"Con"},
+          {"name"=>"Memphis", "seed"=>"2", "short_name"=>"Mem"},
+          {"name"=>"Missouri", "seed"=>"3", "short_name"=>"Msr"},
+          {"name"=>"Washington", "seed"=>"4", "short_name"=>"Was"},
+          {"name"=>"Purdue", "seed"=>"5", "short_name"=>"Pur"},
+          {"name"=>"Marquette", "seed"=>"6", "short_name"=>"Mar"},
+          {"name"=>"California", "seed"=>"7", "short_name"=>"Cal"},
+          {"name"=>"BYU", "seed"=>"8", "short_name"=>"BYU"},
+          {"name"=>"Texas A&M", "seed"=>"9", "short_name"=>"A&M"},
+          {"name"=>"Maryland", "seed"=>"10", "short_name"=>"Mry"},
+          {"name"=>"Utah State", "seed"=>"11", "short_name"=>"USt"},
+          {"name"=>"Northern Iowa", "seed"=>"12", "short_name"=>"NIo"},
+          {"name"=>"Mississippi St.", "seed"=>"13", "short_name"=>"MiS"},
+          {"name"=>"Cornell", "seed"=>"14", "short_name"=>"Cor"},
+          {"name"=>"Cal State Northridge", "seed"=>"15", "short_name"=>"CSN"},
+          {"name"=>"Chattanooga", "seed"=>"16", "short_name"=>"Cht"}]},
+    "region2"=>{"name"=>"East",
+      "seedings"=>[{"name"=>"Pittsburgh", "seed"=>"1", "short_name"=>"Pit"},
+          {"name"=>"Duke", "seed"=>"2", "short_name"=>"Duk"},
+          {"name"=>"Villanova", "seed"=>"3", "short_name"=>"Vil"},
+          {"name"=>"Xavier", "seed"=>"4", "short_name"=>"Xav"},
+          {"name"=>"Florida State", "seed"=>"5", "short_name"=>"FSU"},
+          {"name"=>"UCLA", "seed"=>"6", "short_name"=>"ULA"},
+          {"name"=>"Texas", "seed"=>"7", "short_name"=>"Tex"},
+          {"name"=>"Oklahoma State", "seed"=>"8", "short_name"=>"OkS"},
+          {"name"=>"Tennessee", "seed"=>"9", "short_name"=>"Ten"},
+          {"name"=>"Minnesota", "seed"=>"10", "short_name"=>"Min"},
+          {"name"=>"Virginia Commonwealth", "seed"=>"11", "short_name"=>"VAC"},
+          {"name"=>"Wisconsin", "seed"=>"12", "short_name"=>"Wis"},
+          {"name"=>"Portland St.", "seed"=>"13", "short_name"=>"PSt"},
+          {"name"=>"American", "seed"=>"14", "short_name"=>"Am"},
+          {"name"=>"Binghamton", "seed"=>"15", "short_name"=>"Bin"},
+          {"name"=>"East Tennessee State", "seed"=>"16", "short_name"=>"ETS"}]},
+    "region3"=>{"name"=>"South",
+      "seedings"=>[{"name"=>"North Carolina", "seed"=>"1", "short_name"=>"UNC"},
+          {"name"=>"Oklahoma", "seed"=>"2", "short_name"=>"Okl"},
+          {"name"=>"Syracuse", "seed"=>"3", "short_name"=>"Syr"},
+          {"name"=>"Gonzaga", "seed"=>"4", "short_name"=>"Gon"},
+          {"name"=>"Illinois", "seed"=>"5", "short_name"=>"Ill"},
+          {"name"=>"Arizona State", "seed"=>"6", "short_name"=>"ASU"},
+          {"name"=>"Clemson", "seed"=>"7", "short_name"=>"Clm"},
+          {"name"=>"LSU", "seed"=>"8", "short_name"=>"LSU"},
+          {"name"=>"Butler", "seed"=>"9", "short_name"=>"But"},
+          {"name"=>"Michigan", "seed"=>"10", "short_name"=>"UM"},
+          {"name"=>"Temple", "seed"=>"11", "short_name"=>"Tem"},
+          {"name"=>"W. Kentucky", "seed"=>"12", "short_name"=>"WKy"},
+          {"name"=>"Akron", "seed"=>"13", "short_name"=>"Akr"},
+          {"name"=>"Stephen F. Austin", "seed"=>"14", "short_name"=>"SFA"},
+          {"name"=>"Morgan State", "seed"=>"15", "short_name"=>"MgS"},
+          {"name"=>"Radford", "seed"=>"16", "short_name"=>"Rad"}]},
+    "region0"=>{"name"=>"Midwest",
+      "seedings"=>[{"name"=>"Louisville", "seed"=>"1", "short_name"=>"Lou"},
+          {"name"=>"Michigan St.", "seed"=>"2", "short_name"=>"MSU"},
+          {"name"=>"Kansas", "seed"=>"3", "short_name"=>"Kan"},
+          {"name"=>"Wake Forest", "seed"=>"4", "short_name"=>"WkF"},
+          {"name"=>"Utah", "seed"=>"5", "short_name"=>"Uta"},
+          {"name"=>"West Virginia", "seed"=>"6", "short_name"=>"WVa"},
+          {"name"=>"Boston College", "seed"=>"7", "short_name"=>"BC"},
+          {"name"=>"Ohio State", "seed"=>"8", "short_name"=>"OSU"},
+          {"name"=>"Siena", "seed"=>"9", "short_name"=>"Sie"},
+          {"name"=>"USC", "seed"=>"10", "short_name"=>"USC"},
+          {"name"=>"Dayton", "seed"=>"11", "short_name"=>"Day"},
+          {"name"=>"Arizona", "seed"=>"12", "short_name"=>"UA"},
+          {"name"=>"Cleveland State", "seed"=>"13", "short_name"=>"ClS"},
+          {"name"=>"North Dakota State", "seed"=>"14", "short_name"=>"NDS"},
+          {"name"=>"Robert Morris", "seed"=>"15", "short_name"=>"RbM"},
+          {"name"=>"TBD", "seed"=>"16", "short_name"=>"TBD"}]}
+    }
+    login_as :admin
+    post :change, input
+    team = Team.find_by_name("TBD")
+    assert_not_nil team, "TBD team should not be null"
+    pool = Pool.find(1)
+    RAILS_DEFAULT_LOGGER.debug("POOL SEEDINGS: #{pool.seedings.inspect}")
+    assert_equal 64, pool.seedings.size, "OOPS! There should be 64 seedings."
+    team_list = pool.seedings.map{|s| s.team.name}
+    RAILS_DEFAULT_LOGGER.debug("POOL TEAMS: #{team_list.inspect}")
+    assert_equal 64, team_list.size, "OOPS! There should be 64 teams."
+    assert_equal 64, pool.teams.size, "OOPS! There should be 64 teams."
+  end
 end
