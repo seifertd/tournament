@@ -183,6 +183,96 @@ class Tournament::Pool
     return pool
   end
  
+  # Creates a Pool object for the 2009 NCAA tournament
+  def self.ncaa_2009
+    pool = Tournament::Pool.new
+    pool.add_region("Midwest",
+      [
+        Tournament::Team.new('Louisville', 'UNC', 1),
+        Tournament::Team.new('TBD', 'TBD', 16),
+        Tournament::Team.new('Ohio State', 'OSU', 8),
+        Tournament::Team.new('Siena', 'Sie', 9),
+        Tournament::Team.new('Utah', 'Uta', 5),
+        Tournament::Team.new('Arizona', 'UA', 12),
+        Tournament::Team.new('Wake Forest', 'WkF', 4),
+        Tournament::Team.new('Cleveland State', 'ClS', 13),
+        Tournament::Team.new('West Virginia', 'WVa', 6),
+        Tournament::Team.new('Dayton', 'Day', 11),
+        Tournament::Team.new('Kansas', 'Kan', 3),
+        Tournament::Team.new('North Dakota State', 'NDS', 14),
+        Tournament::Team.new('Boston College', 'BC', 7),
+        Tournament::Team.new('USC', 'USC', 10),
+        Tournament::Team.new('Michigan State', 'MSU', 2),
+        Tournament::Team.new('Robert Morris', 'RbM', 15)
+      ],
+      0
+    )
+    pool.add_region("West",
+      [
+        Tournament::Team.new('Connecticut', 'Con', 1),
+        Tournament::Team.new('Chattanooga', 'Cht', 16),
+        Tournament::Team.new('BYU', 'BYU', 8),
+        Tournament::Team.new('Texas A&M', 'A&M', 9),
+        Tournament::Team.new('Purdue', 'Pur', 5),
+        Tournament::Team.new('Northern Iowa', 'NIo', 12),
+        Tournament::Team.new('Washington', 'Was', 4),
+        Tournament::Team.new('Mississippi State', 'MiS', 13),
+        Tournament::Team.new('Marquette', 'Mar', 6),
+        Tournament::Team.new('Utah State', 'USt', 11),
+        Tournament::Team.new('Missouri', 'Msr', 3),
+        Tournament::Team.new('Cornell', 'Cor', 14),
+        Tournament::Team.new('California', 'Cal', 7),
+        Tournament::Team.new('Maryland', 'Mry', 10),
+        Tournament::Team.new('Memphis', 'Mem', 2),
+        Tournament::Team.new('Cal State Northridge', 'CSN', 15)
+      ],
+      1
+    )
+    pool.add_region("East",
+      [
+        Tournament::Team.new('Pittsburgh', 'Pit', 1),
+        Tournament::Team.new('East Tennessee State', 'ETS', 16),
+        Tournament::Team.new('Oklahoma State', 'OkS', 8),
+        Tournament::Team.new('Tennessee', 'Ten', 9),
+        Tournament::Team.new('Florida State', 'FSU', 5),
+        Tournament::Team.new('Wisconsin', 'Wis', 12),
+        Tournament::Team.new('Xavier', 'Xav', 4),
+        Tournament::Team.new('Portland St', 'PSt', 13),
+        Tournament::Team.new('UCLA', 'ULA', 6),
+        Tournament::Team.new('Virginia Commonwealth', 'VAC', 11),
+        Tournament::Team.new('Villanova', 'Vil', 3),
+        Tournament::Team.new('Cornell', 'Cor', 14),
+        Tournament::Team.new('Texas', 'Tex', 7),
+        Tournament::Team.new('Minnesota', 'Min', 10),
+        Tournament::Team.new('Duke', 'Duk', 2),
+        Tournament::Team.new('Binghamton', 'Bin', 15)
+      ],
+      2
+    )
+    pool.add_region("South",
+      [
+        Tournament::Team.new('North Carolina', 'UNC', 1),
+        Tournament::Team.new('Radford', 'Rad', 16),
+        Tournament::Team.new('LSU', 'LSU', 8),
+        Tournament::Team.new('Butler', 'But', 9),
+        Tournament::Team.new('Illinois', 'Ill', 5),
+        Tournament::Team.new('W. Kentucky', 'WKy', 12),
+        Tournament::Team.new('Gonzaga', 'Gon', 4),
+        Tournament::Team.new('Akron', 'Akr', 13),
+        Tournament::Team.new('Arizona State', 'ASU', 6),
+        Tournament::Team.new('Temple', 'Tem', 11),
+        Tournament::Team.new('Syracuse', 'Syr', 3),
+        Tournament::Team.new('Stephen F. Austin', 'SFA', 14),
+        Tournament::Team.new('Clemson', 'Cle', 7),
+        Tournament::Team.new('Michigan', 'UM', 10),
+        Tournament::Team.new('Oklahoma', 'Okl', 2),
+        Tournament::Team.new('Morgan State', 'MgS', 15)
+      ],
+      3
+    )
+    return pool
+  end
+ 
   # Run a test pool with random entries and a random outcome.
   def self.test(num_picks = 20)
     pool = ncaa_2008

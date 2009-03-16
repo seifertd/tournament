@@ -116,6 +116,7 @@ webgui/db/migrate/20090301014710_create_teams.rb
 webgui/db/migrate/20090301025902_add_more_teams.rb
 webgui/db/migrate/20090301041526_create_seedings.rb
 webgui/db/migrate/20090301090511_create_regions.rb
+webgui/db/migrate/20090316023841_change_illinois_short_name.rb
 webgui/db/migrate/teams.txt
 webgui/db/pool.yml
 webgui/db/schema.rb
