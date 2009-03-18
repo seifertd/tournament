@@ -1,3 +1,7 @@
+== 2.2.0 / 2009-03-18
+* Final update for 2009 NCAA tournament
+* Fix a couple of anchor tags.
+
 == 2.1.2 / 2009-03-16
 * Add two new scoring strategies.
 * Another release forthcoming when play-in game is decided.

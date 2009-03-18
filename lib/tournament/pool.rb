@@ -189,7 +189,7 @@ class Tournament::Pool
     pool.add_region("Midwest",
       [
         Tournament::Team.new('Louisville', 'UNC', 1),
-        Tournament::Team.new('TBD', 'TBD', 16),
+        Tournament::Team.new('Morehead State', 'MrS', 16),
         Tournament::Team.new('Ohio State', 'OSU', 8),
         Tournament::Team.new('Siena', 'Sie', 9),
         Tournament::Team.new('Utah', 'Uta', 5),
