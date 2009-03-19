@@ -11,7 +11,7 @@ task :default => 'spec:run'
 
 depend_on 'main'
 depend_on 'rake'
-depend_on 'rails'
+depend_on 'rails', '2.2.2'
 depend_on 'sqlite3-ruby'
 
 
@@ -20,7 +20,7 @@ PROJ.authors = 'Douglas A. Seifert'
 PROJ.email = 'doug+rubyforge@dseifert.net'
 PROJ.url = 'http://www.dseifert.net/code/tournament'
 PROJ.rubyforge.name = 'tournament'
-PROJ.version = '2.2.1'
+PROJ.version = '2.2.2'
 PROJ.group_id = 5863
 
 PROJ.spec.opts << '--color'
