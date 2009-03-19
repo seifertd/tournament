@@ -7,12 +7,13 @@ class AdminController < ApplicationController
     if @entry
       @pool = @entry.pool
       save_picks(@entry)
-      if @entry.save
+      if @entry.save(false)
         @pool.pool.tournament_entry = @entry.tournament_entry
         @pool.save
         flash[:info] = "Tournament bracket updated."
         redirect_to :action => 'bracket', :id => @pool.id
       else
+        @pool = @pool.pool
         flash[:error] = "Could not save entry."
         render :action => 'bracket', :layout => 'bracket'
       end
@@ -49,7 +50,7 @@ class AdminController < ApplicationController
     @pool = pool.pool
     @entry = Entry.find_or_initialize_by_user_id(:user_id => current_user.id, :pool_id => pool.id, :tie_break => 0, :name => 'Tournament Bracket')
     @entry.bracket
-    @entry.save!
+    @entry.save(false)
       
     render :layout => 'bracket'
   end
