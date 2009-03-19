@@ -32,17 +32,19 @@ end
   classes[idx] = "teamname "
   onclicks[idx] = is_editable ? "pick(this);" : ''
   if winner != :unk
+    real_winner = @pool.tournament_entry.picks.winner(round, game)
     contents[idx] = winner.short_name
     teams[idx] = winner.short_name
     onmouseovers[idx] = active_mouse_over;
     onmouseouts[idx] = active_mouse_out;
-    incorrect = !@pool.tournament_entry.picks.still_alive?(winner)
+    incorrect = real_winner != :unk && real_winner != winner
     if incorrect
       classes[idx] += 'missedpick '
     else
-      bracket_winner = @pool.tournament_entry.picks.winner(round, game)
-      if bracket_winner == winner
+      if real_winner != :unk && real_winner == winner
         classes[idx] += 'correctpick '
+      elsif !@pool.tournament_entry.picks.still_alive?(winner)
+        classes[idx] += 'missedpick '
       else
         classes[idx] += 'pendingpick '
       end
@@ -56,6 +58,7 @@ end
 %>
 <%= error_messages_for 'entry' %>
 <% form_for(@entry, :url => {:action => 'edit', :id => @entry.id}, :html => {:onSubmit => (is_editable ? 'return submitPicks(this);' : 'return false')}) do |f| -%>
+<div style="float: left">
 <table border="0">
 <tr>
 <td><%= f.label :name, "Entry Name"%></td><td><%= f.text_field :name %></td>
@@ -63,19 +66,21 @@ end
 <tr>
 <td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
 </tr>
-<tr>
-<td colspan="2">
+</table>
+</div>
+<div style="float: left">
 <small>
 Current Score: <%= @entry.bracket.score_against(@pool.tournament_entry.picks, @pool.scoring_strategy) %> Max. Possible Score: <%= @entry.bracket.maximum_score(@pool.tournament_entry.picks, @pool.scoring_strategy) %>
 </small>
-</td>
-</table>
+</div>
 <input type="hidden" name="pool_id" value="<%=@entry.pool_id%>">
 <input type="hidden" name="picks" id="picks" value="">
 <% if is_editable %>
+<div style="clear: both">
 <input type="Submit" value="Save Changes">
 <%= submit_tag 'Cancel Changes', :name => 'cancel', :confirm => 'Are you sure?'%>
 <%= submit_tag 'Reset Picks', :name => 'reset', :confirm => 'Are you sure? Resetting will clear all picks and start the bracket over from scratch!'%>
+</div>
 <% end -%>
 <% end -%>
 <TABLE cellspacing=0 class="bracket">
