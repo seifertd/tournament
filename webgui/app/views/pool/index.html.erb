@@ -24,8 +24,10 @@ Entry Fee: $<%=pool.fee%>
 </div>
 <div class="poollistinfodetail">
 Payouts:
+<% take = pool.user_entries.size * pool.fee.to_f -
+         (pool.payouts.inject(0) {|sum, p| sum += p.kind == '$' ? p.payout.to_i : 0}) %>
 <% pool.payouts.delete_if{|p| p.kind.blank?}.sort_by {|p| p.rank }.each do |p| -%>
-<%=p.rank != 'L' ? p.rank.to_i.ordinal : 'Last'%>: <%= p.kind if p.kind == '$'%><%=p.payout%><%=p.kind if p.kind != '$'%>&nbsp;&nbsp;
+<%=p.rank != 'L' ? p.rank.to_i.ordinal : 'Last'%>: $<%=p.kind == '$' ? p.payout : p.payout.to_f / 100.0 * take%>&nbsp;&nbsp;
 <% end -%>
 </div>
 <div class="poollistinfodetail">
