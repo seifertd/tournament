@@ -1,5 +1,5 @@
 == 2.2.1 / 2009-03-19
-* Bug fixes for bracket display after games have been decided.
+* Bug fixes and minor display enhancement.
 
 == 2.2.0 / 2009-03-18
 * Final update for 2009 NCAA tournament
