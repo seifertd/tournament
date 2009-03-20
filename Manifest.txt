@@ -62,6 +62,7 @@ webgui/app/views/admin/bracket.html.erb
 webgui/app/views/admin/entries.html.erb
 webgui/app/views/admin/index.html.erb
 webgui/app/views/admin/pool.html.erb
+webgui/app/views/admin/recap.html.erb
 webgui/app/views/entry/index.html.erb
 webgui/app/views/entry/print.erb
 webgui/app/views/entry/print.html.erb
@@ -79,6 +80,7 @@ webgui/app/views/shared/_admins.html.erb
 webgui/app/views/shared/_bracket.html.erb
 webgui/app/views/teams/choose.html.erb
 webgui/app/views/user_mailer/activation.erb
+webgui/app/views/user_mailer/recap.erb
 webgui/app/views/user_mailer/signup_notification.erb
 webgui/app/views/users/_user_bar.html.erb
 webgui/app/views/users/new.html.erb

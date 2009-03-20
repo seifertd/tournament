@@ -1,3 +1,6 @@
+== 2.3.0 / 2009-03-20
+* Add ability for admin to send emails to participants.  Needs work.
+
 == 2.2.1 / 2009-03-19
 * Bug fixes and minor display enhancement.
 
