@@ -1,25 +1,32 @@
 class UserMailer < ActionMailer::Base
   def signup_notification(user, activation_url)
     setup_email(user)
+    @body[:user] = user
     @subject    += 'Please activate your new account'
-  
-    #@body[:url]  = "#{TOURNAMENT_FQ_WEBROOT}/activate/#{user.activation_code}"
     @body[:url]  = activation_url
-  
   end
   
   def activation(user, home_url)
     setup_email(user)
+    @body[:user] = user
     @subject    += 'Your account has been activated!'
     @body[:url]  = home_url
+  end
+
+  def recap(users, subject, content, home_url)
+    setup_email(users[0])
+    @recipients = ADMIN_EMAIL
+    @bcc = users.map{|u| u.email}
+    @subject << subject
+    @body[:content] = content
+    @body[:url] = home_url
   end
   
   protected
     def setup_email(user)
-      @recipients  = "#{user.email}"
+      @recipients  = user.email
       @from        = ADMIN_EMAIL
       @subject     = "[#{TOURNAMENT_TITLE}] "
       @sent_on     = Time.now
-      @body[:user] = user
     end
 end

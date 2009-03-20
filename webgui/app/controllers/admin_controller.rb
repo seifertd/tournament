@@ -30,6 +30,19 @@ class AdminController < ApplicationController
     @pools = Pool.find(:all)
   end
 
+  def recap
+    if request.post?
+      begin
+        UserMailer.deliver_recap(User.find(:all) - [current_user], params[:subject], params[:content], root_path(:only_path => false))
+        flash[:notice] = "Email was delivered."
+      rescue Exception => e
+        flash[:error] = "Email could not be delivered: #{e}"
+        logger.error "Could not send recap email: #{e}"
+        e.backtrace.each{|b| logger.error(b)}
+      end
+    end
+  end
+
   def pool
     @available_scoring_strategies = Tournament::ScoringStrategy.available_strategies.map{|n| Tournament::ScoringStrategy.strategy_for_name(n)}
     @pool = params[:id] ? Pool.find(params[:id]) : Pool.new
