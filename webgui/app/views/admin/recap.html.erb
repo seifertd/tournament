@@ -1,0 +1,15 @@
+<h1>Send a Recap Email</h1>
+<form action="<%=url_for :action => 'recap'%>" method="POST">
+<table border="0">
+<tr>
+<td>Subject</td>
+<td><%= text_field_tag 'subject', '', :size => 50%></td>
+</tr>
+<tr>
+<td>Body</td>
+<td><%= text_area_tag 'content', '', :rows => 15, :cols => 70%></td>
+</tr>
+</table>
+<%= token_tag %>
+<input type="submit" value="Send" name="Send"/>
+</form>
