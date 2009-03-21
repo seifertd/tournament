@@ -12,7 +12,7 @@ class EntryController < ApplicationController
     @entry = params[:id] ? Entry.find(params[:id]) : Entry.new({:user_id => current_user.id, :pool_id => params[:pool_id]})
   end
 
-  def check_acccess
+  def check_access
     # Admin user
     return true if current_user.has_role?(:admin)
 
