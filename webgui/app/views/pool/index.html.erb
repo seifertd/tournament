@@ -5,10 +5,10 @@
 <div class="poollistblock">
 <span class="poollisthead"><%= pool.name %></span>
 <small>
+<%= link_to '[Tourny Bracket]', :controller => 'entry', :action => 'show', :id => pool.tournament_entry.id %>
 <% if current_user && pool.user_id == current_user.id %>
 &nbsp;
-<%= link_to '[Bracket]', :controller => 'admin', :action => 'bracket', :id => pool.id %>
-<%= link_to '[Recap]', :controller => 'admin', :action => 'recap'%>
+<%= link_to '[Recap]', :controller => 'admin', :action => 'recap', :id => pool.id%>
 <%= link_to '[Edit]', :controller => 'admin', :action => 'pool', :id => pool.id %>
 <%= link_to '[Entries]', :controller => 'admin', :action => 'entries', :id => pool.id %>
 <% end %>
@@ -17,9 +17,12 @@
 </small>
 <div class="poollistinfo">
 <div class="poollistinfodetail">
-Starts: <%= pool.starts_at.to_date.to_formatted_s(:long)%>
+<% if pool.starts_at < Time.zone.now %>Started<%else%>Starts<%end%>: <%= pool.starts_at.to_formatted_s(:long)%>
 Pending Entries: <%= pool.pending_entries.size%>
 Total Entries: <%= pool.user_entries.size%>
+</div>
+<div class="poollistinfodetail">
+Last Update: <%=pool.updated_at.to_formatted_s(:long)%>
 </div>
 <div class="poollistinfodetail">
 Entry Fee: $<%=pool.fee%>

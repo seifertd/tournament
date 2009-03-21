@@ -31,9 +31,10 @@ class AdminController < ApplicationController
   end
 
   def recap
+    @pool = Pool.find(params[:id])
     if request.post?
       begin
-        UserMailer.deliver_recap(User.find(:all) - [current_user], params[:subject], params[:content], root_path(:only_path => false))
+        UserMailer.deliver_recap(@pool.entrants, params[:subject], params[:content], root_path(:only_path => false))
         flash[:notice] = "Email was delivered."
       rescue Exception => e
         flash[:error] = "Email could not be delivered: #{e}"

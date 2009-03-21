@@ -61,27 +61,29 @@ end
 <div style="float: left">
 <table border="0">
 <tr>
-<td><%= f.label :name, "Entry Name"%></td><td><%= f.text_field :name %></td>
+<td><%= f.label :name, "Entry Name"%></td><td><% if is_editable%><%= f.text_field :name %><% else %> : <%=@entry.name%><% end %></td>
 </tr>
 <tr>
-<td><%= f.label :tie_break, 'Tie Breaker'%></td><td><%= f.text_field :tie_break %></td>
+<td><%= f.label :tie_break, 'Tie Breaker'%></td><td><% if is_editable%><%= f.text_field :tie_break %><%else%> : <%=@entry.tie_break || '-'%><%end%></td>
 </tr>
 </table>
 </div>
-<div style="float: left">
+<div style="float: left; margin-left: 25px;">
+<% if @entry.name != @pool.tournament_entry.name %>
 <small>
 Current Score: <%= @entry.bracket.score_against(@pool.tournament_entry.picks, @pool.scoring_strategy) %> Max. Possible Score: <%= @entry.bracket.maximum_score(@pool.tournament_entry.picks, @pool.scoring_strategy) %>
 </small>
+<% end %>
 </div>
 <input type="hidden" name="pool_id" value="<%=@entry.pool_id%>">
 <input type="hidden" name="picks" id="picks" value="">
-<% if is_editable %>
 <div style="clear: both">
+<% if is_editable %>
 <input type="Submit" value="Save Changes">
 <%= submit_tag 'Cancel Changes', :name => 'cancel', :confirm => 'Are you sure?'%>
 <%= submit_tag 'Reset Picks', :name => 'reset', :confirm => 'Are you sure? Resetting will clear all picks and start the bracket over from scratch!'%>
-</div>
 <% end -%>
+</div>
 <% end -%>
 <TABLE cellspacing=0 class="bracket">
 <TR>

@@ -35,6 +35,7 @@
 </thead>
 <tbody>
 <%
+  db_entry_ids = @pool.user_entries.inject({}) {|h,e| h[e.name] = e.id; h}
   pool.entries.sort do |e1, e2|
     s1 = e1.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
     s2 = e2.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
@@ -63,7 +64,7 @@
 <td><%=rank_display%></td>
 <td><%=total%></td>
 <td><%=max%></td>
-<td><%=entry.name%></td>
+<td><%=link_to entry.name, :controller => 'entry', :action => 'show', :id => db_entry_ids[entry.name]%></td>
 <td><%=champ.short_name%> <%=pool.tournament_entry.picks.still_alive?(champ) ? 'Y' : 'N'%></td>
 <td><%=entry.tie_breaker || '-'%></td>
 <% round_scores.each do |rs| %>

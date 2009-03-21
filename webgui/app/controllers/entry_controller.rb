@@ -1,21 +1,25 @@
 class EntryController < ApplicationController
   layout 'bracket'
   before_filter :login_required
-  before_filter :check_access, :only => [:show, :edit, :print, :pdf]
+  before_filter :resolve_entry, :only => [:edit, :show, :print, :pdf]
+  before_filter :check_access, :only => [:edit]
   before_filter :pool_taking_edits, :only => [:edit]
   include SavesPicks
   include PdfHelper
 
-  def check_access
+  def resolve_entry
     # Resolve the entry
     @entry = params[:id] ? Entry.find(params[:id]) : Entry.new({:user_id => current_user.id, :pool_id => params[:pool_id]})
+  end
 
+  def check_acccess
     # Admin user
     return true if current_user.has_role?(:admin)
 
     # Check if entry being viewed belongs to current user
     if current_user != @entry.user
-      flash[:info] = "You don't have access to that entry."
+      flash[:info] = "You can't make edits to that entry.  This has been reported to the pool administrator."
+      logger.warn("User #{current_user.login} tried to edit entry #{@entry.id}")
       redirect_to root_path
       return false
     end

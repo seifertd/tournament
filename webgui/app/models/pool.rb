@@ -7,6 +7,7 @@ class Pool < ActiveRecord::Base
   belongs_to :user
   has_many :entries
   has_many :user_entries, :class_name => 'Entry', :conditions => ['user_id != ?', '#{user_id}']
+  has_many :users, :through => :user_entries
   has_many :pending_entries, :class_name => 'Entry', :conditions => ['completed = ? and user_id != ?', false, '#{user_id}']
   has_one :tournament_entry, :class_name => 'Entry', :conditions => {:user_id => '#{user_id}'}
   has_many :seedings
@@ -27,6 +28,11 @@ class Pool < ActiveRecord::Base
     def _delete
       false
     end
+  end
+
+  # entrants: the unique set of users having entries in this pool
+  def entrants
+    self.users.uniq
   end
 
   # True if the number of teams in the pool is 64
