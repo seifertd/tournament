@@ -66,6 +66,7 @@ class EntryController < ApplicationController
   end
 
   def edit
+    @pool = @entry.pool.pool
     if params[:reset] == 'Reset Picks'
       @entry.reset
       if @entry.new_record?
