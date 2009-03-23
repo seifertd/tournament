@@ -20,7 +20,7 @@ PROJ.authors = 'Douglas A. Seifert'
 PROJ.email = 'doug+rubyforge@dseifert.net'
 PROJ.url = 'http://www.dseifert.net/code/tournament'
 PROJ.rubyforge.name = 'tournament'
-PROJ.version = '2.3.0'
+PROJ.version = '2.4.0'
 PROJ.group_id = 5863
 
 PROJ.spec.opts << '--color'
