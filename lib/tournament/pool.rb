@@ -588,14 +588,20 @@ class Tournament::Pool
     nil
   end
 
-  # Runs through every possible outcome of the tournament and calculates
-  # each entry's chance to win as a percentage of the possible outcomes
-  # the entry would win if the tournament came out that way.
-  def possibility_report(out = $stdout)
-    $stdout.sync = true
-    if @entries.size == 0
-      out << "There are no entries in the pool." << "\n"
-      return
+  # Runs through every possible outcome of the tournament and
+  # calculates each entry's chance to win as a percentage of the
+  # possible outcomes the entry would win if the tournment came
+  # out that way.  If a block is provided, periodically reports
+  # progress by calling the block and passing it the percent complete
+  # and time remaining in seconds as arguments.
+  # Returns array of structs responding to times_champ, max_score,
+  # min_rank, entry and champs methods.  The entry method returns the
+  # Tournament::Entry object and the champs method returns a hash
+  # keyed on team name and whose values are the number of times that
+  # team could win that would make the entry come in on top.
+  def possibility_stats
+    stats = @entries.map do |e|
+      Tournament::Possibility.new(e)
     end
     max_possible_score = @entries.map{|p| 0}
     min_ranking = @entries.map{|p| @entries.size + 1}
@@ -604,19 +610,20 @@ class Tournament::Pool
     count = 0
     old_percentage = -1 
     old_remaining = 1_000_000_000_000
-    out << "Checking #{self.tournament_entry.picks.number_of_outcomes} possible outcomes" << "\n"
     start = Time.now.to_f
     self.tournament_entry.picks.each_possible_bracket do |poss|
       poss_scores = @entries.map{|p| p.picks.score_against(poss, self.scoring_strategy)}
       sort_scores = poss_scores.sort.reverse
       @entries.each_with_index do |entry, i|
         score = poss_scores[i]
-        max_possible_score[i] = score if score > max_possible_score[i]
+        stat = stats[i]
+        stat.max_score = score if score > stat.max_score
         rank = sort_scores.index(score) + 1
-        min_ranking[i] = rank if rank < min_ranking[i]
-        times_winner[i] += 1 if rank == 1
+        stat.min_rank = rank if rank < stat.min_rank
+        stat.times_champ += 1 if rank == 1
         if rank == 1
-          player_champions[i][poss.champion] += 1
+          stat.champs[poss.champion.name] ||= 0
+          stat.champs[poss.champion.name] += 1
         end
       end
       count += 1
@@ -627,42 +634,55 @@ class Tournament::Pool
       if (percentage.to_i != old_percentage) || (remaining < old_remaining)
         old_remaining = remaining
         old_percentage = percentage.to_i
-        hashes = '#' * (percentage.to_i/5) + '>'
-        out << "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
+        if block_given?
+          yield(percentage.to_i, remaining)
+        end
       end
     end
+    stats.sort!
+    return stats
+  end
+
+  # Runs through every possible outcome of the tournament and calculates
+  # each entry's chance to win as a percentage of the possible outcomes
+  # the entry would win if the tournament came out that way.  Generates
+  # an ASCII report of the results.
+  def possibility_report(out = $stdout)
+    $stdout.sync = true
+    if @entries.size == 0
+      out << "There are no entries in the pool." << "\n"
+      return
+    end
+    out << "Checking #{self.tournament_entry.picks.number_of_outcomes} possible outcomes" << "\n"
+    stats = possibility_stats do |percentage, remaining|
+      hashes = '#' * (percentage.to_i/5) + '>'
+      out << "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
+    end
     out << "\n"
-    #puts "\n   Max Scores: #{max_possible_score.inspect}"
-    #puts "Highest Place: #{min_ranking.inspect}"
-    #puts " Times Winner: #{times_winner.inspect}"
-    sort_array = []
-    times_winner.each_with_index { |n, i| sort_array << [n, i, min_ranking[i], max_possible_score[i], player_champions[i]] }
-    sort_array = sort_array.sort_by {|arr| arr[0] == 0 ? (arr[2] == 0 ? -arr[3] : arr[2]) : -arr[0]}
-    #puts "SORT: #{sort_array.inspect}"
+    #puts "SORT: #{stats.inspect}"
     out << "    Entry           | Win Chance | Highest Place | Curr Score | Max Score | Tie Break  " << "\n"
     out << "--------------------+------------+---------------+------------+-----------+------------" << "\n"
-    sort_array.each do |arr|
-      chance = arr[0].to_f * 100.0 / self.tournament_entry.picks.number_of_outcomes
+    stats.each do |stat|
+      chance = stat.times_champ.to_f * 100.0 / self.tournament_entry.picks.number_of_outcomes
       out << "%19s | %10.2f | %13d | %10d | %9d | %7d " %
-        [@entries[arr[1]].name, chance, min_ranking[arr[1]], @entries[arr[1]].picks.score_against(self.tournament_entry.picks, self.scoring_strategy), max_possible_score[arr[1]], @entries[arr[1]].tie_breaker] << "\n"
+        [stat.entry.name, chance, stat.min_rank, stat.entry.picks.score_against(self.tournament_entry.picks, self.scoring_strategy), stat.max_score, stat.entry.tie_breaker] << "\n"
     end
     out << "Possible Champions For Win" << "\n"
     out << "    Entry           |    Champion     |  Ocurrences   |  Chance " << "\n"
     out << "--------------------+-----------------+---------------+---------" << "\n"
-    sort_array.each do |arr|
-      next if arr[4].size == 0
-      arr[4].sort_by{|k,v| -v}.each_with_index do |harr, idx| 
+    stats.each do |stat|
+      next if stat.champs.size == 0
+      stat.champs.sort_by{|k,v| -v}.each_with_index do |harr, idx| 
         team = harr[0]
         occurences = harr[1]
         if idx == 0
-          out << "%19s | %15s | %13d | %8.2f " % [@entries[arr[1]].name, team.name, occurences, occurences.to_f * 100.0 / arr[0]] << "\n"
+          out << "%19s | %15s | %13d | %8.2f " % [stat.entry.name, team, occurences, occurences.to_f * 100.0 / stat.times_champ] << "\n"
         else
-          out << "%19s | %15s | %13d | %8.2f " % ['', team.name, occurences, occurences.to_f * 100.0 / arr[0]] << "\n"
+          out << "%19s | %15s | %13d | %8.2f " % ['', team, occurences, occurences.to_f * 100.0 / stat.times_champ] << "\n"
         end
       end
       out << "--------------------+-----------------+---------------+---------" << "\n"
     end
     nil
   end
-
 end

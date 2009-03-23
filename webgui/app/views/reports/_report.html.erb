@@ -1,5 +1,5 @@
-<% if report == 'leader' %>
-<%= render :partial => 'leader', :locals => {:pool => pool, :show_header => true}%>
+<% if ['leader', 'possibility'].include?(report) %>
+<%= render :partial => report, :locals => {:pool => pool, :show_header => true}%>
 <br/>
 <br/>
 <% else %>

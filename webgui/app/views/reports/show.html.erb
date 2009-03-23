@@ -4,6 +4,12 @@
 <li><%= link_to 'Entries', :report => 'entry'%></li>
 <li><%= link_to 'Score', :report => 'score'%></li>
 <li><%= link_to 'Leader', :report => 'leader'%></li>
+<% if @pool.pool.tournament_entry.picks.teams_left <= 16 %>
+<li><%= link_to 'Possibility', :report => 'possibility'%></li>
+<% end %>
+<% if @pool.pool.tournament_entry.picks.teams_left <= 4 %>
+<li><%= link_to 'Final Four', :report => 'final_four'%></li>
+<% end %>
 </ul>
 <div id="report">
 <% if params[:report] -%>

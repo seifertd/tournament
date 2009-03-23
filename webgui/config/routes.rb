@@ -45,6 +45,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
 
   # Reports
+  map.connect 'reports/gen_possibility/:id', :controller => 'reports', :action => 'gen_possibility'
   map.connect 'reports/:id', :controller => 'reports', :action => 'show'
   map.connect 'reports/:id/:report', :controller => 'reports', :action => 'show'
 

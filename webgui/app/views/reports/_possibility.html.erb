@@ -1,0 +1,45 @@
+<% show_header = defined?(show_header) ? show_header : true %>
+<% if show_header %>
+<h1>Possibility Report</h1>
+<ul>
+<li>Total games played: <%= pool.tournament_entry.picks.games_played %></li>
+<li>Pool Tie Break: <%=pool.tournament_entry.tie_breaker || '-' %></li>
+<li>Number of entries: <%=pool.entries.size%></li>
+<li>Number of remaining outcomes: <%=pool.tournament_entry.picks.number_of_outcomes%></li>
+</ul>
+<% end %>
+<% if @message %>
+<span class="message"><%=@message%></span>
+<% end %>
+<table class="report">
+<thead>
+<tr>
+<td>Entry</td>
+<td>Chance<br/>for 1st</td>
+<td>Highest<br/>Place</td>
+<td>Current<br/>Score</td>
+<td>Max<br/>Score</td>
+<td>Tie<br/>Break</td>
+<td>Champions for 1st</td>
+</tr>
+</thead>
+<tbody>
+<% @stats.each do |stat| -%>
+<tr class="<%=cycle('even', 'odd', :name => 'rtclass')%>">
+<td><%=stat.entry.name%></td>
+<td><%=stat.times_champ * 100.0/pool.tournament_entry.picks.number_of_outcomes%>%</td>
+<td><%=stat.min_rank.ordinal%></td>
+<td><%=stat.entry.bracket.score_against(pool.tournament_entry.picks, pool.scoring_strategy)%></td>
+<td><%=stat.max_score%></td>
+<td><%=stat.entry.tie_breaker%></td>
+<td>
+<% stat.champs.sort_by{|k,v| -v}.each do |team, occurrences| -%>
+<%=team%> <%=occurrences%> (<%="%5.2f" % (occurrences.to_f * 100.0 / stat.times_champ)%>%)
+<br/>
+<% end -%>
+&nbsp;
+</td>
+</tr>
+<% end -%>
+</tbody>
+</table>

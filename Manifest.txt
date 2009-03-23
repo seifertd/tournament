@@ -10,6 +10,7 @@ lib/tournament.rb
 lib/tournament/bracket.rb
 lib/tournament/entry.rb
 lib/tournament/pool.rb
+lib/tournament/possibility.rb
 lib/tournament/scoring_strategy.rb
 lib/tournament/team.rb
 lib/tournament/webgui_installer.rb
@@ -73,6 +74,7 @@ webgui/app/views/layouts/print.html.erb
 webgui/app/views/layouts/report.html.erb
 webgui/app/views/pool/index.html.erb
 webgui/app/views/reports/_leader.html.erb
+webgui/app/views/reports/_possibility.html.erb
 webgui/app/views/reports/_report.html.erb
 webgui/app/views/reports/show.html.erb
 webgui/app/views/sessions/new.html.erb
