@@ -24,18 +24,25 @@
 </tr>
 </thead>
 <tbody>
+<% db_entry_ids = @pool.user_entries.inject({}) {|h,e| h[e.name] = e.id; h} %>
 <% @stats.each do |stat| -%>
 <tr class="<%=cycle('even', 'odd', :name => 'rtclass')%>">
-<td><%=stat.entry.name%></td>
-<td><%=stat.times_champ * 100.0/pool.tournament_entry.picks.number_of_outcomes%>%</td>
+<td><%= link_to stat.entry.name, :controller => 'entry', :action => 'show', :id => db_entry_ids[stat.entry.name]%></td>
+<td><%="%5.2f" % (stat.times_champ * 100.0/pool.tournament_entry.picks.number_of_outcomes)%>%</td>
 <td><%=stat.min_rank.ordinal%></td>
 <td><%=stat.entry.bracket.score_against(pool.tournament_entry.picks, pool.scoring_strategy)%></td>
 <td><%=stat.max_score%></td>
 <td><%=stat.entry.tie_breaker%></td>
 <td>
+<% if stat.champs.size > 0 %>
+<a class="info" href="#">Detail
+<span class="flow">
 <% stat.champs.sort_by{|k,v| -v}.each do |team, occurrences| -%>
-<%=team%> <%=occurrences%> (<%="%5.2f" % (occurrences.to_f * 100.0 / stat.times_champ)%>%)
+<nobr><%=team%> <%=occurrences%> (<%="%5.2f" % (occurrences.to_f * 100.0 / stat.times_champ)%>%)</nobr>
 <br/>
+<% end -%>
+</span>
+</a>
 <% end -%>
 &nbsp;
 </td>

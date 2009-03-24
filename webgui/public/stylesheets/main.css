@@ -181,3 +181,10 @@ a.info:hover span { /*the span will display just on :hover state*/
   padding: 5px;
   background-color:#cff; color:#000;
 }
+
+/* For non fixed width popups that have left justified text.*/
+a.info:hover span.flow {
+  width: auto;
+  text-align: left;
+}
+
