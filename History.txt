@@ -1,5 +1,11 @@
+== 2.5.0 / 2009-03-23
+* Add rake task for generating possibility report data file.
+* Bugfix for final four report: work around fact that web gui
+  sets things as strings that it should not.
+
 == 2.4.0 / 2009-03-23
 * Hook up possibility report.
+* Limit recap mails to pool participants.
 
 == 2.3.0 / 2009-03-20
 * Add ability for admin to send emails to participants.  Needs work.

@@ -467,11 +467,12 @@ class Tournament::Pool
       out << "are four or fewer teams left in the tournament." << "\n"
       return
     end
-    total_payout = @entries.size * @entry_fee
+    total_payout = @entries.size * @entry_fee.to_i
     # Subtract out constant payments
     total_payout = @payouts.values.inject(total_payout) {|t, amount| t += amount if amount < 0; t}
 
-    payout_keys = @payouts.keys.sort do |a,b|
+    use_payouts = @payouts.inject({}) {|h,arr| k = arr[0] != :last ? arr[0].to_i : arr[0]; h[k] = arr[1]; h}
+    payout_keys = use_payouts.keys.sort do |a,b|
       if Symbol === a
         1
       elsif Symbol === b
@@ -488,10 +489,10 @@ class Tournament::Pool
     end
     out << "Payouts" << "\n"
     payout_keys.each do |key|
-      amount = if @payouts[key] > 0
-        @payouts[key].to_f / 100.0 * total_payout
+      amount = if use_payouts[key] > 0
+        use_payouts[key].to_f / 100.0 * total_payout
       else
-        -@payouts[key]
+        -use_payouts[key]
       end
       out << "%4s: $%5.2f" % [key, amount] << "\n"
     end
@@ -515,13 +516,12 @@ class Tournament::Pool
          end
       end
       finishers = {}
-      @payouts.each do |rank, payout|
+      use_payouts.each do |rank, payout|
         finishers[rank] = {}
         finishers[rank][:payout] = payout
         finishers[rank][:entries] = []
         finishers[rank][:score] = 0
       end
-      #puts "Got finishers: #{finishers.inspect}"
       index = 0
       rank = 1
       while index < @entries.size

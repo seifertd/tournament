@@ -264,6 +264,23 @@ on the right sidebar to record the winning teams.
 
 Use the report links to run reports, etc.
 
+==== POSSIBILITY REPORT
+
+After about 21 teams are left in the tournament, you can run the
+possibility report.  This report runs through every possible way the
+tournament can come out and ranks each entry against the possiblity.
+The report lists the "chance to win" for each entry.  The chance
+to win is the percentage of possible outcomes that would result in
+that entry coming in first.
+
+The possibility report requires that a rake task be run on the
+web server.  It is very processor intensive and can take a long
+time to complete.  To generate the possibility report data file,
+run the following command from the web gui install directory
+on the server:
+
+   RAILS_ENV=production rake report:possibilities
+
 == SHOES GUI:
 
 A GUI for filling out tournment bracket entries is included and is run
