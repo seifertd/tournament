@@ -133,6 +133,7 @@ webgui/lib/pdf_helper.rb
 webgui/lib/prince.rb
 webgui/lib/saves_picks.rb
 webgui/lib/tasks/admin.rake
+webgui/lib/tasks/possibility.rake
 webgui/public/404.html
 webgui/public/422.html
 webgui/public/500.html
