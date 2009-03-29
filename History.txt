@@ -1,3 +1,6 @@
+== 2.6.0 / 2009-03-29
+* Pretty HTML Final Four report.
+
 == 2.5.2 / 2009-03-29
 * Really fix manifest problems.
 * Adjust webgui install instructions to account for
