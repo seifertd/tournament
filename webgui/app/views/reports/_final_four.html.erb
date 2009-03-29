@@ -1,0 +1,141 @@
+<h1>Final Four Report</h1>
+<%
+  total_payout = pool.entries.size * pool.entry_fee.to_i
+  # Subtract out constant payments
+  total_payout = pool.payouts.values.inject(total_payout) {|t, amount| t += amount if amount < 0; t}
+
+  use_payouts = pool.payouts.inject({}) {|h,arr| k = arr[0] != :last ? arr[0].to_i : arr[0]; h[k] = arr[1]; h}
+  payout_keys = use_payouts.keys.sort do |a,b|
+    if Symbol === a
+      1
+    elsif Symbol === b
+      -1
+    else
+      a <=> b
+    end
+  end
+%>
+<em>Final Four:</em>
+<%=pool.tournament_entry.picks.winners[4][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")%>
+,
+<%=pool.tournament_entry.picks.winners[4][2,2].map{|t| "(#{t.seed}) #{t.name}"}.join(" vs. ")%>
+<br/>
+<% if pool.tournament_entry.picks.teams_left <= 2 -%>
+<em>Championship:</em>
+<%=pool.tournament_entry.picks.winners[5][0,2].map{|t| "(#{t.seed}) #{t.name}"}.join(' vs. ')%>
+<br/>
+<% end -%>
+<em>Payouts:</em>
+<table>
+<%
+  payout_keys.each do |key|
+    amount = if use_payouts[key] > 0
+      use_payouts[key].to_f / 100.0 * total_payout
+    else
+      -use_payouts[key]
+    end
+    %><tr><td align="right"><%=key%></td><td><%="$%5.2f" % amount%></td></tr>
+<%
+  end
+%>
+</table>
+<table class="report">
+<thead>
+<tr>
+<td rowspan="2">Championship</td>
+<td rowspan="2">Champion</td>
+<td colspan="4">Winners</td>
+</tr>
+<tr>
+<td>Rank</td>
+<td>Score</td>
+<td>Tie<br/>Break</td>
+<td>Name</td>
+</tr>
+</thead>
+<tbody>
+<% 
+  pool.tournament_entry.picks.each_possible_bracket do |poss|
+    rankings = pool.entries.map{|p| [p, p.picks.score_against(poss, pool.scoring_strategy)] }.sort do |a1, a2|
+       if a1[1] == a2[1]
+         # Use tiebreak
+         if pool.tournament_entry.tie_breaker
+           tb1 = (a1[0].tie_breaker - pool.tournament_entry.tie_breaker).abs
+           tb2 = (a2[0].tie_breaker - pool.tournament_entry.tie_breaker).abs
+           tb1 <=> tb2
+         else
+           0
+         end 
+       else
+         a2[1] <=> a1[1]
+       end
+    end
+    finishers = {}
+    use_payouts.each do |rank, payout|
+      finishers[rank] = {}
+      finishers[rank][:payout] = payout
+      finishers[rank][:entries] = []
+      finishers[rank][:score] = 0
+    end
+    index = 0
+    rank = 1
+    while index < pool.entries.size
+      rank_score = rankings[index][1]
+      finishers_key = index < (pool.entries.size - 1) ? rank : :last
+      finish_hash = finishers[finishers_key]
+      #puts "For rank_score = #{rank_score} finishers key = #{finishers_key.inspect}, hash = #{finish_hash}, index = #{index}"
+      if finish_hash
+        while index < pool.entries.size && rankings[index][1] == rank_score
+          finish_hash[:entries] << rankings[index][0]
+          finish_hash[:score] = rank_score
+          index += 1
+        end
+        rank += 1
+        next
+      end
+      index += 1
+      rank += 1
+    end
+
+    num_payouts = payout_keys.size
+
+    first_line = true
+    showed_last = false
+    payout_count = 0
+    tr_class = cycle("even", "odd", :name => 'rtclass')
+    while payout_count < num_payouts
+      rank = payout_keys[payout_count]
+      finish_hash = finishers[rank]
+      label = finish_hash[:entries].size == 1 ? "#{rank}".upcase : "TIE"
+      finish_hash[:entries].each do |winner|  %>
+<tr class="<%=tr_class%>">
+<%
+        if first_line %>
+<td rowspan="<%=num_payouts%>">
+<%=poss.winners[5].map{|t| t.short_name}.join("-")%>
+</td>
+<td rowspan="<%=num_payouts%>">
+<%=poss.champion.name%>
+</td>
+<% 
+          first_line = false
+       end %>
+<td><%=label%></td>
+<td><%=finish_hash[:score]%></td>
+<td><%=winner.tie_breaker%></td>
+<td><%=winner.name%></td>
+</tr>
+<%
+     end
+     payout_count += finish_hash[:entries].size
+     showed_last = (rank == :last)
+     if payout_count >= num_payouts && !showed_last
+       if payout_keys[num_payouts-1] == :last
+         payout_count -= 1
+         showed_last = true
+       end
+     end
+   end
+ end
+%>
+</table>

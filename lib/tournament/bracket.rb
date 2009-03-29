@@ -5,7 +5,7 @@ class Tournament::Bracket
   attr_reader :rounds # The number of rounds in the bracket
   attr_reader :winners # The winners of each game in the bracket
 
-
+  # Marker for an unknown team
   UNKNOWN_TEAM = :unk unless defined?(UNKNOWN_TEAM)
 
   # Creates a new bracket with the given teams
