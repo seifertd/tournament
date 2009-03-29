@@ -20,7 +20,7 @@ PROJ.authors = 'Douglas A. Seifert'
 PROJ.email = 'doug+rubyforge@dseifert.net'
 PROJ.url = 'http://www.dseifert.net/code/tournament'
 PROJ.rubyforge.name = 'tournament'
-PROJ.version = '2.5.1'
+PROJ.version = '2.5.2'
 PROJ.group_id = 5863
 
 PROJ.spec.opts << '--color'
@@ -28,6 +28,10 @@ PROJ.spec.opts << '--color'
 PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb)
 PROJ.exclude << '^tags$'
 
-PROJ.rdoc.opts = ["--line-numbers", "--inline-source"]
-PROJ.rdoc.template = "tasks/jamis.rb"
+PROJ.rdoc.opts = ["--line-numbers", "--force-update", "-W", "http://tournament.rubyforge.org/svn/trunk/%s"]
+PROJ.rdoc.exclude = [
+  "webgui\/vendor\/plugins\/restful_authentication\/notes\/.+\.txt",
+  "webgui\/db\/migrate\/teams.txt",
+  "webgui\/public\/robots.txt"
+]
 # EOF

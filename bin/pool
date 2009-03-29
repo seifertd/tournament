@@ -142,6 +142,9 @@ Main do
       puts "You should now change to #{installer.install_dir} and"
       puts "perform the following steps:"
       puts "  1. RAILS_ENV=production rake db:migrate"
+      puts "If this is the first time you have installed the web gui, you"
+      puts "Should also perform these steps:"
+      puts "  1. RAILS_ENV=production rake auth:gen:site_key"
       puts "  2. RAILS_ENV=production rake \"admin:create[admin,#{params['admin-email'].value},Joe Admin,password]\""
       puts "     You should substitute your desired admin user login, name and password."
     end

@@ -32,9 +32,9 @@ file).  For usage, just execute
 
 For command specific usage, execute
 
-   pool <command> --help
+   pool [command] --help
 
-where <command> is one of the available commands described below. The
+where [command] is one of the available commands described below. The
 pool command saves state in a file called pool.yml by default.  This
 can be overridden in all cases by using the --save-file option.
 
@@ -142,95 +142,101 @@ The above command will copy the Rails app to the specified directory.
 There are several options you can provide in addition to --web-dir
 to control how the application is installed:
 
- * Human readable site name.  This appears as the <title> tag content
-   of pages in the site and is also used in the subject line of any
-   emails sent by the site (as during user registration).
+* Human readable site name.  This appears as the title tag content
+  of pages in the site and is also used in the subject line of any
+  emails sent by the site (as during user registration).
 
-   --site-name="Site Name"  (Default: 'Tournament')
+    --site-name="Site Name"  (Default: 'Tournament')
 
- * Relative url root.  If you will be installing the pool site as
-   a relative url on another virtual host, use this switch.  You
-   will have to configure you virtual host to route requests to this
-   path to Rails.  This is ridiculously easy if you are using
-   modrails and Apache.  Example:
+* Relative url root.  If you will be installing the pool site as
+  a relative url on another virtual host, use this switch.  You
+  will have to configure you virtual host to route requests to this
+  path to Rails.  This is ridiculously easy if you are using
+  modrails and Apache.  Example:
 
-   --relative-root=/my_pool  (Default: empty, no root is set)
+    --relative-root=/my_pool  (Default: empty, no root is set)
  
- * Administrator email address.  The web GUI will send emails
-   when users register for creating entries in a pool. The following
-   sets the from email address on the emails that are sent.
+* Administrator email address.  The web GUI will send emails
+  when users register for creating entries in a pool. The following
+  sets the from email address on the emails that are sent.
 
-   --admin-email=admin
+    --admin-email=admin
 
- * Email server information.  Either edit the config/initializers/pool.rb
-   file after installation, or provide the following options to configure
-   a SMTP server available on your domain.
+* Email server information.  Either edit the config/initializers/pool.rb
+  file after installation, or provide the following options to configure
+  a SMTP server available on your domain.
 
-   --email-server=smtp.myisp.com
-   --email-port=25
-   --email-domain=mydomain.com
-   --email-user=myuser
-   --email-password=mypass
-   --email-auth=login|plain|cram_md5
+    --email-server=smtp.myisp.com
+    --email-port=25
+    --email-domain=mydomain.com
+    --email-user=myuser
+    --email-password=mypass
+    --email-auth=login|plain|cram_md5
 
-   See http://guides.rubyonrails.org/action_mailer_basics.html#_action_mailer_configuration
-   for more info on how to configure a Rails app for sending email.
+  See http://guides.rubyonrails.org/action_mailer_basics.html#_action_mailer_configuration
+  for more info on how to configure a Rails app for sending email.
 
- * The web GUI has the ability to print bracket entries by generating
-   a pdf styled using the web site's bracket stylesheet.  It uses a third
-   party tool called Prince XML to do this.  You are not allowed to
-   use this on a server without paying a license fee, although you
-   can download a trial version for personal use.  It's your call
-   whether or not you want to use this.  Please see http://www.princexml.com/
-   for more details.
+* The web GUI has the ability to print bracket entries by generating
+  a pdf styled using the web site's bracket stylesheet.  It uses a third
+  party tool called Prince XML to do this.  You are not allowed to
+  use this on a server without paying a license fee, although you
+  can download a trial version for personal use.  It's your call
+  whether or not you want to use this.  Please see http://www.princexml.com/
+  for more details.
  
-   --use-princexml=/full/path/to/prince
+    --use-princexml=/full/path/to/prince
 
-   If prince is not available on the path you specify, the princexml
-   distribution will be downloaded and installed using the distribution's
-   install.sh script.  In order to do this, the tar program must be
-   available on your installation system.
+  If prince is not available on the path you specify, the princexml
+  distribution will be downloaded and installed using the distribution's
+  install.sh script.  In order to do this, the tar program must be
+  available on your installation system.
 
- * If you use the --use-princexml option, the install script needs to write
-   files to a temp directory, /tmp by default. Use the --tmp-dir option to
-   change this default.  If the specified temp dir does not exist, it will
-   be created.
+* If you use the --use-princexml option, the install script needs to write
+  files to a temp directory, /tmp by default. Use the --tmp-dir option to
+  change this default.  If the specified temp dir does not exist, it will
+  be created.
 
-   --tmp-dir=/path/to/tmp/dir
+    --tmp-dir=/path/to/tmp/dir
 
 === POST-INSTALLATION:
 
 Before being able to run the web gui for the first time, you have to
-prepare the sqlite database and create an admin account.  To do this,
-change to the installation directory and run the following command:
+generate the web site authorization keys, prepare the sqlite database
+and create an admin account.  Change to the website installation
+directory and perform the following steps.
 
-   RAILS_ENV=production rake db:migrate
+1. Generate the web site authorization keys
 
-To create the admin account, change to the web gui installation directory
-and run the following command:
+     RAILS_ENV=production rake auth:gen:site_key
 
-   RAILS_ENV=production rake "admin:create[login,email,name,password]"
+2. Prepare the sqlite database
 
-In the above command, substitute "login" for the desired admin user's login
-name, "email" for the administrators email address, "name" for the 
-admin user's name (eg, "Joe Admin"), and "password" for the desired
-admin account password
+     RAILS_ENV=production rake db:migrate
+
+3. Create the admin account
+
+     RAILS_ENV=production rake "admin:create[login,email,name,password]"
+
+   In the above command, substitute "login" for the desired admin user's login
+   name, "email" for the administrators email address, "name" for the 
+   admin user's name (eg, "Joe Admin"), and "password" for the desired
+   admin account password
 
 === UPDATING THE WEB GUI:
 
 If the tournament gem is updated, you can pull in the changes as follows:
 
- 1. Update your tournament gem
+1. Update your tournament gem
 
-    sudo gem update tournament
+     sudo gem update tournament
 
- 2. Rerun the same pool install_webgui command you used to install originally
+2. Rerun the same pool install_webgui command you used to install originally
 
- 3. Pull in any released db migrations:
+3. Pull in any released db migrations:
 
-    cd $install_dir; RAILS_ENV=production rake db:migrate
+     cd $install_dir; RAILS_ENV=production rake db:migrate
 
- 4. Reload your web server configuration (nginx, apache, etc.)
+4. Reload your web server configuration (nginx, apache, etc.)
 
 === USING THE WEB GUI:
 
