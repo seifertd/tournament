@@ -23,8 +23,8 @@ basketball tournament pool.
 == COMMAND LINE SYNOPSIS:
 
 The tournament command line program is installed as 'pool'.  The library
-has the 2009 NCAA tournament pre-configured.  If you were to use
-this library for the 2010 NCAA tournament, code changes would be
+has the 2010 NCAA tournament pre-configured.  If you were to use
+this library for the 2011 NCAA tournament, code changes would be
 necessary. FIXME: (add ability to read teams from a simple configuration
 file).  For usage, just execute
 
