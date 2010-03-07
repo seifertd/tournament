@@ -1,37 +1,36 @@
-# Look in the tasks/setup.rb file for the various options that can be
-# configured in this Rakefile. The .rake files in the tasks directory
-# are where the options are used.
 
-load 'tasks/setup.rb'
+begin
+  require 'bones'
+rescue LoadError
+  abort '### Please install the "bones" gem ###'
+end
 
 ensure_in_path 'lib'
 require 'tournament'
 
-task :default => 'spec:run'
+task :default => 'test:run'
 
-depend_on 'main'
-depend_on 'rake'
-depend_on 'rails', '=2.2.2'
-#depend_on 'sqlite3-ruby'
+Bones {
+  depend_on 'main'
+  depend_on 'rake'
+  depend_on 'rails'
 
+  name 'tournament'
+  authors 'Douglas A. Seifert'
+  email 'doug+rubyforge@dseifert.net'
+  url 'http://www.dseifert.net/code/tournament'
+  rubyforge.name 'tournament'
+  version Tournament::VERSION
+  group_id = 5863
 
-PROJ.name = 'tournament'
-PROJ.authors = 'Douglas A. Seifert'
-PROJ.email = 'doug+rubyforge@dseifert.net'
-PROJ.url = 'http://www.dseifert.net/code/tournament'
-PROJ.rubyforge.name = 'tournament'
-PROJ.version = '2.6.0'
-PROJ.group_id = 5863
+#spec.opts << '--color'
 
-PROJ.spec.opts << '--color'
+  exclude %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb ^tags$)
 
-PROJ.exclude = %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb)
-PROJ.exclude << '^tags$'
-
-PROJ.rdoc.opts = ["--line-numbers", "--force-update", "-W", "http://tournament.rubyforge.org/svn/trunk/%s"]
-PROJ.rdoc.exclude = [
-  "webgui\/vendor\/plugins\/restful_authentication\/notes\/.+\.txt",
-  "webgui\/db\/migrate\/teams.txt",
-  "webgui\/public\/robots.txt"
-]
-# EOF
+  rdoc.opts ["--line-numbers", "--force-update", "-W", "http://tournament.rubyforge.org/svn/trunk/%s"]
+  rdoc.exclude [
+    "webgui\/vendor\/plugins\/restful_authentication\/notes\/.+\.txt",
+    "webgui\/db\/migrate\/teams.txt",
+    "webgui\/public\/robots.txt"
+  ]
+}
