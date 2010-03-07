@@ -6,19 +6,24 @@
 <span class="poollisthead"><%= pool.name %></span>
 <small>
 <% if current_user && pool.user_id == current_user.id %>
+<% if pool.tournament_entry -%>
 <%= link_to '[Tourny Bracket]', :controller => 'admin', :action => 'bracket', :id => pool.tournament_entry.id %>
+<% end -%>
 <%= link_to '[Recap]', :controller => 'admin', :action => 'recap', :id => pool.id%>
 <%= link_to '[Edit]', :controller => 'admin', :action => 'pool', :id => pool.id %>
 <%= link_to '[Entries]', :controller => 'admin', :action => 'entries', :id => pool.id %>
 <% else %>
+<% if pool.tournament_entry -%>
 <%= link_to '[Tourny Bracket]', :controller => 'entry', :action => 'show', :id => pool.tournament_entry.id %>
+<% end %>
 <% end %>
 <%= link_to '[Leader Board]', :controller => 'reports', :action => 'show', :id => pool.id, :report => 'leader' %>
 <%= link_to '[Reports]', :controller => 'reports', :action => 'show', :id => pool.id %>
 </small>
 <div class="poollistinfo">
 <div class="poollistinfodetail">
-<% if pool.starts_at < Time.zone.now %>Started<%else%>Starts<%end%>: <%= pool.starts_at.to_formatted_s(:long)%>
+<% if pool.starts_at < Time.zone.now %>Started<%else%>Starts<%end%>: <%= distance_of_time_in_words(pool.starts_at, Time.now)%>
+<% if pool.starts_at < Time.zone.now %>ago.<%else%>from now.<%end%>
 Pending Entries: <%= pool.pending_entries.size%>
 Total Entries: <%= pool.user_entries.size%>
 </div>
@@ -28,6 +33,7 @@ Last Update: <%=pool.updated_at.to_formatted_s(:long)%>
 <div class="poollistinfodetail">
 Entry Fee: $<%=pool.fee%>
 </div>
+<% if pool.user_entries.size > 0 -%>
 <div class="poollistinfodetail">
 Payouts:
 <% take = pool.user_entries.size * pool.fee.to_f -
@@ -36,6 +42,7 @@ Payouts:
 <%=p.rank != 'L' ? p.rank.to_i.ordinal : 'Last'%>: $<%=p.kind == '$' ? p.payout : p.payout.to_f / 100.0 * take%>&nbsp;&nbsp;
 <% end -%>
 </div>
+<% end -%>
 <div class="poollistinfodetail">
 Scoring: <%=pool.pool.scoring_strategy.description%>
 </div>

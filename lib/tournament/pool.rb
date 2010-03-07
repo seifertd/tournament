@@ -443,7 +443,8 @@ class Tournament::Pool
     out << " Region | Seed | Team               " << "\n"
     current_idx = -1
     @regions.each_with_index do |region, idx|
-      region[:teams].each do |team|
+      next unless region
+      (region[:teams] || []).each do |team|
         region_name = ''
         if idx != current_idx
           region_name =  region[:name]

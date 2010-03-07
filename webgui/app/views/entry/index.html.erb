@@ -11,6 +11,12 @@ You have no entries.
 <% end %>
 </ul>
 <% end %>
+<% if @pool.accepting_entries? -%>
 <p>
 <%= link_to 'Create a new entry', :action => 'new', :id => @pool.id %>
 </p>
+<% elsif !@pool.ready? -%>
+<i>This pool is not yet ready.  The pool starts in <%= distance_of_time_in_words(@pool.starts_at, Time.now) %>.  After it starts, you can make entries.</i>
+<% else -%>
+<i>This pool is not accepting any more entries.</i>
+<% end -%>

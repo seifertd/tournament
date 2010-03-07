@@ -12,7 +12,7 @@ task :default => 'spec:run'
 depend_on 'main'
 depend_on 'rake'
 depend_on 'rails', '=2.2.2'
-depend_on 'sqlite3-ruby'
+#depend_on 'sqlite3-ruby'
 
 
 PROJ.name = 'tournament'

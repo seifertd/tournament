@@ -1,3 +1,4 @@
+<% if pool.entries.size > 0 -%>
 <% if show_header %>
 <h1>Leader Report</h1>
 <ul>
@@ -79,3 +80,9 @@ end
 %>
 </tbody>
 </table>
+<% else -%>
+<h1>Leader Report</h1>
+<p>
+<i>There are no entries in the pool.</i>
+</p>
+<% end -%>

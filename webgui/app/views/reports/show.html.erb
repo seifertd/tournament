@@ -2,6 +2,7 @@
 <ul>
 <li><%= link_to 'Region', :report => 'region'%></li>
 <li><%= link_to 'Entries', :report => 'entry'%></li>
+<% if @pool.ready? -%>
 <li><%= link_to 'Score', :report => 'score'%></li>
 <li><%= link_to 'Leader', :report => 'leader'%></li>
 <% if @pool.pool.tournament_entry.picks.teams_left <= 16 %>
@@ -9,6 +10,7 @@
 <% end %>
 <% if @pool.pool.tournament_entry.picks.teams_left <= 4 %>
 <li><%= link_to 'Final Four', :report => 'final_four'%></li>
+<% end %>
 <% end %>
 </ul>
 <div id="report">

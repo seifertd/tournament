@@ -9,7 +9,7 @@ class Pool < ActiveRecord::Base
   has_many :user_entries, :class_name => 'Entry', :conditions => ['user_id != ?', '#{user_id}']
   has_many :users, :through => :user_entries
   has_many :pending_entries, :class_name => 'Entry', :conditions => ['completed = ? and user_id != ?', false, '#{user_id}']
-  has_one :tournament_entry, :class_name => 'Entry', :conditions => {:user_id => '#{user_id}'}
+  has_one :tournament_entry, :class_name => 'Entry', :conditions => ['user_id = \'#{user_id}\'']
   has_many :seedings
   has_many :teams, :through => :seedings
   has_many :regions, :order => 'position'
@@ -142,6 +142,6 @@ class Pool < ActiveRecord::Base
   end
 
   def self.active_pools
-    Pool.find(:all, :conditions => ['active = ?', true])
+    Pool.find(:all, :conditions => ['active = ?', true]).reverse
   end
 end
