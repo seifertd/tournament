@@ -25,7 +25,7 @@ Bones {
 
 #spec.opts << '--color'
 
-  exclude %w(tmp$ bak$ ~$ CVS \.svn ^pkg ^doc bin/fake bin/gui_v2.rb ^tags$)
+  exclude %w(tmp$ bak$ ~$ CVS \.svn \.git swp$ ^pkg ^doc bin/fake bin/gui_v2.rb ^tags$ ^webgui/log/.*\.log)
 
   rdoc.opts ["--line-numbers", "--force-update", "-W", "http://tournament.rubyforge.org/svn/trunk/%s"]
   rdoc.exclude [

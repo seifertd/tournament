@@ -1,0 +1,6 @@
+pkg
+*.swp
+doc
+webgui/log/*.log
+webgui/tmp/*
+webgui/db/*.sqlite3
