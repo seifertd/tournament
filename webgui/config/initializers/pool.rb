@@ -16,6 +16,9 @@ ADMIN_EMAIL = 'admin' unless defined?(ADMIN_EMAIL)
 RELATIVE_URL_ROOT = nil
 
 if RELATIVE_URL_ROOT
+  # Need to do this two ways in Rails 2.3.5?
+  config = Rails::Configuration.new
+  config.action_controller.relative_url_root = RELATIVE_URL_ROOT
   ActionController::Base.relative_url_root = RELATIVE_URL_ROOT
 end
 
