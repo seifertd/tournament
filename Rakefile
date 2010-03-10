@@ -20,6 +20,8 @@ Bones {
   email 'doug+rubyforge@dseifert.net'
   url 'http://www.dseifert.net/code/tournament'
   rubyforge.name 'tournament'
+  readme_file 'README.rdoc'
+  ignore_file '.gitignore'
   version Tournament::VERSION
   group_id = 5863
 
