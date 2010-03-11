@@ -1,4 +1,7 @@
-== 3.0.2 / 2009-03-11
+== 3.0.3 / 2009-03-11
+* Fix bug with bad string encoding and prince xml for pdf generation.
+
+== 3.0.2 / 2009-03-10
 * Fix bug caused by change in semantics of Array#to_s in ruby 1.9.1
 
 == 3.0.1 / 2009-03-10
