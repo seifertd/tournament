@@ -1,7 +1,8 @@
 tournament
     by Douglas A. Seifert (doug+rubyforge at dseifert dot net)
     http://www.dseifert.net/code/tournament
-    http://tournament.rubyforge.org/
+    http://github.org/seifertd/tournament
+    http://rubygems.org/gems/tournament
 
 == DESCRIPTION:
 
@@ -307,13 +308,13 @@ from played to unknown outcome.
  
 == REQUIREMENTS:
 
-* main (2.8.0)
+* main (4.2.0)
 
 == WEB GUI REQUIREMENTS:
 
-* rails (2.2.2)
-* rake (0.8.3)
-* sqlite3-ruby (1.2.4)
+* rails (2.3.5)
+* rake (0.8.7)
+* sqlite3-ruby (1.2.5)
 
 == SHOES GUI REQUIREMENTS:
 

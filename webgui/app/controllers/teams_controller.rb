@@ -10,14 +10,15 @@ class TeamsController < ApplicationController
     region_hash = params[:region0] || params[:region1] || params[:region2] || params[:region3]
     name_like = region_hash[:seedings][0][:name]
     @teams_like = Team.find(:all, :conditions => ['name like ?', "#{name_like}%"], :order => 'name asc')
-    render :inline => "<%= content_tag(:ul, @teams_like.map{|t| content_tag(:li, h(t.name), :short => t.short_name)}) %>"
+    logger.debug("auto_complte_for_team_name got teams: #{@teams_like.inspect}")
+    render :inline => "<%= content_tag(:ul, @teams_like.map{|t| content_tag(:li, h(t.name), :short => t.short_name)}.join(' ')) %>"
   end
 
   def auto_complete_for_short_name
     region_hash = params[:region0] || params[:region1] || params[:region2] || params[:region3]
     name_like = region_hash[:seedings][0][:short_name]
     @teams_like = Team.find(:all, :conditions => ['short_name like ?', "#{name_like}%"], :order => 'short_name asc')
-    render :inline => "<%= content_tag(:ul, @teams_like.map{|t| content_tag(:li, h(t.short_name), :name => t.name)}) %>"
+    render :inline => "<%= content_tag(:ul, @teams_like.map{|t| content_tag(:li, h(t.short_name), :name => t.name)}.join(' ')) %>"
   end
 
   def change
