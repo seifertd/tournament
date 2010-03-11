@@ -4,3 +4,4 @@ doc
 webgui/log/*.log
 webgui/tmp/*
 webgui/db/*.sqlite3
+webgui/db/stats_*.yml

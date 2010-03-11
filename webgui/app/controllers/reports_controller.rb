@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  STATS_DATAFILE = File.expand_path(File.join(RAILS_ROOT, 'db', 'stats.yml')) unless defined?(STATS_DATAFILE)
+  STATS_DATAFILE_NAME = "stats_%d.yml" unless defined?(STATS_DATAFILE_NAME)
   layout 'report'
   def show
     @pool = Pool.find(params[:id])
@@ -9,11 +9,13 @@ class ReportsController < ApplicationController
   end
 
   def possibility
-    if !File.exist?(STATS_DATAFILE)
+    pool_id = params[:id]
+    my_data_file = self.stats_data_file(pool_id)
+    if !File.exist?(my_data_file)
       @message = "The statistics data has not yet been generated.  Please try again later or send an email to #{ADMIN_EMAIL}."
       @stats = []
     else
-      @stats = YAML.load_file(STATS_DATAFILE)
+      @stats = YAML.load_file(my_data_file)
     end
   end
 
@@ -51,11 +53,15 @@ class ReportsController < ApplicationController
         output.flush
       else
         data = stats_thread[:stats]
-        File.open(STATS_DATAFILE, "w") {|f| f.write YAML.dump(data)}
+        File.open(self.stats_data_file(@pool.id), "w") {|f| f.write YAML.dump(data)}
         output.write "Generated file!"
       end
     end
     render :text => reporter
+  end
+
+  def stats_data_file(pool_id)
+    File.expand_path(File.join(RAILS_ROOT, 'db', STATS_DATAFILE_NAME % pool_id))
   end
 
 end
