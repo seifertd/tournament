@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Uses Prince library to create pdfs
 module PdfHelper
   require 'prince'

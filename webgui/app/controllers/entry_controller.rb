@@ -1,3 +1,4 @@
+# encoding: utf-8
 class EntryController < ApplicationController
   layout 'bracket'
   before_filter :login_required

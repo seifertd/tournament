@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Prince XML Ruby interface. 
 # http://www.princexml.com
 #
@@ -64,7 +65,7 @@ class Prince
     #logger.info ''
     
     # Actually call the prince command, and pass the entire data stream back.
-    pdf = IO.popen(path, "w+")
+    pdf = IO.popen(path, "wb+")
     pdf.puts(string)
     pdf.close_write
     output = pdf.gets(nil)
