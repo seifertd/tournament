@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :pools
   has_and_belongs_to_many :roles
 
+  attr_accessor :updating_email, :confirming_email
+
   validates_presence_of     :login
   validates_length_of       :login,    :within => 3..40
   validates_uniqueness_of   :login
@@ -19,7 +21,9 @@ class User < ActiveRecord::Base
 
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
+  validates_uniqueness_of   :email, :if => :updating_email?
+  validates_presence_of     :email_confirmation, :if => :confirming_email
+  validates_confirmation_of :email, :if => :confirming_email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
   before_create :make_activation_code 
@@ -27,7 +31,7 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :password, :password_confirmation
+  attr_accessible :login, :email, :email_confirmation, :name, :password, :password_confirmation
 
   # Return all users with admin role
   def self.admin_users
@@ -87,11 +91,35 @@ class User < ActiveRecord::Base
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
   end
+  
+  def create_password_reset_code
+    @password_reset = true
+    self.password_reset_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
+    self.save(false)
+  end
+
+  def password_recently_reset?
+    @password_reset
+  end 
+
+  def delete_password_reset_code
+    self.password_reset_code = nil
+    self.save(false)
+  end
 
   protected
     
     def make_activation_code
-        self.activation_code = self.class.make_token
+      self.activation_code = self.class.make_token
+    end
+
+    def updating_email?
+      # validate_uniqueness_of email unless specifically set to false
+      if updating_email == false
+        return false
+      else
+        return true
+      end
     end
 
 

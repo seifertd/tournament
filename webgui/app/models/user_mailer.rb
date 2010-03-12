@@ -21,9 +21,16 @@ class UserMailer < ActionMailer::Base
     @body[:content] = content
     @body[:url] = home_url
   end
+
+  def password_reset_notification(user, reset_url)
+    setup_email(user)
+    @subject    = 'Link to reset your password'
+    @body[:url]  = reset_url
+   end
   
   protected
     def setup_email(user)
+      @user = user
       @recipients  = user.email
       @from        = ADMIN_EMAIL
       @subject     = "[#{TOURNAMENT_TITLE}] "

@@ -35,12 +35,14 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
  
-  # restful_authentication routs 
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.login '/login', :controller => 'sessions', :action => 'new'
-  map.register '/register', :controller => 'users', :action => 'create'
-  map.signup '/signup', :controller => 'users', :action => 'new'
-  map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
+  # restful_authentication routes 
+  map.logout 'logout', :controller => 'sessions', :action => 'destroy'
+  map.login 'login', :controller => 'sessions', :action => 'new'
+  map.register 'register', :controller => 'users', :action => 'create'
+  map.signup 'signup', :controller => 'users', :action => 'new'
+  map.activate 'activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
+  map.reset_password 'reset_password/:reset_code', :controller => 'users', :action => 'reset_password'
+  map.lost_password 'lost_password', :controller => 'users', :action => 'lost_password'
   map.resources :users
   map.resource :session
 
