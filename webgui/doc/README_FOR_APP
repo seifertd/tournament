@@ -1,5 +1,48 @@
-To build the guides:
+= USING THE WEB GUI:
 
-* Install source-highlighter (http://www.gnu.org/software/src-highlite/source-highlight.html)
-* Install the mizuho gem (http://github.com/FooBarWidget/mizuho/tree/master)
-* Run `rake guides` from the railties directory
+Load the entry page in your brower.  Log in as the admin user you 
+configured during installation.  Click on on the 'All Pools' link on
+the right sidebar.  Create a new pool and fill in the information.
+Each time you save this form, a new blank payouts line will be added
+so that you can configure as many payouts as you desire.
+
+After the basic pool configuration is set up, click on the 'Teams'
+link in the right sidebar.  You are presented with four region
+brackets to fill in.  Keep in mind that the pink region champs will
+play each other in the final four and the light blue region champs
+will play each other in the final four so you can get the bracket 
+right.  The web application is preconfigured with over 300 NCAA
+schools.  The team name fields are auto-complete fields -- type in
+a few letters and pause and you will be presented with a list of
+matching teams.  The Short Name field should be a three letter
+abbreviation for the team.  The abbreviations have to be unique
+across the entire tournament field.
+
+Once the teams are configured, go back to the pool basic information
+form, click the Active check box and save the form.  The pool is now
+ready for entries to be added to it.  Invite your friends to join the pool
+by giving them the url for the entry page.  They will be asked to
+register.  After registering and logging in, they will be able to
+submit entries to your pool.
+
+As the tournament progresses, use the 'Tournament Bracket' link
+on the right sidebar to record the winning teams.  
+
+Use the report links to run reports, etc.
+
+== POSSIBILITY REPORT
+
+After about 21 teams are left in the tournament, you can run the
+possibility report.  This report runs through every possible way the
+tournament can come out and ranks each entry against the possiblity.
+The report lists the "chance to win" for each entry.  The chance
+to win is the percentage of possible outcomes that would result in
+that entry coming in first.
+
+The possibility report requires that a rake task be run on the
+web server.  It is very processor intensive and can take a long
+time to complete.  To generate the possibility report data file,
+run the following command from the web gui install directory
+on the server:
+
+   RAILS_ENV=production rake report:possibilities
