@@ -69,7 +69,7 @@ class Tournament::Bracket
 
   # Returns the number of teams left in the bracket.
   def teams_left
-    return 1 + @winners.inject(0) { |memo, arr| arr.inject(memo) {|memo, team| memo += (team == UNKNOWN_TEAM ? 1 : 0)} }
+    return 1 + @winners.inject(0) { |memo, arr| arr.inject(memo) {|memo2, team| memo2 += (team == UNKNOWN_TEAM ? 1 : 0)} }
   end
 
   # Returns the number of possible outcomes for the bracket

@@ -377,8 +377,8 @@ class Tournament::Pool
             else
               out << fmt2 % [round, round_total, scores_str_arr[0]] << "\n"
             end
-            scores_str_arr[1..-1].each do |scores_str|
-              out << fmt3 % scores_str << "\n"
+            scores_str_arr[1..-1].each do |ss2|
+              out << fmt3 % ss2 << "\n"
             end
           else
             out << fmt2 % [round, round_total, scores_str] << "\n"
