@@ -1,3 +1,8 @@
+== 3.1.0 / 2009-03-12
+* Account for multiple pools when saving/loading possibility yaml file.
+* Update restful_authentication to latest version.
+* Add ability to reset passwords.
+
 == 3.0.3 / 2009-03-11
 * Fix bug with bad string encoding and prince xml for pdf generation.
 
