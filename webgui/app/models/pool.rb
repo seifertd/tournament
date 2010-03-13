@@ -36,8 +36,28 @@ class Pool < ActiveRecord::Base
   end
 
   # True if the number of teams in the pool is 64
-  def ready?
+  def teams_set?
     return teams.size == 64
+  end
+
+  # True if the pool has started
+  def started?
+    return Time.now > starts_at
+  end
+
+  # True if the teams have been set and the start time
+  # has not been reached
+  def accepting_entries?
+    teams_set? && !started?
+  end
+
+  # True if this pool is over, ie, the champion is known
+  def completed?
+    begin
+      self.pool.tournament_entry.picks.teams_left == 1
+    rescue Exception => e
+      false
+    end
   end
 
   def region_seedings
@@ -60,7 +80,7 @@ class Pool < ActiveRecord::Base
   end
 
   def initialize_tournament_pool
-    if self.ready?
+    if self.teams_set?
       @pool = Tournament::Pool.new
       @pool.scoring_strategy = FormObject.class_get(@scoring_strategy || 'Tournament::ScoringStrategy::Basic').new
       region_counter = 0
@@ -135,10 +155,6 @@ class Pool < ActiveRecord::Base
       @payouts << PayoutData.new(:rank => rank, :payout => payout, :kind => kind)
     end
     @payouts << PayoutData.new
-  end
-
-  def accepting_entries?
-    return ready? && Time.now < starts_at
   end
 
   def self.active_pools

@@ -15,8 +15,11 @@ You have no entries.
 <p>
 <%= link_to 'Create a new entry', :action => 'new', :id => @pool.id %>
 </p>
-<% elsif !@pool.ready? -%>
-<i>This pool is not yet ready.  The pool starts in <%= distance_of_time_in_words(@pool.starts_at, Time.now) %>.  After it starts, you can make entries.</i>
-<% else -%>
+<% elsif !@pool.started? -%>
+<i>This pool is not yet ready.  The pool starts in <%= distance_of_time_in_words(@pool.starts_at, Time.now) %>.  Once all the teams in the tournament have 
+been selected, you will be able to create entries.</i>
+<% elsif @pool.started? && !@pool.completed? -%>
 <i>This pool is not accepting any more entries.</i>
+<% elsif @pool.completed? -%>
+<i>This pool is over.</i>
 <% end -%>
