@@ -17,19 +17,22 @@
 <p>
 <i>Same color region champs play each other in final four:</i>
 </p>
+<p>
+Order: <%= button_to_function('Seed Order', 'switch_to_seed_order()', :id => 'seed_button', :disabled => true) %> <%= button_to_function('Matchup Order', 'switch_to_matchup_order()', :id => 'matchup_button')%>
+</p>
 <%= form_tag({:controller => 'teams', :action => 'change', :id => @pool.id}, {:method => "POST"}) %>
 <% @pool.region_seedings.each_with_index do |arr, index| -%>
 <% region_name = arr[0]; teams = arr[1] %>
 <div class="<%= cycle('regionLeft', 'regionRight', :name => 'tbclass')%> <%= cycle('regionTop', 'regionTop', 'regionBottom', 'regionBottom', :name => 'lrclass')%>">
 Region Name: <input type="text" name="region<%=index%>[name]" value="<%=region_name%>">
-<table>
+<table id="<%="region_#{index}"%>">
 <tr>
 <th>Seed</th>
 <th>Name</th>
 <th>Short<br/>Name</th>
 </tr>
 <% teams.each_with_index do |team, seed_idx| -%>
-<tr>
+<tr id="<%="region_#{index}_#{seed_idx}"%>">
 <td>
 <%= seed_idx + 1%>
 </td>
