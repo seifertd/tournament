@@ -3,11 +3,16 @@
 # and champions of Region 3 and Region 4 play each
 # other in the final four.
 class Tournament::Pool
-  attr_reader :regions  # The regions in the pool
-  attr_reader :entries  # Tournament::Entry objects for participants
-  attr_reader :payouts  # Hash of payouts by rank
-  attr_accessor :entry_fee  # The amount each entry paid to participate
-  attr_reader :scoring_strategy  # The scoring strategy for the pool
+  # The regions in the pool.
+  attr_reader :regions
+  # Tournament::Entry objects for the participants
+  attr_reader :entries
+  # Hash of payouts by rank
+  attr_reader :payouts
+  # The entry fee
+  attr_accessor :entry_fee
+  # The scoring strategy for the pool
+  attr_reader :scoring_strategy
 
   # Create a new empty pool with no Regions or Entries
   def initialize
@@ -286,9 +291,9 @@ class Tournament::Pool
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
     # Play out the bracket
     32.times { |n| b.set_winner(1,n+1, b.matchup(1, n+1)[rand(2)])}
-    16.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
-    8.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
-    4.times { |n| b.set_winner(4,n+1, b.matchup(4, n+1)[rand(2)])}
+    10.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
+#    8.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
+#4.times { |n| b.set_winner(4,n+1, b.matchup(4, n+1)[rand(2)])}
     #2.times { |n| b.set_winner(5,n+1, b.matchup(5, n+1)[rand(2)])}
     #1.times { |n| b.set_winner(6,n+1, b.matchup(6, n+1)[rand(2)])}
     picks.each_with_index {|p, idx| pool.add_entry Tournament::Entry.new("picker_#{idx}", p) }

@@ -69,7 +69,7 @@ class UsersController < ApplicationController
           UserMailer.deliver_password_reset_notification(user, reset_password_path(:reset_code => user.password_reset_code, :only_path => false))
         end
         flash[:notice] = "Reset code sent to #{params[:user][:email]}"
-        redirect_back_or_default('/')
+        redirect_back_or_default(root_path)
       else
         flash[:error] = "Please enter a valid email address"
       end
@@ -92,7 +92,7 @@ class UsersController < ApplicationController
         #self.current_user = @user
         @user.delete_password_reset_code
         flash[:notice] = "Password updated successfully for #{@user.email} - You may now log in using your new password."
-        redirect_back_or_default('/')
+        redirect_back_or_default(root_path)
       else
         render :action => :reset_password
       end

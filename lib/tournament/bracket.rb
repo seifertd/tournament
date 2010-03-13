@@ -1,9 +1,13 @@
 # Class representing a bracket in a tournament.
 class Tournament::Bracket
-  attr_reader :name  # The name of the bracket
-  attr_reader :teams # The teams in the bracket
-  attr_reader :rounds # The number of rounds in the bracket
-  attr_reader :winners # The winners of each game in the bracket
+  # The name of the bracket
+  attr_reader :name 
+  # The teams in the bracket
+  attr_reader :teams
+  # The number of rounds in the bracket
+  attr_reader :rounds
+  # The winners of each game in the bracket
+  attr_reader :winners
 
   # Marker for an unknown team
   UNKNOWN_TEAM = :unk unless defined?(UNKNOWN_TEAM)
