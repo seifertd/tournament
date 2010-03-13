@@ -3,7 +3,7 @@
 <% if Pool.active_pools.size > 0 %>
 <% Pool.active_pools.each do |pool| -%>
 <div class="poollistblock">
-<span class="poollisthead"><%= pool.name %></span>
+<span class="poollisthead<%= pool.completed? ? ' poollistheaddone' : ''%>"><%= pool.name %></span>
 <small>
 <% if current_user && pool.user_id == current_user.id %>
 <% if pool.tournament_entry -%>

@@ -27,6 +27,9 @@ h1 {
   font-weight: bold;
   color: green;
 }
+.poollistheaddone {
+  color: gray;
+}
 #wrap {
   margin:0 auto;
   width:auto;
