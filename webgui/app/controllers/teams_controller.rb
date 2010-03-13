@@ -68,7 +68,7 @@ class TeamsController < ApplicationController
       end
       @pool.save!
       end
-      if @pool.ready?
+      if @pool.teams_set?
         @pool.initialize_tournament_pool
         @pool.save
       end
