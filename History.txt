@@ -1,3 +1,8 @@
+== 3.1.1 / 2009-03-13
+* Bugfixes for showing add entry links.  Makes sure participants can
+  add entries once the teams are set.
+* Verbiage for pools that are over.
+
 == 3.1.0 / 2009-03-12
 * Account for multiple pools when saving/loading possibility yaml file.
 * Update restful_authentication to latest version.
