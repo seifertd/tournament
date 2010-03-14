@@ -1,3 +1,7 @@
+== 3.2.1 / 2009-03-14
+* Fix teams selection controller to not care about the order of
+  input seedings.
+
 == 3.2.0 / 2009-03-14
 * Fix team selection page to not jump around when using arrow keys
   with the autocomplete pop ups.
