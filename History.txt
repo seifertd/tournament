@@ -1,3 +1,6 @@
+== 3.2.2 / 2009-03-14
+* Fix initialization of tournament entry.
+
 == 3.2.1 / 2009-03-14
 * Fix teams selection controller to not care about the order of
   input seedings.
