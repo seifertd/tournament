@@ -298,4 +298,37 @@ class TeamsControllerTest < ActionController::TestCase
     assert_equal 64, team_list.size, "OOPS! There should be 64 teams."
     assert_equal 64, pool.teams.size, "OOPS! There should be 64 teams."
   end
+
+  # Test that completely reording the world works
+  test "reorder entire region" do
+    input = {"id" => 1, "region0"=>{"name"=>"West",
+     "seedings"=>[{"name"=>"UCLA", "seed"=>"1", "short_name"=>"ULA"},
+     {"name"=>"Duke", "seed"=>"2", "short_name"=>"Duk"},
+     {"name"=>"Xavier", "seed"=>"3", "short_name"=>"Xav"},
+     {"name"=>"Connecticut", "seed"=>"4", "short_name"=>"Con"},
+     {"name"=>"Drake", "seed"=>"5", "short_name"=>"Dra"},
+     {"name"=>"Purdue", "seed"=>"6", "short_name"=>"Pur"},
+     {"name"=>"West Virginia", "seed"=>"7", "short_name"=>"WVa"},
+     {"name"=>"BYU", "seed"=>"8", "short_name"=>"BYU"},
+     {"name"=>"Texas A&M", "seed"=>"9", "short_name"=>"A&M"},
+     {"name"=>"Arizona", "seed"=>"10", "short_name"=>"UA"},
+     {"name"=>"Baylor", "seed"=>"11", "short_name"=>"Bay"},
+     {"name"=>"W. Kentucky", "seed"=>"12", "short_name"=>"WKy"},
+     {"name"=>"San Diego", "seed"=>"13", "short_name"=>"SD"},
+     {"name"=>"Georgia", "seed"=>"14", "short_name"=>"UG"},
+     {"name"=>"Belmont", "seed"=>"15", "short_name"=>"Bel"},
+     {"name"=>"Mis. Valley St", "seed"=>"16", "short_name"=>"MVS"}]}}
+    login_as :admin
+    post :change, input
+    pool = Pool.find(1)
+    assert_equal 16, pool.region_seedings[0][1].uniq.size, "OOPS! There are dupe teams in region 0 teams list"
+    assert_equal input["region0"]["seedings"].map {|h| h["short_name"]}, pool.region_seedings[0][1].uniq.map{|t| t.short_name}, "Teams are out of order or otherwise not equal"
+
+    input["region0"]["seedings"] = input["region0"]["seedings"].sort_by { rand }
+    input["region0"]["seedings"].each_with_index {|s, idx| s["seed"] = idx + 1}
+    post :change, input
+    pool = Pool.find(1)
+    assert_equal 16, pool.region_seedings[0][1].uniq.size, "OOPS! There are dupe teams in region 0 teams list"
+    assert_equal input["region0"]["seedings"].map {|h| h["short_name"]}, pool.region_seedings[0][1].uniq.map{|t| t.short_name}, "Teams are out of order or otherwise not equal"
+  end
 end

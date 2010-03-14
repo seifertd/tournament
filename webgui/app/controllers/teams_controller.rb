@@ -47,24 +47,13 @@ class TeamsController < ApplicationController
           logger.debug("SAVING NEW TEAM for region #{region_idx}, seed: #{seeding_hash[:seed]}, name: #{team.name}, short: #{team.short_name}")
           team.save!
         end
-        existing_region = @pool.region_seedings.find{|rn, rs| rn == region_name}
-        existing_team = nil
-        if existing_region
-          existing_team = existing_region[1][seeding_hash[:seed].to_i - 1]
+        logger.debug "Finding Seeding for region #{region.name}, seed #{seeding_hash[:seed]}"
+        existing_seeding = @pool.seedings.find_or_create_by_region_and_seed(region.name, seeding_hash[:seed])
+        if existing_seeding.team_id != team.id
+          logger.debug "  ==> TEAMS ARE DIFF, CHANGING SEEDING: #{existing_seeding.inspect}"
+          existing_seeding.team_id = team.id
+          existing_seeding.save!
         end
-        if existing_team
-          logger.debug "COMPARING existing team #{existing_team.inspect} with new team #{team.inspect}"
-          if existing_team != team
-            # Change team ...
-            existing_seeding = @pool.seedings.find(:first, :conditions => {:team_id => existing_team.id, :region => region_name})
-            logger.debug "  ==> TEAMS ARE DIFF, CHANGING SEEDING: #{existing_seeding.inspect}"
-            existing_seeding.team_id = team.id
-            existing_seeding.save!
-          end
-        else
-          logger.debug("SAVING NEW SEEDING for region #{region_idx}, seed: #{seeding_hash[:seed]}, team name: #{team.name}, short: #{team.short_name}, team id: #{team.id}")
-          @pool.seedings.create(:team_id => team.id, :region => region_name, :seed => seeding_hash[:seed])
-        end 
       end
       @pool.save!
       end

@@ -50,8 +50,8 @@ Region Name: <input type="text" name="region<%=index%>[name]" value="<%=region_n
     :after_update_element => 'function(element, value) {name_id = element.id.replace("short_name", "team_name"); $(name_id).value = value.readAttribute("name")}'
 %>
 </td>
-</tr>
 <input type="hidden" name="region<%=index%>[seedings][][seed]" value="<%=seed_idx + 1%>">
+</tr>
 <% end -%>
 </table>
 </div>
