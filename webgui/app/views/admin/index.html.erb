@@ -8,7 +8,7 @@
 <% @pools.each do |p| -%>
 <tr>
 <td><%=link_to p.name, :action => 'pool', :id => p.id%></td>
-<td><%=p.starts_at.to_formatted_s(:short)%></td>
+<td><%=p.starts_at.to_formatted_s(:long)%></td>
 </tr>
 <% end %>
 </table>
