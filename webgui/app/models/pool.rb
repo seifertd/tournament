@@ -67,7 +67,7 @@ class Pool < ActiveRecord::Base
     end
     (0..3).each {|n| reg_ret[n] ||= ['', Array.new(16)]}
 
-    self.seedings.each_with_index do |t, idx|
+    self.seedings.each do |t|
       region = reg_ret.find {|name, teams| name == t.region} || reg_ret.find {|name, teams| name.blank?}
       region[0] = t.region
       region[1][t.seed-1] = t.team

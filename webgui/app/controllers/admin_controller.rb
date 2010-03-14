@@ -62,7 +62,10 @@ class AdminController < ApplicationController
     pool = Pool.find(params[:id])
     # This is confusing ...
     @pool = pool.pool
-    @entry = Entry.find_or_initialize_by_user_id(:user_id => current_user.id, :pool_id => pool.id, :tie_break => 0, :name => 'Tournament Bracket')
+    @entry = Entry.find_or_initialize_by_user_id_and_pool_id(current_user.id, pool.id) do |e|
+      e.tie_break = 0
+      e.name = 'Tournament Bracket'
+    end
     @entry.bracket
     @entry.save(false)
       
