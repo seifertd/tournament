@@ -1,3 +1,9 @@
+== 3.2.0 / 2009-03-14
+* Fix team selection page to not jump around when using arrow keys
+  with the autocomplete pop ups.
+* Allow switch between seed and matchup order in team selection page.
+* Minor cosmetic formatting changes.
+
 == 3.1.1 / 2009-03-13
 * Bugfixes for showing add entry links.  Makes sure participants can
   add entries once the teams are set.
