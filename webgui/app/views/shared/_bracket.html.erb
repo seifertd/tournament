@@ -1,5 +1,5 @@
 <%
-is_editable = defined?(editable) ? editable : (current_user.has_role?(:admin) || Time.now < @entry.pool.starts_at)
+is_editable = defined?(editable) ? editable : (current_user.has_role?(:admin) || (@entry.pool.accepting_entries? && @entry.user == current_user ) )
 classes = {}
 ids = {}
 onclicks = {}
