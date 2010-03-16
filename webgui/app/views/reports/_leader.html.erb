@@ -21,6 +21,7 @@
 <td rowspan="2">Current<br/>Score</td>
 <td rowspan="2">Max Score</td>
 <td rowspan="2">Entry Name</td>
+<td rowspan="2">By</td>
 <td rowspan="2">Champ<br/>Alive?</td>
 <td rowspan="2">Tie<br/>Break</td>
 <td colspan="6">Round Scores</td>
@@ -36,13 +37,17 @@
 </thead>
 <tbody>
 <%
-  db_entry_ids = @pool.user_entries.inject({}) {|h,e| h[e.name] = e.id; h}
+  db_entries = @pool.user_entries.inject({}) {|h,e| h[e.name] = e; h}
   pool.entries.sort do |e1, e2|
     s1 = e1.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
     s2 = e2.picks.score_against(pool.tournament_entry.picks, pool.scoring_strategy)
     if s1 == s2 && pool.tournament_entry.tie_breaker
       s1 = 0 - (e1.tie_breaker - pool.tournament_entry.tie_breaker).abs
       s2 = 0 - (e2.tie_breaker - pool.tournament_entry.tie_breaker).abs
+    end
+    if s1 == s2
+      s1 = e1.max_score
+      s2 = e2.max_score
     end
     s2 <=> s1
   end.inject(nil) do |last_entry, entry|
@@ -65,7 +70,8 @@
 <td><%=rank_display%></td>
 <td><%=total%></td>
 <td><%=max%></td>
-<td><%=link_to entry.name, :controller => 'entry', :action => 'show', :id => db_entry_ids[entry.name]%></td>
+<td><%=link_to entry.name, :controller => 'entry', :action => 'show', :id => db_entries[entry.name].id%></td>
+<td><%=db_entries[entry.name].user.login%></td>
 <td><%=champ.short_name%> <%=pool.tournament_entry.picks.still_alive?(champ) ? 'Y' : 'N'%></td>
 <td><%=entry.tie_breaker || '-'%></td>
 <% round_scores.each do |rs| %>
