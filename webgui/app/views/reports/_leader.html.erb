@@ -46,8 +46,8 @@
       s2 = 0 - (e2.tie_breaker - pool.tournament_entry.tie_breaker).abs
     end
     if s1 == s2
-      s1 = e1.max_score
-      s2 = e2.max_score
+      s1 = e1.picks.maximum_score(pool.tournament_entry.picks, pool.scoring_strategy)
+      s2 = e2.picks.maximum_score(pool.tournament_entry.picks, pool.scoring_strategy)
     end
     s2 <=> s1
   end.inject(nil) do |last_entry, entry|
