@@ -278,6 +278,96 @@ class Tournament::Pool
     return pool
   end
  
+  # Creates a Pool object for the 2010 NCAA tournament
+  def self.ncaa_2010
+    pool = Tournament::Pool.new
+    pool.add_region("Midwest",
+      [
+        Tournament::Team.new('Kansas', 'Kan', 1),
+        Tournament::Team.new('Lehigh', 'Leh', 16),
+        Tournament::Team.new('UNLV', 'ULV', 8),
+        Tournament::Team.new('Northern Iowa', 'NIo', 9),
+        Tournament::Team.new('Michigan St.', 'MSU', 5),
+        Tournament::Team.new('New Mexico State', 'NMS', 12),
+        Tournament::Team.new('Maryland', 'Mry', 4),
+        Tournament::Team.new('Houston', 'Hou', 13),
+        Tournament::Team.new('Tennessee', 'Ten', 6),
+        Tournament::Team.new('San Diego State', 'SDS', 11),
+        Tournament::Team.new('Georgetown', 'GT', 3),
+        Tournament::Team.new('Ohio', 'Ohi', 14),
+        Tournament::Team.new('Oklahoma State', 'OkS', 7),
+        Tournament::Team.new('Georgia Tech', 'GTc', 10),
+        Tournament::Team.new('Ohio State', 'OSU', 2),
+        Tournament::Team.new('UC Santa Barbara', 'SB', 15)
+      ],
+      0
+    )
+    pool.add_region("West",
+      [
+        Tournament::Team.new('Syracuse', 'Syr', 1),
+        Tournament::Team.new('Vermont', 'Ver', 16),
+        Tournament::Team.new('Gonzaga', 'Gon', 8),
+        Tournament::Team.new('Florida State', 'FSU', 9),
+        Tournament::Team.new('Butler', 'But', 5),
+        Tournament::Team.new('UTEP', 'UTP', 12),
+        Tournament::Team.new('Vanderbilt', 'Van', 4),
+        Tournament::Team.new('Murray State', 'Mur', 13),
+        Tournament::Team.new('Xavier', 'Xav', 6),
+        Tournament::Team.new('Minnesota', 'Min', 11),
+        Tournament::Team.new('Pittsburgh', 'Pit', 3),
+        Tournament::Team.new('Oakland', 'Oak', 14),
+        Tournament::Team.new('BYU', 'BYU', 7),
+        Tournament::Team.new('Florida', 'Fla', 10),
+        Tournament::Team.new('Kansas St.', 'KSU', 2),
+        Tournament::Team.new('Nort Texas', 'NTx', 15)
+      ],
+      1
+    )
+    pool.add_region("East",
+      [
+        Tournament::Team.new('Kentucky', 'Ken', 1),
+        Tournament::Team.new('East Tennessee State', 'ETS', 16),
+        Tournament::Team.new('Texas', 'Tex', 8),
+        Tournament::Team.new('Wake Forest', 'WkF', 9),
+        Tournament::Team.new('Temple', 'Tem', 5),
+        Tournament::Team.new('Cornell', 'Cor', 12),
+        Tournament::Team.new('Wisconsin', 'Wis', 4),
+        Tournament::Team.new('Wofford', 'Wof', 13),
+        Tournament::Team.new('Marquette', 'Mar', 6),
+        Tournament::Team.new('Washington', 'Was', 11),
+        Tournament::Team.new('New Mexico', 'NMx', 3),
+        Tournament::Team.new('Montana', 'Mon', 14),
+        Tournament::Team.new('Clemson', 'Clm', 7),
+        Tournament::Team.new('Missouri', 'Msr', 10),
+        Tournament::Team.new('West Virginia', 'WVa', 2),
+        Tournament::Team.new('Morgan State', 'MgS', 15)
+      ],
+      2
+    )
+    pool.add_region("South",
+      [
+        Tournament::Team.new('Duke', 'Duk', 1),
+        Tournament::Team.new('Arkansa-Pine Bluff', 'APB', 16),
+        Tournament::Team.new('California', 'Cal', 8),
+        Tournament::Team.new('Louisville', 'Lou', 9),
+        Tournament::Team.new('Texas A&M', 'A&M', 5),
+        Tournament::Team.new('Utah State', 'USt', 12),
+        Tournament::Team.new('Purdue', 'Pur', 4),
+        Tournament::Team.new('Siena', 'Sie', 13),
+        Tournament::Team.new('Notre Dame', 'ND', 6),
+        Tournament::Team.new('Old Dominion', 'OD', 11),
+        Tournament::Team.new('Baylor', 'Bay', 3),
+        Tournament::Team.new('Sam Houston State', 'SHS', 14),
+        Tournament::Team.new('Richmond', 'Rch', 7),
+        Tournament::Team.new("St. Mary's", 'StM', 10),
+        Tournament::Team.new('Villanova', 'Vil', 2),
+        Tournament::Team.new('Robert Morris', 'RbM', 15)
+      ],
+      3
+    )
+    return pool
+  end
+ 
   # Run a test pool with random entries and a random outcome.
   def self.test(num_picks = 20)
     pool = ncaa_2008

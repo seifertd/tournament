@@ -1,5 +1,5 @@
 tournament
-    by Douglas A. Seifert (doug+rubyforge at dseifert dot net)
+    by Douglas A. Seifert (doug at dseifert dot net)
     http://www.dseifert.net/code/tournament
     http://github.org/seifertd/tournament
     http://rubygems.org/gems/tournament

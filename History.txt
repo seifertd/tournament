@@ -1,3 +1,8 @@
+== 3.3.0 / 2009-03-16
+* Final 2010 bracket.
+* Fix permissions issue making tournament bracket seem editable to all.
+* Show login name in leader board.
+
 == 3.2.2 / 2009-03-14
 * Fix initialization of tournament entry.
 

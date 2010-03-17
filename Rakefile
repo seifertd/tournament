@@ -17,7 +17,7 @@ Bones {
 
   name 'tournament'
   authors 'Douglas A. Seifert'
-  email 'doug+rubyforge@dseifert.net'
+  email 'doug@dseifert.net'
   url 'http://www.dseifert.net/code/tournament'
   rubyforge.name 'tournament'
   readme_file 'README.rdoc'
