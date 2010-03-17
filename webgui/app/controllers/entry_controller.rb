@@ -41,7 +41,7 @@ class EntryController < ApplicationController
   end
 
   def new
-    @entry = Entry.new(:pool_id => params[:id])
+    @entry = Entry.new(:pool_id => params[:id], :user_id => current_user.id)
     @pool = @entry.pool.pool
     render :action => 'show'
   end
