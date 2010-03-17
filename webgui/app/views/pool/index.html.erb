@@ -7,7 +7,7 @@
 <small>
 <% if current_user && pool.user_id == current_user.id %>
 <% if pool.tournament_entry -%>
-<%= link_to '[Tourny Bracket]', :controller => 'admin', :action => 'bracket', :id => pool.tournament_entry.id %>
+<%= link_to '[Tourny Bracket]', :controller => 'admin', :action => 'bracket', :id => pool.id %>
 <% end -%>
 <%= link_to '[Recap]', :controller => 'admin', :action => 'recap', :id => pool.id%>
 <%= link_to '[Edit]', :controller => 'admin', :action => 'pool', :id => pool.id %>
