@@ -25,6 +25,7 @@ class Prince
   def initialize()
     # Finds where the application lives, so we can call it.
     @exe_path = defined?(PRINCE_PATH) ? PRINCE_PATH : `which prince`.chomp
+    @exe_path = 'no prince' if @exe_path.blank?
   	@style_sheets = ''
   	@log_file = "#{RAILS_ROOT}/log/prince.log"
   end

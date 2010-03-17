@@ -9,7 +9,7 @@ class EntryControllerTest < ActionController::TestCase
     assert pool.accepting_entries?, "Pool with id = 4 should be taking entries."
     post(:edit, {:picks => "111000000000000000000000000000000000000000000000000000000000000",
       :id => 1, :entry => {:name => 'Test', :tie_break => 42}, :pool_id => 2})
-    assert_redirected_to :action => 'show'
+    assert_redirected_to :controller => 'entry', :action => 'show', :id => 1
     assert_nil flash[:error]
     assert_equal "Changes were saved.", flash[:info]
     assert_equal "You still have remaining games in this entry to pick.", flash[:notice]
@@ -24,6 +24,35 @@ class EntryControllerTest < ActionController::TestCase
     assert_redirected_to :action => 'show'
     assert_equal "You can't make changes to your entry, the pool has already started.", flash[:error]
   end
+
+  test "can edit new entry" do
+    login_as :quentin
+    pool = Pool.find(2)
+    get :new, :id => pool.id
+    entry = assigns['entry']
+    assert_not_nil entry, "Entry should be set"
+    assert entry.new_record?, "Entry should be new, not saved"
+    assert_select "span[class~='teamname']" do |elems|
+      elems.each do |elem|
+        assert elem.attributes["onclick"].length() > 0, "There should be onclick handlers on the teamname spans."
+      end
+    end
+  end
+
+  test "can not edit tournament entry" do
+    login_as :quentin
+    pool = Pool.find(2)
+    get :show, :id => pool.tournament_entry.id
+    entry = assigns['entry']
+    assert_not_nil entry, "Entry should be set"
+    assert !entry.new_record?, "Entry should not be new"
+    assert_select "span[class~='teamname']" do |elems|
+      elems.each do |elem|
+        assert elem.attributes["onclick"].length() == 0, "There should not be onclick handlers on the teamname spans."
+      end
+    end
+  end
+
 
   test "entry can change name" do
     login_as :quentin

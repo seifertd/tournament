@@ -9,6 +9,7 @@ one:
 two:
   id: 2
   name: Test Pool 2
+  user_id: 4
   data:
   started: false
   starts_at: <%= Time.now + 5.days %>

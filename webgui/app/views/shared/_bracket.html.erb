@@ -95,10 +95,11 @@ Current Score: <%= @entry.bracket.score_against(@pool.tournament_entry.picks, @p
 <TR>
 <TD class="space" colspan="17">&nbsp;</TD>
 <!-- SEED 1 TOP  1/33 -->
+</TR>
 <TR>
 <TD class="space">&nbsp;</TD>
 <TD class="odd">
-<span class="<%=classes[1]%>" id="<%=ids[1]%>" team="<%=teams[1]%>" onclick="<%=onclicks[1]%>" onmouseover="<%=onmouseovers[1]%>" onmouseout="<%=onmouseouts[1]%>"><%=contents[1]%></span>
+<span class="<%=classes[1].strip%>" id="<%=ids[1]%>" team="<%=teams[1]%>" onclick="<%=onclicks[1]%>" onmouseover="<%=onmouseovers[1]%>" onmouseout="<%=onmouseouts[1]%>"><%=contents[1]%></span>
 </TD>
 <TD class="space">&nbsp;</TD>
 <TD class="space">&nbsp;</TD>
