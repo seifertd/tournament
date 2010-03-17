@@ -1,3 +1,6 @@
+== 3.3.1 / 2009-03-16
+* Emergency bug fix.
+
 == 3.3.0 / 2009-03-16
 * Final 2010 bracket.
 * Fix permissions issue making tournament bracket seem editable to all.
