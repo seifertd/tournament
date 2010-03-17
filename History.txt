@@ -1,3 +1,8 @@
+== 3.3.2 / 2010-03-17
+* More regressions: Fix Tourny Bracket link when logged in as pool owner.
+  Fix create entry to set the user_id so the new permissions checking actually
+  works.
+
 == 3.3.1 / 2010-03-16
 * Emergency bug fix.
 
