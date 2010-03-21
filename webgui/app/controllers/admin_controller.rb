@@ -3,19 +3,27 @@ class AdminController < ApplicationController
   include SavesPicks
 
   def edit
-    @entry = Entry.find_by_user_id(current_user.id)
+    @entry = Entry.find(params[:id])
     if @entry
       @pool = @entry.pool
-      save_picks(@entry)
-      if @entry.save(false)
+      if params[:reset] == 'Reset Picks'
+        @entry.reset
+        flash[:info] = "Tournament bracket reset."
+      else
+        save_picks(@entry)
+        flash[:info] = "Tournament bracket updated."
+      end
+      if @entry.save_with_validation(false)
         @pool.pool.tournament_entry = @entry.tournament_entry
         @pool.save
-        flash[:info] = "Tournament bracket updated."
         redirect_to :action => 'bracket', :id => @pool.id
+        return
       else
         @pool = @pool.pool
+        flash[:info] = nil
         flash[:error] = "Could not save entry."
         render :action => 'bracket', :layout => 'bracket'
+        return
       end
     else
       flash[:error] = "Tournament bracket has not yet been initialized."

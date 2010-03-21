@@ -5,7 +5,7 @@
 <% if @pool.started? -%>
 <li><%= link_to 'Score', :report => 'score'%></li>
 <li><%= link_to 'Leader', :report => 'leader'%></li>
-<% if @pool.pool.tournament_entry.picks.teams_left <= 16 %>
+<% if @has_poss_stats %>
 <li><%= link_to 'Possibility', :report => 'possibility'%></li>
 <% end %>
 <% if @pool.pool.tournament_entry.picks.teams_left <= 4 %>

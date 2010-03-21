@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
   layout 'report'
   def show
     @pool = Pool.find(params[:id])
+    @has_poss_stats = File.exist?(self.stats_data_file(@pool.id))
     if params[:report] == 'possibility'
       possibility
     end
