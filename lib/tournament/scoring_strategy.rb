@@ -16,6 +16,22 @@ module Tournament::ScoringStrategy
     end
   end
 
+  class WorldCupSoccer
+    PER_ROUND = [0, 0, 1, 2, 4, 8]
+    def score(pick, winner, loser, round)
+      if winner != Tournament::Bracket::UNKNOWN_TEAM && pick == winner
+        return PER_ROUND[round-1]
+      end
+      return 0
+    end
+    def name
+      'World Cup Soccer'
+    end
+    def description
+      "Each correct pick is worth #{PER_ROUND.join(', ')} per round. First 2 rounds are 'dummy' rounds representing the group play."
+    end
+  end
+
   # Class representing a scoring strategy where correct picks
   # are worth 1 point each, regardless of round
   class ConstantValue
@@ -90,7 +106,7 @@ module Tournament::ScoringStrategy
   # Returns names of available strategies.  The names returned are suitable
   # for use in the strategy_for_name method
   def self.available_strategies
-    return ['basic', 'upset', 'josh_patashnik', 'tweaked_josh_patashnik', 'constant_value']
+    return ['basic', 'world_cup_soccer', 'upset', 'josh_patashnik', 'tweaked_josh_patashnik', 'constant_value']
   end
 
   # Returns an instantiated strategy class for the named strategy.
@@ -100,3 +116,4 @@ module Tournament::ScoringStrategy
   end
 
 end
+
