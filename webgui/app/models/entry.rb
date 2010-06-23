@@ -1,7 +1,7 @@
 class Entry < ActiveRecord::Base
   belongs_to :user
   belongs_to :pool
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :scope => :pool_id
   validates_presence_of :tie_break
   validates_presence_of :user_id
   attr_accessor :old_name
