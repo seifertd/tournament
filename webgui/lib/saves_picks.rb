@@ -18,6 +18,6 @@ module SavesPicks
     logger.debug("SAVING ENTRY PARAMS: #{params[:entry].inspect}")
     entry.attributes = params[:entry]
     logger.debug("DONE SAVING ENTRY PARAMS")
-    entry.completed = true if bracket.complete?
+    entry.completed = bracket.complete?
   end
 end
