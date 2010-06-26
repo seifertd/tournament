@@ -82,7 +82,7 @@ class UsersController < ApplicationController
     @user = User.find_by_password_reset_code(params[:reset_code]) unless params[:reset_code].nil?
     if !@user
       flash[:error] = "Reset password token invalid, please contact support."
-      redirect_to('/')
+      redirect_to(root_path)
       return
     else
       @user.crypted_password = nil
