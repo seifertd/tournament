@@ -1,3 +1,7 @@
+== 4.0.0 / 2011-03-14
+* 2011 bracket.
+* Upgrade to Rails 2.3.11.
+
 == 3.3.3 / 2010-03-21
 * Show link to possibility report if stats file exists.
 

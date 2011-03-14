@@ -20,6 +20,7 @@ basketball tournament pool.
   the entries and updating the tournament results bracket.  Useful as an
   adjunct to the command line script.
 * FIXME: Complete the test suite for the library and command line tool
+* FIXME: Can't change name of team after entries have been added
 
 == COMMAND LINE SYNOPSIS:
 
@@ -288,7 +289,7 @@ on the server:
 
    RAILS_ENV=production rake report:possibilities
 
-== SHOES GUI:
+== SHOES GUI (Deprecated):
 
 A GUI for filling out tournment bracket entries is included and is run
 by executing the program "picker".  If no argument is included, a blank
@@ -312,9 +313,9 @@ from played to unknown outcome.
 
 == WEB GUI REQUIREMENTS:
 
-* rails (2.3.5)
+* rails (2.3.11)
 * rake (0.8.7)
-* sqlite3-ruby (1.2.5)
+* sqlite3-ruby (1.3.3) (default active record adapter)
 
 == SHOES GUI REQUIREMENTS:
 
@@ -332,7 +333,7 @@ Verified working on
 
 (The MIT License)
 
-Copyright (c) 2008
+Copyright (c) 2011
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
