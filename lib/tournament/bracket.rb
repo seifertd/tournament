@@ -321,6 +321,27 @@ class Tournament::Bracket
     end
   end
 
+  # Change the name of a team in this bracket
+  def change_team_name(old_name, old_short_name, new_name, new_short_name)
+    @teams.each do |t|
+      if t.name == old_name && t.short_name == old_short_name
+        t.name = new_name
+        t.short_name = new_short_name
+        break
+      end
+    end
+    @winners.each do |round|
+      round.each do |t|
+        next if t == UNKNOWN_TEAM
+        if t.name == old_name && t.short_name == old_short_name
+          t.name = new_name
+          t.short_name = new_short_name
+          break
+        end
+      end
+    end
+  end
+
   # Generates a bracket for the provided teams with a random winner
   # for each game.
   def self.random_bracket(teams = nil)

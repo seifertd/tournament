@@ -58,8 +58,19 @@ class TeamsController < ApplicationController
         end
         if existing_seeding.team_id != team.id
           logger.debug "  ==> TEAMS ARE DIFF, CHANGING SEEDING: #{existing_seeding.inspect}"
+          old_name = existing_seeding.team.name
+          old_short_name = existing_seeding.team.short_name
           existing_seeding.team_id = team.id
           existing_seeding.save!
+          # Change the name in all the entries
+          if @pool.teams_set?
+            @pool.pool.tournament_entry.bracket.change_team_name(old_name, old_short_name, team.name, team.short_name)
+            @pool.save!
+            @pool.user_entries.each do |entry|
+              entry.bracket.change_team_name(old_name, old_short_name, team.name, team.short_name)
+              entry.save!
+            end
+          end
         end
       end
       @pool.save!

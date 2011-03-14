@@ -1,6 +1,6 @@
 # Represents a team in a tournament Bracket
 class Tournament::Team
-  attr_reader :name, :short_name, :seed
+  attr_accessor :name, :short_name, :seed
   
   def initialize(name, short_name, seed)
     @name = name
