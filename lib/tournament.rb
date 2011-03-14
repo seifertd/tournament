@@ -7,7 +7,7 @@ unless defined? Tournament
 module Tournament
 
   # :stopdoc:
-  VERSION = '4.0.1'
+  VERSION = '4.0.2'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:

@@ -1,4 +1,4 @@
-== 4.0.1 / 2011-03-14
+== 4.0.2 / 2011-03-14
 * Add ability to change the name of a team after tourny has started.  
   FIXME: after team name change, admin must manually save all entries
 
