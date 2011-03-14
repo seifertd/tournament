@@ -13,7 +13,7 @@ task :default => 'test:run'
 Bones {
   depend_on 'main'
   depend_on 'rake'
-  depend_on 'rails'
+  depend_on 'rails', :version => "2.3.11"
 
   name 'tournament'
   authors 'Douglas A. Seifert'
