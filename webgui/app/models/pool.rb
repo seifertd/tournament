@@ -5,14 +5,14 @@ class Pool < ActiveRecord::Base
   validates_uniqueness_of :name
   before_save :marshal_pool
   belongs_to :user
-  has_many :entries
+  has_many :entries, :dependent => :destroy
   has_many :user_entries, :class_name => 'Entry', :conditions => ['user_id != ?', '#{user_id}'], :include => :user, :order => 'users.login, entries.name'
   has_many :users, :through => :user_entries
   has_many :pending_entries, :class_name => 'Entry', :conditions => ['completed = ? and user_id != ?', false, '#{user_id}']
   has_one :tournament_entry, :class_name => 'Entry', :conditions => ['user_id = \'#{user_id}\'']
-  has_many :seedings
+  has_many :seedings, :dependent => :destroy
   has_many :teams, :through => :seedings
-  has_many :regions, :order => 'position'
+  has_many :regions, :order => 'position', :dependent => :destroy
 
   # Class for collecting payout info from edit pool form
   class PayoutData < FormObject
