@@ -26,9 +26,13 @@ class TeamsController < ApplicationController
     Pool.transaction do
     [0,1,2,3].each do |region_idx|
       region_hash = params["region#{region_idx}".to_sym]
+      logger.debug("Got region hash: #{region_hash}, index: #{region_idx}")
       next unless region_hash
       region_name = region_hash[:name]
-      next if region_name.blank? || region_hash[:seedings].blank?
+      if region_name.blank? || region_hash[:seedings].blank?
+	flash[:error] = "Please specify name of region #{region_idx+1}"
+        next
+      end
       raise "Illegal input, seedings array contains more than 16 elements" if region_hash[:seedings].length > 16
       region = Region.find_by_pool_id_and_position(@pool.id, region_idx)
       if !region
@@ -48,7 +52,10 @@ class TeamsController < ApplicationController
           team.save!
         end
         logger.debug "Finding Seeding for region #{region.name}, seed #{seeding_hash[:seed]}"
-        existing_seeding = @pool.seedings.find_or_create_by_region_and_seed(region.name, seeding_hash[:seed])
+        existing_seeding = @pool.seedings.find_by_region_and_seed(region.name, seeding_hash[:seed])
+        unless existing_seeding
+           existing_seeding = @pool.seedings.create(:region => region.name, :seed => seeding_hash[:seed], :team_id => team.id)
+        end
         if existing_seeding.team_id != team.id
           logger.debug "  ==> TEAMS ARE DIFF, CHANGING SEEDING: #{existing_seeding.inspect}"
           existing_seeding.team_id = team.id
