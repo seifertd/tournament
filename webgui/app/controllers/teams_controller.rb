@@ -66,7 +66,7 @@ class TeamsController < ApplicationController
           if @pool.teams_set?
             @pool.pool.tournament_entry.bracket.change_team_name(old_name, old_short_name, team.name, team.short_name)
             @pool.save!
-            @pool.user_entries.each do |entry|
+            @pool.entries.each do |entry|
               entry.bracket.change_team_name(old_name, old_short_name, team.name, team.short_name)
               entry.save!
             end

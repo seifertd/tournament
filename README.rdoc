@@ -20,7 +20,6 @@ basketball tournament pool.
   the entries and updating the tournament results bracket.  Useful as an
   adjunct to the command line script.
 * FIXME: Complete the test suite for the library and command line tool
-* FIXME: Can't change name of team after entries have been added
 
 == COMMAND LINE SYNOPSIS:
 

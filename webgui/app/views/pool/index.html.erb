@@ -7,14 +7,14 @@
 <small>
 <% if current_user && pool.user_id == current_user.id %>
 <% if pool.tournament_entry -%>
-<%= link_to '[Tourny Bracket]', :controller => 'admin', :action => 'bracket', :id => pool.id %>
+<%= link_to '[Tourny Results]', :controller => 'admin', :action => 'bracket', :id => pool.id %>
 <% end -%>
 <%= link_to '[Recap]', :controller => 'admin', :action => 'recap', :id => pool.id%>
 <%= link_to '[Edit]', :controller => 'admin', :action => 'pool', :id => pool.id %>
 <%= link_to '[Entries]', :controller => 'admin', :action => 'entries', :id => pool.id %>
 <% else %>
 <% if pool.tournament_entry -%>
-<%= link_to '[Tourny Bracket]', :controller => 'entry', :action => 'show', :id => pool.tournament_entry.id %>
+<%= link_to '[Tourny Results]', :controller => 'entry', :action => 'show', :id => pool.tournament_entry.id %>
 <% end %>
 <% end %>
 <%= link_to '[Leader Board]', :controller => 'reports', :action => 'show', :id => pool.id, :report => 'leader' %>

@@ -22,6 +22,7 @@ Bones {
   rubyforge.name 'tournament'
   readme_file 'README.rdoc'
   ignore_file '.gitignore'
+  ignore_file 'webgui/db/*.sqlite3'
   version Tournament::VERSION
   group_id = 5863
 
