@@ -22,13 +22,12 @@ Bones {
   rubyforge.name 'tournament'
   readme_file 'README.rdoc'
   ignore_file '.gitignore'
-  ignore_file 'webgui/db/*.sqlite3'
   version Tournament::VERSION
   group_id = 5863
 
 #spec.opts << '--color'
 
-  exclude %w(tmp$ bak$ ~$ CVS \.svn \.git swp$ ^pkg ^doc bin/fake bin/gui_v2.rb ^tags$ ^webgui/log/.*\.log)
+  exclude %w(tmp$ bak$ ~$ CVS \.svn \.git swp$ ^pkg ^doc bin/fake bin/gui_v2.rb ^tags$ ^webgui/db/.*\.sqlite3 ^webgui/db/stats_.*\.yml ^webgui/log/.*\.log)
 
   rdoc.opts ["--line-numbers", "--force-update", "-W", "http://tournament.rubyforge.org/svn/trunk/%s"]
   rdoc.exclude [
