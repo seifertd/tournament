@@ -52,7 +52,8 @@ class Tournament::WebguiInstaller
       ['admin-email', 'ADMIN_EMAIL'],
       ['relative-root', 'RELATIVE_URL_ROOT'],
       ['smtp-configuration', 'SMTP_CONFIGURATION'],
-      ['prince-path', 'PRINCE_PATH']
+      ['prince-path', 'PRINCE_PATH'],
+      ['stats-processors', 'STATS_PROCESSORS']
     ].each do |config_name, constant_name|
       if config_options[config_name]
         puts "  -> Setting config option #{config_name} to #{config_options[config_name]}"

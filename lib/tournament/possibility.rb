@@ -16,4 +16,18 @@ class Tournament::Possibility
       (self.min_rank <=> other.min_rank).nonzero? ||
       other.max_score <=> self.max_score
   end
+  # Combine self with another possibility
+  def merge!(other)
+    @times_champ += other.times_champ
+    @max_score = [@max_score, other.max_score].max
+    @min_rank = [@min_rank, other.min_rank].min
+
+    # Merge champs
+    @champs.keys.each do |name|
+      @champs[name] += (other.champs[name] || 0)
+    end
+    (other.champs.keys - @champs.keys).each do |name|
+      @champs[name] = other.champs[name]
+    end
+  end
 end

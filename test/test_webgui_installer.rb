@@ -48,13 +48,15 @@ class WebguiInstallerTest < Test::Unit::TestCase
       {
         'prince-path' => 'foo',
         'admin-email' => 'admin@admin.com',
-        'site-name' => 'My Site'
+        'site-name' => 'My Site',
+        'stats-processors' => 5
       }
     )
     new_config = File.read(File.join(@installer.install_dir, 'config', 'initializers', 'pool.rb'))
     assert_match(/PRINCE_PATH = "foo"/, new_config)
     assert_match(/TOURNAMENT_TITLE = "My Site"/, new_config)
     assert_match(/ADMIN_EMAIL = "admin@admin.com"/, new_config)
+    assert_match(/STATS_PROCESSORS = 5/, new_config)
   end
 
   #def test_prince_install

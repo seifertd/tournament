@@ -5,7 +5,7 @@
 <li>Total games played: <%= pool.tournament_entry.picks.games_played %></li>
 <li>Pool Tie Break: <%=pool.tournament_entry.tie_breaker || '-' %></li>
 <li>Number of entries: <%=pool.entries.size%></li>
-<li>Number of remaining outcomes: <%=pool.tournament_entry.picks.number_of_outcomes%></li>
+<li>Number of remaining outcomes: <%=number_with_delimiter(pool.tournament_entry.picks.number_of_outcomes)%></li>
 </ul>
 <% end %>
 <% if @message %>
@@ -38,7 +38,7 @@
 <a class="info" href="#">Detail
 <span class="flow">
 <% stat.champs.sort_by{|k,v| -v}.each do |team, occurrences| -%>
-<nobr><%=team%> <%=occurrences%> (<%="%5.2f" % (occurrences.to_f * 100.0 / stat.times_champ)%>%)</nobr>
+<nobr><%=team%> <%=number_with_delimiter(occurrences)%> (<%="%5.2f" % (occurrences.to_f * 100.0 / stat.times_champ)%>%)</nobr>
 <br/>
 <% end -%>
 </span>

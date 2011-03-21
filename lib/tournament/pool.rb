@@ -381,8 +381,8 @@ class Tournament::Pool
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
     # Play out the bracket
     32.times { |n| b.set_winner(1,n+1, b.matchup(1, n+1)[rand(2)])}
-    10.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
-#    8.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
+    16.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
+    2.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
 #4.times { |n| b.set_winner(4,n+1, b.matchup(4, n+1)[rand(2)])}
     #2.times { |n| b.set_winner(5,n+1, b.matchup(5, n+1)[rand(2)])}
     #1.times { |n| b.set_winner(6,n+1, b.matchup(6, n+1)[rand(2)])}
@@ -687,56 +687,91 @@ class Tournament::Pool
   # Runs through every possible outcome of the tournament and
   # calculates each entry's chance to win as a percentage of the
   # possible outcomes the entry would win if the tournment came
-  # out that way.  If a block is provided, periodically reports
-  # progress by calling the block and passing it the percent complete
-  # and time remaining in seconds as arguments.
-  # Returns array of structs responding to times_champ, max_score,
-  # min_rank, entry and champs methods.  The entry method returns the
-  # Tournament::Entry object and the champs method returns a hash
+  # out that way.  Returns an array of Tournament::Possibility objects for
+  # each entry in the pool. These objects respond to :times_champ, :max_score,
+  # :min_rank, :entry and :champs methods.  The :entry method returns the
+  # Tournament::Entry object and the :champs method returns a hash
   # keyed on team name and whose values are the number of times that
   # team could win that would make the entry come in on top.
-  def possibility_stats
-    stats = @entries.map do |e|
+  # Options avaliable:
+  #   :processes => Number of Threads (default: 1) - Set this to the
+  #       number of CPU's on your computer to really peg CPU usage ;)
+  # This method spins up N processes to perform the work and will periodically
+  # report progress if passed a block responding to three parameters:
+  # 1) percentage of possibilities checked, 2) estimated time remaining in seconds
+  # and 3) total possibilities checked so far.
+  def possibility_stats(options = {})
+    options = options || {}
+    global_stats = @entries.map do |e|
       Tournament::Possibility.new(e)
     end
-    max_possible_score = @entries.map{|p| 0}
-    min_ranking = @entries.map{|p| @entries.size + 1}
-    times_winner = @entries.map{|p| 0 }
-    player_champions = @entries.map{|p| Hash.new {|h,k| h[k] = 0} }
+
+    # Create a collector to hold the results
+    collector = StatsCollector.new
+
+    # How many workers?
+    num_threads = options[:threads] || 1
+
+    threads = if num_threads == 1
+      # With just one worker, do it in-process
+      [possibility_stats_thread(collector, 0, 1)]
+    else
+      # With more than one worker, create a drb
+      # server and multiple clients
+      possibility_stats_cluster(collector, num_threads)
+    end
+
+    puts "CREATED WORKERS: #{threads}"
+
+    # Wait for them to finish
     count = 0
-    old_percentage = -1 
-    old_remaining = 1_000_000_000_000
     start = Time.now.to_f
-    self.tournament_entry.picks.each_possible_bracket do |poss|
-      poss_scores = @entries.map{|p| p.picks.score_against(poss, self.scoring_strategy)}
-      sort_scores = poss_scores.sort.reverse
-      @entries.each_with_index do |entry, i|
-        score = poss_scores[i]
-        stat = stats[i]
-        stat.max_score = score if score > stat.max_score
-        rank = sort_scores.index(score) + 1
-        stat.min_rank = rank if rank < stat.min_rank
-        stat.times_champ += 1 if rank == 1
-        if rank == 1
-          stat.champs[poss.champion.name] ||= 0
-          stat.champs[poss.champion.name] += 1
-        end
-      end
-      count += 1
-      percentage = (count * 100.0 / self.tournament_entry.picks.number_of_outcomes)
+    old_remaining = 1_000_000_000_000_000
+    old_percentage = 0
+    last_thousand = 1000
+    total_outcomes = self.tournament_entry.picks.number_of_outcomes
+    while count < total_outcomes
+      sleep 1
+      count = collector.total_count
+      next if count == 0
+      percentage = (count * 100.0 / total_outcomes)
       elapsed = Time.now.to_f - start
       spp = elapsed / count
       remaining = ((self.tournament_entry.picks.number_of_outcomes - count) * spp).to_i
-      if (percentage.to_i != old_percentage) || (remaining < old_remaining)
+      if (percentage.to_i != old_percentage) || (remaining < old_remaining) || count > last_thousand
         old_remaining = remaining
         old_percentage = percentage.to_i
         if block_given?
-          yield(percentage.to_i, remaining)
+          yield(percentage.to_i, remaining, count)
         end
       end
+      if count > last_thousand
+        last_thousand = (count / 1000 + 1) * 1000
+      end
     end
-    stats.sort!
-    return stats
+
+    # join
+    puts
+    puts "Waiting for threads to finish"
+    threads.each {|t| t.join}
+    
+    if @drb_server
+      puts "Waiting for drb services to stop"
+      DRb.stop_service
+      if DRb.thread
+        DRb.thread.stop
+        DRb.thread.join
+      end
+    end
+   
+    # Collect all the stats 
+    num_threads.times do |n|
+      global_stats.each_with_index do |stats, idx|
+        stats.merge!(collector.stats_of(n)[idx])
+      end
+    end
+    global_stats.sort!
+    return global_stats
   end
 
   # Runs through every possible outcome of the tournament and calculates
@@ -750,9 +785,9 @@ class Tournament::Pool
       return
     end
     out << "Checking #{self.tournament_entry.picks.number_of_outcomes} possible outcomes" << "\n"
-    stats = possibility_stats do |percentage, remaining|
+    stats = possibility_stats(:threads => 2) do |percentage, remaining, num_processed|
       hashes = '#' * (percentage.to_i/5) + '>'
-      out << "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
+      out << "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining, %d" % [percentage.to_i, remaining, num_processed]
     end
     out << "\n"
     #puts "SORT: #{stats.inspect}"
@@ -781,4 +816,114 @@ class Tournament::Pool
     end
     nil
   end
+
+  require 'drb/drb'
+  URI = "druby://localhost:38787"
+  class StatsCollector
+    include DRb::DRbUndumped
+    def initialize
+      @counts = {}
+      @stats = {}
+    end
+    def count(child, count)
+      @counts[child] = count
+    end
+    def stats(child, stat)
+      @stats[child] = stat
+    end
+    def stats_of(child)
+      @stats[child]
+    end
+    def count_of(child)
+      @count[child]
+    end
+    def total_count
+      @counts.values.inject(0) {|sum, count| sum += count}
+    end
+  end
+
+  # Make a subprocess look like a thread
+  class StatsProcess
+    def initialize(pid)
+      @pid = pid
+    end
+    def join
+      Process.waitpid @pid
+    end
+  end
+
+  protected
+
+  # Starts a drb server that spins off #total_threads child processes
+  # that each do a chunk of the calculation.  Returns array
+  # of StatsProcess objects that can be joined
+  def possibility_stats_cluster(collector, total_threads)
+    # Create a drb server
+    @drb_server = DRb.start_service(URI, collector)
+    threads = []
+    total_threads.times do |n|
+      pid = fork
+      if pid
+        # Track the child process
+        threads << StatsProcess.new(pid)
+      else
+        # child
+        DRb.start_service
+        remote_collector = DRbObject.new_with_uri(URI)
+        puts "Child #{n} got remote collector: #{remote_collector.inspect}"
+        # Start off collection thread
+        t = possibility_stats_thread(remote_collector, n, total_threads)
+        # Wait for it to finish 
+        t.join
+        exit 0
+      end
+    end
+    return threads
+  end
+
+  # Compute possibility stats for the given thread num and total threads.
+  # Tracks number of possibilities processed in collector and stores 
+  # an Array of Tournament::Possibility objects in the collector when
+  # finished
+  def possibility_stats_thread(collector, thread_num, total_threads)
+    puts "Creating stats thread #{thread_num} of #{total_threads}"
+    t = Thread.new do
+      count = 0
+      collector.count(thread_num, count)
+      stats = @entries.map do |e|
+        Tournament::Possibility.new(e)
+      end
+      self.tournament_entry.picks.each_possible_bracket(thread_num, total_threads) do |poss|
+        poss_scores = @entries.map{|p| p.picks.score_against(poss, self.scoring_strategy)}
+        # precalculate ranks
+        sorted = poss_scores.sort_by{|s| -s}
+        sort_scores = sorted.inject({}) do |h, s|
+          h[s] = sorted.index(s) + 1
+          h
+        end
+        @entries.each_with_index do |entry, i|
+          score = poss_scores[i]
+          stat = stats[i]
+          stat.max_score = score if score > stat.max_score
+          rank = sort_scores[score]
+          stat.min_rank = rank if rank < stat.min_rank
+          stat.times_champ += 1 if rank == 1
+          if rank == 1
+            stat.champs[poss.champion.name] ||= 0
+            stat.champs[poss.champion.name] += 1
+          end
+        end
+        count += 1
+        if count % 1000 == 0
+          collector.count(thread_num, count)
+        end
+      end
+      # Final count and stats
+      collector.count(thread_num, count)
+      collector.stats(thread_num, stats)
+    end
+    t.abort_on_exception = true
+    t
+  end
+
 end

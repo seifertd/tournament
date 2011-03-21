@@ -18,6 +18,9 @@
 <% end %>
 <% end %>
 <%= link_to '[Leader Board]', :controller => 'reports', :action => 'show', :id => pool.id, :report => 'leader' %>
+<% if has_stats_file(pool.id) -%>
+<%= link_to '[Possibilities]', :controller => 'reports', :action => 'show', :id => pool.id, :report => 'possibility' %>
+<% end -%>
 <%= link_to '[Reports]', :controller => 'reports', :action => 'show', :id => pool.id %>
 </small>
 <div class="poollistinfo">

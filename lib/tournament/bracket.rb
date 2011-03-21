@@ -44,9 +44,9 @@ class Tournament::Bracket
   # For each possible outcome remaining in the pool, generates a bracket representing
   # that outcome and yields it to the caller's block.  This can take a very long time
   # with more than about 22 teams left.
-  def each_possible_bracket
+  def each_possible_bracket(batch = 0, num_batches = 1)
     puts "WARNING: This is likely going to take a very long time ... " if teams_left > 21
-    each_possibility do |possibility|
+    each_possibility(batch, num_batches) do |possibility|
       yield(bracket_for(possibility))
     end
   end
@@ -97,7 +97,7 @@ class Tournament::Bracket
   #
   # If no games have been played, we can represent each possibility
   # by every possible 7 bit binary number.
-  def each_possibility
+  def each_possibility(batch = 0, num_batches = 1)
     # bit masks of games that have been played
     # played_mask is for any game where a winner has been determined
     # first is a mask where the first of the matched teams won
@@ -151,9 +151,19 @@ class Tournament::Bracket
     #num_possibilities = 0
     #shifts.size.times { |n| num_possibilities |= (1 << n) }
 
-    #puts "Checking #{num_possibilities} (#{number_of_outcomes}) possible outcomes."
-    possibility = num_possibilities - 1
-    while possibility >= 0
+    # Handle a batch
+    limit = nil
+    offset = 0
+    if batch && num_batches && num_batches > 1
+      limit = num_possibilities / num_batches
+      offset = batch * limit
+    end
+
+    possibility = num_possibilities - 1 - offset
+    puts "Checking #{limit.inspect} of #{number_of_outcomes} possible outcomes, offset: #{offset}, starting at: #{possibility}"
+
+    count_this_run = 0
+    while possibility >= 0 && (limit.nil? || count_this_run < limit)
       #puts "    possibility: #{Tournament::Bracket.jbin(possibility, teams.size - 1)}"
       real_poss = 0
       shifts.each_with_index do |s, i|
@@ -164,6 +174,7 @@ class Tournament::Bracket
       #puts "    real_poss: #{Tournament::Bracket.jbin(real_poss, teams.size - 1)}"
       yield(real_poss)
       possibility -= 1
+      count_this_run += 1
     end
   end
 

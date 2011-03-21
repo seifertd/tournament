@@ -156,6 +156,16 @@ to control how the application is installed:
   modrails and Apache.  Example:
 
     --relative-root=/my_pool  (Default: empty, no root is set)
+
+* Number of statistics processors.  If you generate statistics for
+  the possibilities report, set this to the number of CPUs/cores your
+  machine has to get maximum performance.  If you set this to 1 or
+  to fewer than the number of CPUs/cores, you won't max CPU consumption
+  when calculating the possibility stats.  This might be considered
+  a 'good thing'.  Set this to 1 if your hosting provider charges you
+  for high CPU use.
+
+    --stats-processors=1   (Default: 2)
  
 * Administrator email address.  The web GUI will send emails
   when users register for creating entries in a pool. The following

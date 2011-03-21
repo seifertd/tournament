@@ -5,9 +5,9 @@ namespace :report do
     pool_id = args[:pool_id].to_i
     tournament_pool = Pool.find(pool_id).pool
     puts "Calculating stats for pool with #{tournament_pool.tournament_entry.picks.number_of_outcomes} possible outcomes ..."
-    stats = tournament_pool.possibility_stats do |percentage, remaining|
+    stats = tournament_pool.possibility_stats(:threads => STATS_PROCESSORS) do |percentage, remaining, num_processed|
       hashes = '#' * (percentage.to_i/5) + '>'
-      print "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining" % [percentage.to_i, remaining]
+      print "\rCalculating: %3d%% +#{hashes.ljust(20, '-')}+ %5d seconds remaining, processed %d" % [percentage.to_i, remaining, num_processed]
     end
     puts
     stats_yaml_file = File.join(RAILS_ROOT, 'db', "stats_#{pool_id}.yml")

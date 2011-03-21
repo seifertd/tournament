@@ -1,3 +1,9 @@
+== 4.2.0 / 2011-03-20
+* Add ability to run statistics for the possibility report in more than one
+  process.
+* Add link to possibility report on pool index page.
+* Pretty formatting for large numbers.
+
 == 4.1.0 / 2011-03-17
 * Bug fix change team name and some cosmetic changes
 

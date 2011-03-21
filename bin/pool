@@ -55,6 +55,13 @@ Main do
       arity 1
       description "Relative URL root if you are installing the web application as a subdirectory in an existing website."
     end
+    option('stats-processors', 's') do
+      optional
+      argument :required
+      arity 1
+      cast :int
+      description "Number of processors to spawn when calculating the possibility statistics.  Set this to the number of CPUs/cores on your box."
+    end
     option('admin-email') do
       required
       argument :required

@@ -34,3 +34,8 @@ end
 # Full path to the prince xml executable if you want printable
 # styled PDF's of tournament brackets.
 PRINCE_PATH = nil unless defined?(PRINCE_PATH)
+
+# Number of processes to use when calculating possibility
+# report.  Set this to the number of CPU's on the machine
+# you run the report on.
+STATS_PROCESSORS = 2
