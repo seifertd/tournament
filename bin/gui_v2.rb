@@ -1,5 +1,6 @@
-#!/usr/bin/env shoes
+#!/usr/bin/env ruby
 
+require 'green_shoes'
 require 'yaml'
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'tournament.rb'))
 

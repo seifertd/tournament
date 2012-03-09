@@ -1,4 +1,6 @@
-#!/usr/bin/env shoes
+#!/usr/bin/env ruby
+
+require 'green_shoes'
 
 Dir.chdir(File.join(File.dirname(__FILE__), '..'))
 
@@ -30,7 +32,7 @@ Shoes.app :width => WINDOW_WIDTH, :height => 600 do
     load_data
   else
     @entry = Tournament::Entry.new
-    @entry.picks = Tournament::Bracket.new(@pool.scoring_strategy, @pool.tournament_entry.picks.teams)
+    @entry.picks = Tournament::Bracket.new(@pool.tournament_entry.picks.teams)
     #@picks = Tournament::Bracket.random_bracket(Tournament::Pool.ncaa_2008.bracket.teams)
   end
 
@@ -71,6 +73,7 @@ Shoes.app :width => WINDOW_WIDTH, :height => 600 do
         "%4s" % team.short_name
       end
     end
+    return label.gsub("&", "&amp;")
   end
 
   def matchup_flow(region_idx, round, game, real_game, bc, gap)
@@ -172,11 +175,11 @@ Shoes.app :width => WINDOW_WIDTH, :height => 600 do
       end
       stack do
         para "Name"
-        @name = edit_line @entry.name
+        @name = edit_line :text => @entry.name
       end
       stack do
         para "Tie Breaker"
-        @tie_break = edit_line "#{@entry.tie_breaker}"
+        @tie_break = edit_line :text => "#{@entry.tie_breaker}"
       end
     end
     @pool.regions.each_with_index do |region, region_idx|
