@@ -1,3 +1,6 @@
+== 5.0.0 / 2012-03-08
+* 2012 bracket.
+
 == 4.2.0 / 2011-03-20
 * Add ability to run statistics for the possibility report in more than one
   process.

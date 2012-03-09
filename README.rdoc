@@ -21,120 +21,15 @@ basketball tournament pool.
   adjunct to the command line script.
 * FIXME: Complete the test suite for the library and command line tool
 
-== COMMAND LINE SYNOPSIS:
-
-The tournament command line program is installed as 'pool'.  The library
-has the 2010 NCAA tournament pre-configured.  If you were to use
-this library for the 2011 NCAA tournament, code changes would be
-necessary. FIXME: (add ability to read teams from a simple configuration
-file).  For usage, just execute
-
-   pool --help
-
-For command specific usage, execute
-
-   pool [command] --help
-
-where [command] is one of the available commands described below. The
-pool command saves state in a file called pool.yml by default.  This
-can be overridden in all cases by using the --save-file option.
-
-The pool manager would use this program as follows:
-
-1. Choose a scoring strategy.  There are various scoring strategies
-   that could be used.  The library comes pre-configured with 
-   three scoring strategies:
-   1. Basic scoring strategy: each correct pick is worth 2 X the round.
-   2. Upset favoring strategy: each correct pick is worth a
-      base amount per round plus the seed number of the winner.  As
-      pre-configured, the base amounts per round are 3, 5, 11, 19, 30
-      and 40 points.
-   3. The Josh Patashnik strategy: each correct pick is worth the
-      winner's seed number X a round multiplier.  The multipliers
-      are 1, 2, 4, 8, 16 and 32 points.
-   4. Tweaked Josh Patashnik strategy: each correct pick is worth the
-      winner's seed number X a round multiplier.  The multipliers
-      are 1, 2, 4, 8, 12 and 22 points.
-   4. Constant Value strategy: each correct pick is worth exactly
-      one (1) point, regardless of round.
-   If your scoring strategy is not one of the above, you will have to
-   add a class to the ScoringStrategy module, in file
-   lib/tournament/scoring_strategy.rb.
-
-2. Create a directory to hold the pool data and change to it
-
-3. Initialize the pool
-
-       pool setup [--scoring=upset]
-
-   Use the --scoring argument to change from the default basic scoring
-   strategy.  If the basic strategy is ok, the --scoring argument is
-   not required.
-
-   As mentioned above, unless overridden by using the --save-file
-   option, the pool will save itself to the file 'pool.yml'
-
-4. Set the entry fee and payout amounts
-   
-       pool fee 10
-       pool payout 1 80
-       pool payout 2 20
-       pool payout last 10 -C
-
-   The above commands say that each entry fee is 10 units (this is all
-   for fun, not profit, right?) and that the 1st place finisher would
-   receive 80% of the total payout, the 2nd place finisher would 
-   receive 20% of the total payout and the last place finisher would
-   receive 10 units back (would get her entry fee back).  No error
-   checking is done with this.  FIXME: Add error checking.
-
-5. Export a tournament entry YAML file
-
-       pool dump
-
-   This will save the tournament entry file as tournament.yml unless
-   the --entry option is used to override it.
-
-6. Create entries.  You can use the included buggy GUI (see below),
-   or edit YAML files by hand.
-
-7. Import the entry YAML files into the pool
-
-       pool entry --add=path/to/entry.yml
-
-8. As games progress, update the tournament.yml file, again using the GUI or
-   editing the YAML file by hand.  Then update the pool with the new
-   pool YAML file
-
-       pool update
-
-9. Run reports
-  
-       pool report [final_four|entry|region|leader|score]
-
-   The final four report can only be run once the final four teams have
-   been determined.
-
-10. After about 22 teams are left, run a possibility report.  This report will
-    run through all the remaining ways the tournament can come out and
-    calculate the chance to win for each player.  The chance to win
-    is defined as the percentage of possibilities that lead to that player
-    coming out on top in the pool.  With more than about 22 teams left
-    (YMMV), this report could take months to run. FIXME (Investigate
-    possibly using EC2 or something to spread the load around, or 
-    otherwise optimize the possibility checking algorithm)
-
-        pool report possibility
-
 == WEB GUI:
 
-A Rails web application is available if you don't want to use the
-command line to manage your pool.
+A Rails web application is available for collecting entries and
+running reports during the course of the pool.
 
 === INSTALLING THE WEB GUI:
 
 The web application can be installed by running the pool command
-as follows
+(see command line synopsis below) as follows
 
    pool install_webgui --web-dir=/path/to/directory [options]
 
@@ -297,6 +192,111 @@ run the following command from the web gui install directory
 on the server:
 
    RAILS_ENV=production rake report:possibilities
+
+== COMMAND LINE SYNOPSIS:
+
+The tournament command line program is installed as 'pool'.  The library
+has the 2010 NCAA tournament pre-configured.  If you were to use
+this library for the 2011 NCAA tournament, code changes would be
+necessary. FIXME: (add ability to read teams from a simple configuration
+file).  For usage, just execute
+
+   pool --help
+
+For command specific usage, execute
+
+   pool [command] --help
+
+where [command] is one of the available commands described below. The
+pool command saves state in a file called pool.yml by default.  This
+can be overridden in all cases by using the --save-file option.
+
+The pool manager would use this program as follows:
+
+1. Choose a scoring strategy.  There are various scoring strategies
+   that could be used.  The library comes pre-configured with 
+   three scoring strategies:
+   1. Basic scoring strategy: each correct pick is worth 2 X the round.
+   2. Upset favoring strategy: each correct pick is worth a
+      base amount per round plus the seed number of the winner.  As
+      pre-configured, the base amounts per round are 3, 5, 11, 19, 30
+      and 40 points.
+   3. The Josh Patashnik strategy: each correct pick is worth the
+      winner's seed number X a round multiplier.  The multipliers
+      are 1, 2, 4, 8, 16 and 32 points.
+   4. Tweaked Josh Patashnik strategy: each correct pick is worth the
+      winner's seed number X a round multiplier.  The multipliers
+      are 1, 2, 4, 8, 12 and 22 points.
+   4. Constant Value strategy: each correct pick is worth exactly
+      one (1) point, regardless of round.
+   If your scoring strategy is not one of the above, you will have to
+   add a class to the ScoringStrategy module, in file
+   lib/tournament/scoring_strategy.rb.
+
+2. Create a directory to hold the pool data and change to it
+
+3. Initialize the pool
+
+       pool setup [--scoring=upset]
+
+   Use the --scoring argument to change from the default basic scoring
+   strategy.  If the basic strategy is ok, the --scoring argument is
+   not required.
+
+   As mentioned above, unless overridden by using the --save-file
+   option, the pool will save itself to the file 'pool.yml'
+
+4. Set the entry fee and payout amounts
+   
+       pool fee 10
+       pool payout 1 80
+       pool payout 2 20
+       pool payout last 10 -C
+
+   The above commands say that each entry fee is 10 units (this is all
+   for fun, not profit, right?) and that the 1st place finisher would
+   receive 80% of the total payout, the 2nd place finisher would 
+   receive 20% of the total payout and the last place finisher would
+   receive 10 units back (would get her entry fee back).  No error
+   checking is done with this.  FIXME: Add error checking.
+
+5. Export a tournament entry YAML file
+
+       pool dump
+
+   This will save the tournament entry file as tournament.yml unless
+   the --entry option is used to override it.
+
+6. Create entries.  You can use the included buggy GUI (see below),
+   or edit YAML files by hand.
+
+7. Import the entry YAML files into the pool
+
+       pool entry --add=path/to/entry.yml
+
+8. As games progress, update the tournament.yml file, again using the GUI or
+   editing the YAML file by hand.  Then update the pool with the new
+   pool YAML file
+
+       pool update
+
+9. Run reports
+  
+       pool report [final_four|entry|region|leader|score]
+
+   The final four report can only be run once the final four teams have
+   been determined.
+
+10. After about 22 teams are left, run a possibility report.  This report will
+    run through all the remaining ways the tournament can come out and
+    calculate the chance to win for each player.  The chance to win
+    is defined as the percentage of possibilities that lead to that player
+    coming out on top in the pool.  With more than about 22 teams left
+    (YMMV), this report could take months to run. FIXME (Investigate
+    possibly using EC2 or something to spread the load around, or 
+    otherwise optimize the possibility checking algorithm)
+
+        pool report possibility
 
 == SHOES GUI (Deprecated):
 
