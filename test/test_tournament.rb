@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'tournament'
+require_relative '../lib/tournament'
 
 class TournamentTest < Test::Unit::TestCase
   def test_random_pool

@@ -302,8 +302,8 @@ Main do
   mode('report') do
     mixin :savefile
     available_reports = Tournament::Pool.instance_methods(false).map do |name|
-      if idx = name.index("_report")
-        name[0,idx]
+      if idx = name.to_s.index("_report")
+        name.to_s[0,idx]
       else
         nil
       end
