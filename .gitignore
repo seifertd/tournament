@@ -1,6 +1,7 @@
 pkg
 *.swp
 doc
+pool.yml
 webgui/log/*.log
 webgui/tmp/*
 webgui/db/*.sqlite3

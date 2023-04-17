@@ -13,7 +13,22 @@ Main do
   # Loads the pool from the save file.  If the save file
   # does not exist, creates a default pool
   def load_pool
-    @pool = YAML::load_file(save_file_name)
+    @pool = YAML::load_file(save_file_name,
+      permitted_classes: [
+        Tournament::Entry,
+        Tournament::Possibility,
+        Tournament::Pool,
+        Tournament::Team,
+        Tournament::Bracket,
+        Tournament::ScoringStrategy,
+        Tournament::ScoringStrategy::Basic,
+        Tournament::ScoringStrategy::WorldCupSoccer,
+        Tournament::ScoringStrategy::ConstantValue,
+        Tournament::ScoringStrategy::Upset,
+        Tournament::ScoringStrategy::JoshPatashnik,
+        Tournament::ScoringStrategy::TweakedJoshPatashnik,
+        Symbol
+      ])
   end
 
   def save_file_name
