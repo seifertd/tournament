@@ -381,7 +381,7 @@ class Tournament::Pool
     picks = (1..num_picks).map {|n| Tournament::Bracket.random_bracket(b.teams)}
     # Play out the bracket
     32.times { |n| b.set_winner(1,n+1, b.matchup(1, n+1)[rand(2)])}
-    #16.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
+    16.times { |n| b.set_winner(2,n+1, b.matchup(2, n+1)[rand(2)])}
     #2.times { |n| b.set_winner(3,n+1, b.matchup(3, n+1)[rand(2)])}
 #4.times { |n| b.set_winner(4,n+1, b.matchup(4, n+1)[rand(2)])}
     #2.times { |n| b.set_winner(5,n+1, b.matchup(5, n+1)[rand(2)])}
