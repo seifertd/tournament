@@ -1,3 +1,11 @@
+[DEPRECATED]
+
+This project is deprecated. No further development is being done on it.
+
+REPLACEMENTS:
+1. If you want a fast command line way to run an office pool try https://github.com/seifertd/tournament3
+2. If you want a gui way to run an office pool, there are a million free websites, go use one.
+
 tournament
     by Douglas A. Seifert (doug at dseifert dot net)
     http://www.dseifert.net/code/tournament
