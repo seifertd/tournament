@@ -1,256 +1,147 @@
-== Welcome to Rails
-
-Rails is a web-application framework that includes everything needed to create 
-database-backed web applications according to the Model-View-Control pattern. 
-
-This pattern splits the view (also called the presentation) into "dumb" templates
-that are primarily responsible for inserting pre-built data in between HTML tags.
-The model contains the "smart" domain objects (such as Account, Product, Person,
-Post) that holds all the business logic and knows how to persist themselves to
-a database. The controller handles the incoming requests (such as Save New Account,
-Update Product, Show Post) by manipulating the model and directing data to the view.
-
-In Rails, the model is handled by what's called an object-relational mapping
-layer entitled Active Record. This layer allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. You can read more about Active Record in
-link:files/vendor/rails/activerecord/README.html.
-
-The controller and view are handled by the Action Pack, which handles both
-layers by its two parts: Action View and Action Controller. These two layers
-are bundled in a single package due to their heavy interdependence. This is
-unlike the relationship between the Active Record and Action Pack that is much
-more separate. Each of these packages can be used independently outside of
-Rails.  You can read more about Action Pack in
-link:files/vendor/rails/actionpack/README.html.
-
-
-== Getting Started
-
-1. At the command prompt, start a new Rails application using the <tt>rails</tt> command
-   and your application name. Ex: rails myapp
-2. Change directory into myapp and start the web server: <tt>script/server</tt> (run with --help for options)
-3. Go to http://localhost:3000/ and get "Welcome aboard: You're riding the Rails!"
-4. Follow the guidelines to start developing your application
-
-
-== Web Servers
-
-By default, Rails will try to use Mongrel and lighttpd if they are installed, otherwise
-Rails will use WEBrick, the webserver that ships with Ruby. When you run script/server,
-Rails will check if Mongrel exists, then lighttpd and finally fall back to WEBrick. This ensures
-that you can always get up and running quickly.
+# Tournament Webgui
+
+This documents how to run the legacy Rails 2.3.11 app (Ruby 1.9.3) on a modern Linux system using Docker.
 
-Mongrel is a Ruby-based webserver with a C component (which requires compilation) that is
-suitable for development and deployment of Rails applications. If you have Ruby Gems installed,
-getting up and running with mongrel is as easy as: <tt>gem install mongrel</tt>.
-More info at: http://mongrel.rubyforge.org
+## Prerequisites
 
-If Mongrel is not installed, Rails will look for lighttpd. It's considerably faster than
-Mongrel and WEBrick and also suited for production use, but requires additional
-installation and currently only works well on OS X/Unix (Windows users are encouraged
-to start with Mongrel). We recommend version 1.4.11 and higher. You can download it from
-http://www.lighttpd.net.
+Install Docker (on CachyOS/Arch, doing this on other distros is out-of-scope for this document):
 
-And finally, if neither Mongrel or lighttpd are installed, Rails will use the built-in Ruby
-web server, WEBrick. WEBrick is a small Ruby web server suitable for development, but not
-for production.
-
-But of course its also possible to run Rails on any platform that supports FCGI.
-Apache, LiteSpeed, IIS are just a few. For more information on FCGI,
-please visit: http://wiki.rubyonrails.com/rails/pages/FastCGI
+```bash
+sudo pacman -S docker docker-compose
+sudo systemctl enable --now docker.socket
+sudo usermod -aG docker $USER
+newgrp docker
+```
 
+Verify Docker is working:
 
-== Apache .htaccess example
+```bash
+docker run hello-world
+```
 
-# General Apache options
-AddHandler fastcgi-script .fcgi
-AddHandler cgi-script .cgi
-Options +FollowSymLinks +ExecCGI
+## Project Files
 
-# If you don't want Rails to look in certain directories,
-# use the following rewrite rules so that Apache won't rewrite certain requests
-# 
-# Example:
-#   RewriteCond %{REQUEST_URI} ^/notrails.*
-#   RewriteRule .* - [L]
+### Gemfile
 
-# Redirect all requests not available on the filesystem to Rails
-# By default the cgi dispatcher is used which is very slow
-# 
-# For better performance replace the dispatcher with the fastcgi one
-#
-# Example:
-#   RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
-RewriteEngine On
+Create a `Gemfile` in the root of your Rails app (Rails 2.3.11 predates Bundler, so this needs to be added manually):
 
-# If your Rails application is accessed via an Alias directive,
-# then you MUST also set the RewriteBase in this htaccess file.
-#
-# Example:
-#   Alias /myrailsapp /path/to/myrailsapp/public
-#   RewriteBase /myrailsapp
+```ruby
+source 'https://rubygems.org'
 
-RewriteRule ^$ index.html [QSA]
-RewriteRule ^([^.]+)$ $1.html [QSA]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ dispatch.cgi [QSA,L]
+gem 'rails', '2.3.11'
+gem 'sqlite3', '1.4.4'
+gem 'tournament' 
+```
 
-# In case Rails experiences terminal errors
-# Instead of displaying this message you can supply a file here which will be rendered instead
-# 
-# Example:
-#   ErrorDocument 500 /500.html
+### Dockerfile
 
-ErrorDocument 500 "<h2>Application error</h2>Rails application failed to start properly"
+```dockerfile
+FROM debian:bookworm-slim
 
+RUN apt-get update && \
+    dpkg --configure -a && \
+    apt-get install -y --fix-broken \
+    build-essential \
+    wget \
+    libreadline-dev \
+    zlib1g-dev \
+    libsqlite3-dev \
+    sqlite3 \
+    libyaml-dev \
+    libgdbm-dev \
+    libffi-dev \
+    ca-certificates
 
-== Debugging Rails
+# Build OpenSSL 1.0.2 from source (required for Ruby 1.9.3 — incompatible with OpenSSL 3.x)
+RUN wget https://www.openssl.org/source/openssl-1.0.2u.tar.gz && \
+    tar xzf openssl-1.0.2u.tar.gz && \
+    cd openssl-1.0.2u && \
+    ./config --prefix=/usr/local/openssl-1.0.2 --openssldir=/etc/ssl shared && \
+    make && make install && \
+    cd .. && rm -rf openssl-1.0.2u*
 
-Sometimes your application goes wrong.  Fortunately there are a lot of tools that
-will help you debug it and get it back on the rails.
+# Build Ruby 1.9.3 from source
+RUN wget https://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p551.tar.gz && \
+    tar xzf ruby-1.9.3-p551.tar.gz && \
+    cd ruby-1.9.3-p551 && \
+    ./configure --with-openssl-dir=/usr/local/openssl-1.0.2 --with-yaml-dir=/usr --disable-install-rdoc && \
+    make && \
+    make install && \
+    cd .. && rm -rf ruby-1.9.3-p551*
 
-First area to check is the application log files.  Have "tail -f" commands running
-on the server.log and development.log. Rails will automatically display debugging
-and runtime information to these files. Debugging info will also be shown in the
-browser on requests from 127.0.0.1.
+RUN gem install bundler -v 1.17.3
 
-You can also log your own messages directly into the log file from your code using
-the Ruby logger class from inside your controllers. Example:
+WORKDIR /app
+COPY Gemfile .
+RUN bundle install
 
-  class WeblogController < ActionController::Base
-    def destroy
-      @weblog = Weblog.find(params[:id])
-      @weblog.destroy
-      logger.info("#{Time.now} Destroyed Weblog ID ##{@weblog.id}!")
-    end
-  end
+COPY . .
 
-The result will be a message in your log file along the lines of:
+EXPOSE 3000
+CMD ["bundle", "exec", "ruby", "/app/script/server", "-b", "0.0.0.0"]
+```
 
-  Mon Oct 08 14:22:29 +1000 2007 Destroyed Weblog ID #1
+**Why so much from source?**
+- Modern Debian ships OpenSSL 3.x, which Ruby 1.9.3 cannot build against — OpenSSL 1.0.2u must be compiled separately.
+- Ruby 1.9.3 packages are no longer available in any current distro repos.
 
-More information on how to use the logger is at http://www.ruby-doc.org/core/
+### docker-compose.yml
 
-Also, Ruby documentation can be found at http://www.ruby-lang.org/ including:
+```yaml
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+```
 
-* The Learning Ruby (Pickaxe) Book: http://www.ruby-doc.org/docs/ProgrammingRuby/
-* Learn to Program: http://pine.fm/LearnToProgram/  (a beginners guide)
+The volume mount means local file edits are reflected immediately without rebuilding.
 
-These two online (and free) books will bring you up to speed on the Ruby language
-and also on programming in general.
+## Building and Running
 
+Build the image (takes a few minutes the first time due to compiling OpenSSL and Ruby):
 
-== Debugger
+```bash
+docker compose build
+```
 
-Debugger support is available through the debugger command when you start your Mongrel or
-Webrick server with --debugger. This means that you can break out of execution at any point
-in the code, investigate and change the model, AND then resume execution! 
-You need to install ruby-debug to run the server in debugging mode. With gems, use 'gem install ruby-debug'
-Example:
+Start the app:
 
-  class WeblogController < ActionController::Base
-    def index
-      @posts = Post.find(:all)
-      debugger
-    end
-  end
+```bash
+docker compose up
+```
 
-So the controller will accept the action, run the first line, then present you
-with a IRB prompt in the server window. Here you can do things like:
+The app will be available at http://localhost:3000.
 
-  >> @posts.inspect
-  => "[#<Post:0x14a6be8 @attributes={\"title\"=>nil, \"body\"=>nil, \"id\"=>\"1\"}>,
-       #<Post:0x14a6620 @attributes={\"title\"=>\"Rails you know!\", \"body\"=>\"Only ten..\", \"id\"=>\"2\"}>]"
-  >> @posts.first.title = "hello from a debugger"
-  => "hello from a debugger"
+Stop the app:
 
-...and even better is that you can examine how your runtime objects actually work:
+```bash
+docker compose down
+```
 
-  >> f = @posts.first
-  => #<Post:0x13630c4 @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>
-  >> f.
-  Display all 152 possibilities? (y or n)
+## Useful Commands
 
-Finally, when you're ready to resume execution, you enter "cont"
+Run the Rails console:
 
+```bash
+docker compose exec web bundle exec ruby script/console
+```
 
-== Console
+Run a one-off command:
 
-You can interact with the domain model by starting the console through <tt>script/console</tt>.
-Here you'll have all parts of the application configured, just like it is when the
-application is running. You can inspect domain models, change values, and save to the
-database. Starting the script without arguments will launch it in the development environment.
-Passing an argument will specify a different environment, like <tt>script/console production</tt>.
+```bash
+docker compose exec web bundle exec rake db:migrate
+```
 
-To reload your controllers and models after launching the console run <tt>reload!</tt>
+Open a shell in the container:
 
-== dbconsole
+```bash
+docker compose exec web bash
+```
 
-You can go to the command line of your database directly through <tt>script/dbconsole</tt>.
-You would be connected to the database with the credentials defined in database.yml.
-Starting the script without arguments will connect you to the development database. Passing an
-argument will connect you to a different database, like <tt>script/dbconsole production</tt>.
-Currently works for mysql, postgresql and sqlite.
+## Notes
 
-== Description of Contents
-
-app
-  Holds all the code that's specific to this particular application.
-
-app/controllers
-  Holds controllers that should be named like weblogs_controller.rb for
-  automated URL mapping. All controllers should descend from ApplicationController
-  which itself descends from ActionController::Base.
-
-app/models
-  Holds models that should be named like post.rb.
-  Most models will descend from ActiveRecord::Base.
-
-app/views
-  Holds the template files for the view that should be named like
-  weblogs/index.html.erb for the WeblogsController#index action. All views use eRuby
-  syntax.
-
-app/views/layouts
-  Holds the template files for layouts to be used with views. This models the common
-  header/footer method of wrapping views. In your views, define a layout using the
-  <tt>layout :default</tt> and create a file named default.html.erb. Inside default.html.erb,
-  call <% yield %> to render the view using this layout.
-
-app/helpers
-  Holds view helpers that should be named like weblogs_helper.rb. These are generated
-  for you automatically when using script/generate for controllers. Helpers can be used to
-  wrap functionality for your views into methods.
-
-config
-  Configuration files for the Rails environment, the routing map, the database, and other dependencies.
-
-db
-  Contains the database schema in schema.rb.  db/migrate contains all
-  the sequence of Migrations for your schema.
-
-doc
-  This directory is where your application documentation will be stored when generated
-  using <tt>rake doc:app</tt>
-
-lib
-  Application specific libraries. Basically, any kind of custom code that doesn't
-  belong under controllers, models, or helpers. This directory is in the load path.
-
-public
-  The directory available for the web server. Contains subdirectories for images, stylesheets,
-  and javascripts. Also contains the dispatchers and the default HTML files. This should be
-  set as the DOCUMENT_ROOT of your web server.
-
-script
-  Helper scripts for automation and generation.
-
-test
-  Unit and functional tests along with fixtures. When using the script/generate scripts, template
-  test files will be generated for you and placed in this directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins subdirectory.
-  If the app has frozen rails, those gems also go here, under vendor/rails/.
-  This directory is in the load path.
+- The build will emit many deprecation warnings about `Gem.source_index` — these are harmless, just Rails 2.x running on a newer RubyGems than it was designed for.
+- The first `docker compose build` is slow; subsequent builds are fast unless you change the `Gemfile`.
